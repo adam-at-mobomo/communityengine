@@ -1,7 +1,7 @@
 #content form {margin-bottom:0;}
 
-#content p.subtle { 
-	margin:0 0 0.5em; 
+#content p.subtle {
+	margin:0 0 0.5em;
 	float:right;
 	}
 #content .subtle a {
@@ -104,11 +104,11 @@ hr {
 
 #right hr { border-color:#bbb; }
 
-#monitor_topic { 
-  font-size: 12px; 
+#monitor_topic {
+  font-size: 12px;
 	}
-#monitor_topic .icon { 
-  background-image:none; 
+#monitor_topic .icon {
+  background-image:none;
 	}
 
 ul.quotes, ul.flat {
@@ -127,7 +127,7 @@ ul.flat li {
 	}
 	ul.flat li.label {
 		background:none;
-		padding-left:0;		
+		padding-left:0;
 		}
 ul.ways li span {
 	color:#666;
@@ -196,9 +196,9 @@ p.private {
   color:#c00;
   font-weight:bold;
 	}
-p.psmall { 
-  font-size:0.7em; 
-  font-weight:normal; 
+p.psmall {
+  font-size:0.7em;
+  font-weight:normal;
 	}
 
 div.upload {
@@ -214,7 +214,7 @@ div.upload p {margin:0}
 div.upload input { margin-left:0.75em;}
 div.upload a {
 	color:#666;
-	font-size:0.8em;	
+	font-size:0.8em;
 	}
 
 .pastePreview pre { font-size:0.9em; }
@@ -272,7 +272,7 @@ label {
 /* random */
 
 .photo {
-	background:#aaa url(/assets/clearbits/smile.gif) no-repeat 8px 8px;
+	background:#aaa url(./clearbits/smile.gif) no-repeat 8px 8px;
 }
 #footer_content .photo {
 	/* Prevents conflict with footer class*/
@@ -302,7 +302,7 @@ table.noborder td {
 table.nopad td {
   padding-left:0;}
 
-table.wide {	
+table.wide {
 	width:100%; }
 table.wide tr th {
 	background:#333;
@@ -325,7 +325,7 @@ table.wide tr td {
 /* specific table styles */
 
 table.forums tr td .desc {
-	margin:0.5em 0;	
+	margin:0.5em 0;
 	}
 table.forums tr td {
 	padding:4px 15px;
@@ -384,7 +384,7 @@ form.dialog {
 	background:#eee;
 	width:300px;
 	padding:15px;
-	}		
+	}
 
 form .entryhelp {
   font-size:0.7em;
@@ -439,7 +439,7 @@ table.posts tr.spacer td {
 	}
 
 .post .author img {
-	float:left; 
+	float:left;
 	margin-right:0.5em;
 	}
 .post .author {
@@ -507,7 +507,7 @@ table.posts tr.spacer td {
 .posts .post .body a:hover { color:brown; }
 
 .posts .post .body blockquote p {
-	margin:0.5em 0;	
+	margin:0.5em 0;
 	}
 
 .post .body p.topic {
@@ -525,7 +525,7 @@ p.online {margin-bottom:0;}
 
 img.icon {
 	background:#696;
-	background-image: url(/assets/clearbits/bg_rounded.gif);
+	background-image: url(./clearbits/bg_rounded.gif);
 	background-repeat: no-repeat;
 	vertical-align: bottom;
 	}
@@ -542,7 +542,7 @@ img.green { background-color:#0c0;}
 /* reply */
 
 div.editbox {
-	background:url(/assets/reply_background.png);
+	background:url(./reply_background.png);
 	border:2px solid #333;
 	border-width:2px 0;
 	position:fixed;
@@ -599,7 +599,7 @@ div.editbox ul.help {
 
 #monitor_topic {
 	margin-right:2em;
-	} 
+	}
 	#monitor_topic a {
 	  color: #666;
 		}

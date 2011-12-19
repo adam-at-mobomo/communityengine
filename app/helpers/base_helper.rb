@@ -31,7 +31,7 @@ module BaseHelper
         Event.observe(window, 'load', function(){
       		$$('img.#{classname}').each(function(image){
       			CommunityEngine.resize_image(image, {max_width: #{width}, max_height:#{height}});
-      		});          
+      		});
         }, false);
     	//]]>
     </script>"
@@ -57,7 +57,7 @@ module BaseHelper
 
   def box(html_options = {}, &block)
     block_to_partial('shared/box', html_options, &block)
-  end  
+  end
     
   def city_cloud(cities, classes)
     max, min = 0, 0
@@ -92,12 +92,12 @@ module BaseHelper
     if paragraph
       paragraph.to_html + end_string
     else
-      truncate_words(text, 150, end_string) 
+      truncate_words(text, 150, end_string)
     end
   end
 
   def page_title
-    divider = " | ".html_safe    
+    divider = " | ".html_safe
     
     app_base = configatron.community_name
     tagline = " #{divider} #{configatron.community_tagline}"
@@ -117,10 +117,10 @@ module BaseHelper
           @canonical_url = user_post_url(@post.user, @post)
         end
       when 'users'
-        if @user && !@user.new_record? && @user.login 
+        if @user && !@user.new_record? && @user.login
           title = @user.login
           title += divider + app_base + tagline
-          @canonical_url = user_url(@user)          
+          @canonical_url = user_url(@user)
         else
           title = :showing_users.l+divider + app_base + tagline
         end
@@ -141,7 +141,7 @@ module BaseHelper
               title = :posts_photos_and_bookmarks.l(:name => @tags.map(&:name).join(', '))
             end
             title += " (#{:related_tags.l}: #{@related_tags.join(', ')})" if @related_tags
-            title += divider + app_base    
+            title += divider + app_base
             @canonical_url = tag_url(URI.escape(@tags_raw, /[\/.?#]/)) if @tags_raw
           else
             title = "Showing tags #{divider} #{app_base} #{tagline}"
@@ -150,15 +150,15 @@ module BaseHelper
         if @category and @category.name
           title = :posts_photos_and_bookmarks.l(:name => @category.name) + divider + app_base + tagline
         else
-          title = :showing_categories.l + divider + app_base + tagline            
+          title = :showing_categories.l + divider + app_base + tagline
         end
       when 'sessions'
-        title = :login.l + divider + app_base + tagline            
+        title = :login.l + divider + app_base + tagline
     end
 
     if @page_title
       title = @page_title + divider + app_base + tagline
-    elsif title == app_base          
+    elsif title == app_base
 		  title = :showing.l + ' ' + controller.controller_name + divider + app_base + tagline
     end
 
@@ -169,10 +169,10 @@ module BaseHelper
 		html = "<span class='friend_request' id='friend_request_#{user.id}'>"
     html += link_to_remote :request_friendship.l,
 				{:update => "friend_request_#{user.id}",
-					:loading => "$$('span#friend_request_#{user.id} span.spinner')[0].show(); $$('span#friend_request_#{user.id} a.add_friend_btn')[0].hide()", 
+					:loading => "$$('span#friend_request_#{user.id} span.spinner')[0].show(); $$('span#friend_request_#{user.id} a.add_friend_btn')[0].hide()",
 					:complete => visual_effect(:highlight, "friend_request_#{user.id}", :duration => 1),
           500 => "alert('"+:sorry_there_was_an_error_requesting_friendship.l.gsub(/'/, "\\\\'")+"')",
-					:url => hash_for_user_friendships_url(:user_id => current_user.id, :friend_id => user.id), 
+					:url => hash_for_user_friendships_url(:user_id => current_user.id, :friend_id => user.id),
 					:method => :post }, {:class => "add_friend button"}
 		html +=	"<span style='display:none;' class='spinner'>"
 		html += image_tag 'spinner.gif', :plugin => "community_engine"
@@ -200,19 +200,19 @@ module BaseHelper
   end
   
   def clippings_link
-    "javascript:(function() {d=document, w=window, e=w.getSelection, k=d.getSelection, x=d.selection, s=(e?e():(k)?k():(x?x.createRange().text:0)), e=encodeURIComponent, document.location='#{home_url}new_clipping?uri='+e(document.location)+'&title='+e(document.title)+'&selection='+e(s);} )();"    
+    "javascript:(function() {d=document, w=window, e=w.getSelection, k=d.getSelection, x=d.selection, s=(e?e():(k)?k():(x?x.createRange().text:0)), e=encodeURIComponent, document.location='#{home_url}new_clipping?uri='+e(document.location)+'&title='+e(document.title)+'&selection='+e(s);} )();"
   end
   
   def paginating_links(paginator, options = {}, html_options = {})
     paginate paginator
-  end  
+  end
   
   def last_active
     session[:last_active] ||= Time.now.utc
   end
     
   def ajax_spinner_for(id, spinner="spinner.gif")
-    "<img src='/assets/#{spinner}' style='display:none; vertical-align:middle;' id='#{id.to_s}_spinner'> ".html_safe
+    image_tag spinner, :style => 'display:none; vertical-align:middle;', :id => "#{id.to_s}_spinner"
   end
 
   def avatar_for(user, size=32)
@@ -267,9 +267,9 @@ module BaseHelper
   def profile_completeness(user)
     segments = [
       {:val => 2, :action => link_to(:upload_a_profile_photo.l, edit_user_path(user, :anchor => 'profile_details')), :test => !user.avatar.nil? },
-      {:val => 1, :action => link_to(:tell_us_about_yourself.l, edit_user_path(user, :anchor => 'user_description')), :test => !user.description.blank?},      
-      {:val => 2, :action => link_to(:select_your_city.l, edit_user_path(user, :anchor => 'location_chooser')), :test => !user.metro_area.nil? },            
-      {:val => 1, :action => link_to(:tag_yourself.l, edit_user_path(user, :anchor => "user_tags")), :test => user.tags.any?},                  
+      {:val => 1, :action => link_to(:tell_us_about_yourself.l, edit_user_path(user, :anchor => 'user_description')), :test => !user.description.blank?},
+      {:val => 2, :action => link_to(:select_your_city.l, edit_user_path(user, :anchor => 'location_chooser')), :test => !user.metro_area.nil? },
+      {:val => 1, :action => link_to(:tag_yourself.l, edit_user_path(user, :anchor => "user_tags")), :test => user.tags.any?},
       {:val => 1, :action => link_to(:invite_some_friends.l, new_invitation_path), :test => user.invitations.any?}
     ]
     
@@ -284,7 +284,7 @@ module BaseHelper
   
 
   def possesive(user)
-    user.gender ? (user.male? ? :his.l : :her.l)  : :their.l    
+    user.gender ? (user.male? ? :his.l : :her.l)  : :their.l
   end
 
 end

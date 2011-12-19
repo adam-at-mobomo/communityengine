@@ -28,7 +28,7 @@ alt blue dark #94beff
 /*  3. WELCOME                                            */
 /*  4. BOX and ALTBOX                                     */
 /*  5. BODY                                               */
-/*  6. SIDEBAR                                            */ 
+/*  6. SIDEBAR                                            */
 /*  7. FOOTER                                             */
 /*  8. COMMUNITY FOOTER                                   */
 /*  9. CLEARFIX                                           */
@@ -117,7 +117,7 @@ float: right;
 padding-left: 20px;
 margin-right: 20px;
 background-color: transparent;
-background-image: url(/assets/icons/email_open.png);
+background-image: url(./icons/email_open.png);
 background-repeat: no-repeat;
 background-position: left center;
 }
@@ -125,7 +125,7 @@ background-position: left center;
 /* Navbar */
 
 #NavBar{
-background: #aba8a3 url(/assets/bg_navbar.gif) repeat-x 0 0;
+background: #aba8a3 url(./bg_navbar.gif) repeat-x 0 0;
 border-top: 1px solid #d9d6d3;
 clear: both;
 }
@@ -158,7 +158,7 @@ text-decoration: none !important;
 font-size: 108%;
 padding: 4px 15px 4px 5px;
 margin: 11px 10px 0 0;
-background: #fff url(/assets/search.gif) no-repeat right center;
+background: #fff url(./search.gif) no-repeat right center;
 border: none;
 }
 
@@ -186,12 +186,12 @@ margin-bottom:.5em;
 font-size: 108%;}
 
 #welcome .box h4{
-background:url(/assets/bg_h6btn.gif) repeat-x left center;
+background:url(./bg_h6btn.gif) repeat-x left center;
 }
 
 #welcome .box h4 a{
 background-color: transparent;
-background-image: url(/assets/icons/52.png);
+background-image: url(./icons/52.png);
 background-repeat: no-repeat;
 background-position: .5em center;
 display: block;
@@ -205,7 +205,7 @@ border: 1px solid #9ec500;
 }
 
 #welcome .first .box h4 a{
-background-image: url(/assets/icons/31.png);
+background-image: url(./icons/31.png);
 }
 
 #welcome .box h4 a:hover{
@@ -348,21 +348,21 @@ font-weight: bold;
 padding:0 0 3px 0;
 }
 
-.hentry .vcard ul li.update{background-image: url(/assets/icons/date.png) }
-.hentry .vcard ul li.view{background-image: url(/assets/icons/page_white_magnify.png) }
-.hentry .vcard ul li.comments{background-image: url(/assets/icons/comments.png) }
-.hentry .vcard ul li.msg{background-image: url(/assets/icons/email_go.png) }
-.hentry .vcard ul li.addfriend{background-image: url(/assets/icons/user_add.png) }
-.hentry .vcard ul li.print{background-image: url(/assets/icons/printer.png) }
-.hentry .vcard ul li.email{background-image: url(/assets/icons/user_go.png) }
+.hentry .vcard ul li.update{background-image: url(./icons/date.png) }
+.hentry .vcard ul li.view{background-image: url(./icons/page_white_magnify.png) }
+.hentry .vcard ul li.comments{background-image: url(./icons/comments.png) }
+.hentry .vcard ul li.msg{background-image: url(./icons/email_go.png) }
+.hentry .vcard ul li.addfriend{background-image: url(./icons/user_add.png) }
+.hentry .vcard ul li.print{background-image: url(./icons/printer.png) }
+.hentry .vcard ul li.email{background-image: url(./icons/user_go.png) }
 .hentry .vcard ul li.share{
-/*	background-image: url(/assets/icons/group_go.png) */
+/*	background-image: url(./icons/group_go.png) */
 	padding-left:0;
 	}
-.hentry .vcard ul li.tags{background-image: url(/assets/icons/tag_blue.png) }
-.hentry .vcard ul li.geo{background-image: url(/assets/icons/world.png) }
-.hentry .vcard ul li.edit{background-image: url(/assets/icons/post.png) }
-.hentry .vcard ul li.delete{background-image: url(/assets/icons/delete.png) }
+.hentry .vcard ul li.tags{background-image: url(./icons/tag_blue.png) }
+.hentry .vcard ul li.geo{background-image: url(./icons/world.png) }
+.hentry .vcard ul li.edit{background-image: url(./icons/post.png) }
+.hentry .vcard ul li.delete{background-image: url(./icons/delete.png) }
 
 .entry-content h6{
 border-bottom: 1px dotted #a2a19b;
@@ -376,7 +376,7 @@ font-size: 85%;
 font-weight: bold;
 text-transform: uppercase;
 text-decoration: none;
-background: transparent url(/assets/icons/add.png) no-repeat left center;
+background: transparent url(./icons/add.png) no-repeat left center;
 padding-left: 20px;
 padding: 2px 2px 2px 20px;
 }
@@ -404,7 +404,7 @@ background: red;
 display: block;
 margin: 0 10px 5px 0;
 padding: 2px 0 2px 15px;
-background: url(/assets/icons/tag_blue.png) no-repeat left center;
+background: url(./icons/tag_blue.png) no-repeat left center;
 }
 
 
@@ -425,13 +425,13 @@ border-bottom: 1px dotted #a2a19b;
 .checks li, .page li{
 padding-left: 20px;
 background-color: transparent;
-background-image: url(/assets/icons/accept.png);
+background-image: url(./icons/accept.png);
 background-repeat: no-repeat;
 background-position: left center;
 }
 
-.checks li{background-image: url(/assets/icons/accept.png)}
-.page li{background-image:url(/assets/icons/page_white.png)}
+.checks li{background-image: url(./icons/accept.png)}
+.page li{background-image:url(./icons/page_white.png)}
 
 /* user list */
 dl.vcard{
@@ -470,9 +470,9 @@ background-repeat: no-repeat;
 background-color: transparent;
 }
 
-dl.vcard dd.member{background-image: url(/assets/icons/user.png);}
-dl.vcard dd.post{background-image: url(/assets/icons/page_white.png);}
-dl.vcard dd.rss{background-image: url(/assets/icons/rss.png);}
+dl.vcard dd.member{background-image: url(./icons/user.png);}
+dl.vcard dd.post{background-image: url(./icons/page_white.png);}
+dl.vcard dd.rss{background-image: url(./icons/rss.png);}
 
 h6.all{margin:.5em 0;}
 
@@ -480,7 +480,7 @@ h6.all a{
 font-size: 85%;
 font-weight: bold;
 text-transform: uppercase;
-background: transparent url(/assets/icons/add.png) no-repeat left center;
+background: transparent url(./icons/add.png) no-repeat left center;
 padding:3px 0 3px 20px;
 color: #379d00;
 }
@@ -546,7 +546,7 @@ cursor: pointer;
 }
 
 .MainForm p input:hover{
-background:#004500;} 
+background:#004500;}
 
 
 .MainForm strong{color: #f00;}
@@ -631,19 +631,19 @@ margin-left:  12.3846em; /* about 200px - 3em*/
 
 .fresh dt {
 	padding-left: 20px;
-	background-image: url(/assets/icons/activity_default.png);
+	background-image: url(./icons/activity_default.png);
 	background-repeat: no-repeat;
 	background-position: left center;
-	background-color: transparent;	
+	background-color: transparent;
 }
 
-.fresh .comment dt {background-image: url(/assets/icons/comment.png);}
-.fresh .photo dt {background-image: url(/assets/icons/picture.png);}
-.fresh .clipping dt {background-image: url(/assets/icons/book.png);}
-.fresh .updated_profile dt {background-image: url(/assets/icons/user_edit.png);}
-.fresh .favorite dt {background-image: url(/assets/icons/heart_add.png);}
-.fresh .post dt, .fresh .sb_post dt, .fresh .topic dt{background-image: url(/assets/icons/post.png);}
-.fresh .rsvp dt, .fresh .event dt {background-image: url(/assets/icons/date.png);}
+.fresh .comment dt {background-image: url(./icons/comment.png);}
+.fresh .photo dt {background-image: url(./icons/picture.png);}
+.fresh .clipping dt {background-image: url(./icons/book.png);}
+.fresh .updated_profile dt {background-image: url(./icons/user_edit.png);}
+.fresh .favorite dt {background-image: url(./icons/heart_add.png);}
+.fresh .post dt, .fresh .sb_post dt, .fresh .topic dt{background-image: url(./icons/post.png);}
+.fresh .rsvp dt, .fresh .event dt {background-image: url(./icons/date.png);}
 
 /* =============================================== */
 /* 8. COMMUNITY FOOTER                             */
@@ -677,7 +677,7 @@ padding-left: 0;
 #CommunityFooter p{
 float: right;
 padding: 2px 0 2px 120px;
-background: url(/assets/logo.gif) no-repeat left center;
+background: url(./logo.gif) no-repeat left center;
 }
 
 /* =============================================== */
@@ -685,10 +685,10 @@ background: url(/assets/logo.gif) no-repeat left center;
 /* =============================================== */
 
 #NavBar:after, .hentry:after, .box:after, dl.vcard:after, .fresh dl:after, #CommunityFooter:after, .hentry .tags:after {
-    content: "."; 
-    display: block; 
-    height: 0; 
-    clear: both; 
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
     visibility: hidden;
 }
 
@@ -710,7 +710,7 @@ ul.sortable {
 	padding:0;
 	}
 	ul.sortable li {
-		cursor: move;		
+		cursor: move;
 	}
 
 ul.sortable_hover {
@@ -729,18 +729,18 @@ div.pagination {
 		}
 div.pagination a {
 	margin-right:0.3em;
-	padding:0.4em;	
+	padding:0.4em;
 	}
 	div.pagination a:hover {
 		background:#828282;
 		color:#ffffff;
 		margin-right:0.3em;
-		padding:0.4em;	
+		padding:0.4em;
 		}
 div.pagination a.active {
 		background:#828282;
 		border:none;
-		color:#ffffff;		
+		color:#ffffff;
 	}
 
 /* CLIPPINGS */
@@ -864,10 +864,10 @@ ul.message_nav li {
 	background-repeat: no-repeat;
 	padding-left:20px;
 }
-ul.message_nav li.inbox_new {background-image: url(/assets/icons/email_open.png);}
-ul.message_nav li.inbox {background-image: url(/assets/icons/email.png);}
-ul.message_nav li.sent {background-image: url(/assets/icons/email_go.png);}
-li.compose {background-image: url(/assets/icons/email_edit.png);}
+ul.message_nav li.inbox_new {background-image: url(./icons/email_open.png);}
+ul.message_nav li.inbox {background-image: url(./icons/email.png);}
+ul.message_nav li.sent {background-image: url(./icons/email_go.png);}
+li.compose {background-image: url(./icons/email_edit.png);}
 .messages .photo a img{
 	float: left;
 	display: block;
@@ -883,7 +883,7 @@ table.messages tbody td {
 	font-style: italic;
 	font-family: Georgia, Times, serif;
 	color: #777;
-	}	
+	}
 .messages td.meta {
 	font-size: 85%;
 	text-align: right;
@@ -913,7 +913,7 @@ table.poll {
     table.poll td .vote {
       display: block;
       float: left;
-      background: url(/assets/icons/vote.png) no-repeat left;
+      background: url(./icons/vote.png) no-repeat left;
       padding: 0 10px 0 20px;
       height: 20px;
       margin-right: 10px;
@@ -943,19 +943,19 @@ table.poll {
   right: 0;
   top: -9999px;
 	*width:150px;
-	border: 2px solid #2a1301; 
-	border-top: none;	
+	border: 2px solid #2a1301;
+	border-top: none;
   padding: 10px;
-  z-index: 999;  
+  z-index: 999;
 }
 #user-menu {
 	padding-right: 15px;
 	position: relative;
-	background: url(/assets/icons/bullet_arrow_down_50.png) no-repeat right;
+	background: url(./icons/bullet_arrow_down_50.png) no-repeat right;
 	}
 #user-menu:hover {
-	background: url(/assets/icons/bullet_arrow_down.png) no-repeat right;	
-} 
+	background: url(./icons/bullet_arrow_down.png) no-repeat right;
+}
 #user-menu:hover #user-menu-tip {
   top: 22px;
 }
@@ -972,6 +972,6 @@ table.poll {
 
 .omniauth_remove {
   position: relative;
-  margin-left: -15px; 
+  margin-left: -15px;
 }
 
