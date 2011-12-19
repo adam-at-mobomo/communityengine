@@ -7,7 +7,7 @@ require 'community_engine/version'
 Gem::Specification.new do |s|
   s.name = "community_engine"
   s.version = CommunityEngine::Version::STRING
-  s.summary = "CommunityEngine for Rails 3"  
+  s.summary = "CommunityEngine for Rails 3"
   s.description = "CommunityEngine is a free, open-source social network platform for Ruby on Rails applications. Drop it into your new or existing application, and you’ll instantly have all the features of a basic community site."
   s.homepage = "http://www.communityengine.org"
   
@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.rubygems_version = "1.8.11"
   
   s.files       = `git ls-files`.split("\n") rescue ''
-  s.test_files  = `git ls-files -- {test}/*`.split("\n")  
+  s.test_files  = `git ls-files -- {test}/*`.split("\n")
   
   s.add_dependency(%q<rails>, ["= 3.1.2"])
   s.add_dependency(%q<rack>, ["= 1.3.5"])
@@ -43,7 +43,7 @@ Gem::Specification.new do |s|
   s.add_dependency(%q<paperclip>, ["= 2.4.3"])
   s.add_dependency(%q<acts_as_commentable>, ["= 3.0.1"])
   s.add_dependency(%q<recaptcha>, [">= 0"])
-  s.add_dependency(%q<omniauth>, ["= 0.3.0"])
+  s.add_dependency(%q<omniauth>, [">= 0.3.0"])
   s.add_dependency(%q<prototype-rails>, [">= 0"])
   s.add_dependency(%q<rails_autolink>, [">= 0"])
   s.add_dependency(%q<meta_search>, ["= 1.1.1"])
