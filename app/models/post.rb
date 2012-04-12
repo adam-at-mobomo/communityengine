@@ -19,7 +19,7 @@ class Post < ActiveRecord::Base
   validates_presence_of :user
   validates_presence_of :published_at, :if => Proc.new{|r| r.is_live? }
   
-  before_save :transform_post
+  before_save :transform_post, :if => Proc.new{|r| r.raw_post_changed? }
   before_validation :set_published_at
   
   after_save do |post|
@@ -56,7 +56,7 @@ class Post < ActiveRecord::Base
           :conditions => [ 'posts.id != ? AND published_as = ?', post.id, 'live' ]
       })
 
-      limit(options[:limit]).order(options[:order]).where(options[:conditions]).tagged_with(post.tag_list)
+      limit(options[:limit]).order(options[:order]).where(options[:conditions]).tagged_with(post.tag_list, :any => true)
     end
     
     def find_recent(options = {:limit => 5})

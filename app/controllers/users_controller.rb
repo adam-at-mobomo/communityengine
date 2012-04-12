@@ -192,9 +192,8 @@ class UsersController < BaseController
   
   def update_account
     @user             = current_user
-    @user.attributes  = params[:user]
 
-    if @user.save
+    if @user.update_attributes!(params[:user])
       flash[:notice] = :your_changes_were_saved.l
       respond_to do |format|
         format.html {redirect_to user_path(@user)}
@@ -215,9 +214,7 @@ class UsersController < BaseController
   def update_pro_details
     @user = User.find(params[:id])
     
-    @user.attributes = params[:user]
-
-    if @user.save!
+    if @user.update_attributes(params[:user])
       respond_to do |format|
         format.html { 
           flash[:notice] = :your_changes_were_saved.l
@@ -345,7 +342,8 @@ class UsersController < BaseController
           :metro_areas => metro_areas, 
           :selected_country => params[:country_id].to_i, 
           :selected_state => params[:state_id].to_i, 
-          :selected_metro_area => nil }        
+          :selected_metro_area => nil,
+          :js => true }        
       }
     end
   end
@@ -372,7 +370,7 @@ class UsersController < BaseController
     end
     
     start_date  = @month.beginning_of_month
-    end_date    = @month.end_of_month + 1.day
+    end_date    = @month.end_of_month.end_of_day
     
     @posts = @user.posts.find(:all, 
       :conditions => ['? <= published_at AND published_at <= ?', start_date, end_date])    

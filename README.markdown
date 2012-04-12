@@ -6,7 +6,7 @@ Information at: [http://www.communityengine.org](http://www.communityengine.org)
 
 Requirements:
 
-	- RAILS VERSION 3.1.2
+	- RAILS VERSION 3.2
 
 Getting CommunityEngine Running
 --------------------------------
@@ -101,7 +101,7 @@ For complex strings with substitutions, Symbols respond to the `.l` method with 
   
 And in your language file you'd have:
 
-	welcome: "Welcome {{name}}"
+	welcome: "Welcome %{name}"
 
 To customize the language, or add a new language create a new yaml file in `Rails.root/config/locales`. The name of the file should be `LANG-LOCALE.yml` (`e.g. en-US.yml` or `es-PR`). The language only file (`es.yml`) will support all locales.
 

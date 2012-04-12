@@ -34,8 +34,7 @@ class TopicsController < BaseController
 
         @posts = @topic.sb_posts.recent.includes(:user).page(params[:page]).per(25)
 
-        @voices = @posts.map(&:user)
-        @voices.compact.uniq!
+        @voices = @posts.map(&:user).compact.uniq
         @post   = SbPost.new(params[:post])
       end
       format.xml do
@@ -80,10 +79,9 @@ class TopicsController < BaseController
   end
   
   def update
-    @topic.attributes = params[:topic]
     assign_protected
     @topic.tag_list = params[:tag_list] || ''
-    @topic.save!
+    @topic.update_attributes!(params[:topic])
     respond_to do |format|
       format.html { redirect_to forum_topic_path(@forum, @topic) }
       format.xml  { head 200 }

@@ -3,9 +3,9 @@
   
   -box do
     %h3=:search.l
-    = form_for @search, :html => {:class => "MainForm"} do |f|
+    = form_for @search, :url => tags_path, :html => {:class => "MainForm"} do |f|
 
-      = f.label :name.l
+      %label= :name.l
       = f.text_field :name_starts_with
 
       %p= f.submit :search.l

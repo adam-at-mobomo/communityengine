@@ -232,11 +232,6 @@ class User < ActiveRecord::Base
     monitored_topics.find_by_id(topic.id)
   end
 
-  def to_xml(options = {})
-    options[:except] ||= []
-    super
-  end
-
   def recount_metro_area_users
     return unless self.metro_area
     ma = self.metro_area
@@ -371,7 +366,7 @@ class User < ActiveRecord::Base
   
   def recommended_posts(since = 1.week.ago)
     return [] if tags.empty?
-    rec_posts = Post.tagged_with(tags.map(&:name)).where(['posts.user_id != ? AND published_at > ?', self.id, since ])
+    rec_posts = Post.tagged_with(tags.map(&:name), :any => true).where(['posts.user_id != ? AND published_at > ?', self.id, since ])
     rec_posts = rec_posts.order('published_at DESC').limit(10)
     rec_posts
   end

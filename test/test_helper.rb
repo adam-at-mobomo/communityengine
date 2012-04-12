@@ -32,6 +32,8 @@ class ActiveSupport::TestCase
   setup :activate_authlogic
   include AuthenticatedTestHelper
   
+  set_fixture_class :tags => ActsAsTaggableOn::Tag, :taggings => ActsAsTaggableOn::Tagging  
+  
   def self.all_fixtures
     # fixtures :forums, :users, :sb_posts, :topics, :moderatorships, :monitorships, :categories
     fixtures :all
@@ -52,8 +54,14 @@ class ActiveSupport::TestCase
     assert_difference object, method, 0, &block
   end 
   
+  def login_as(user)
+    UserSession.create(users(user))
+  end  
+  
   def authorize_as(user, mime_type = 'application/xml')
     @request.env["HTTP_AUTHORIZATION"] = user ? "Basic #{Base64.encode64("#{users(user).login}:test")}" : nil
+    accept       mime_type
+    content_type mime_type
   end
 
   def content_type(type)
@@ -86,7 +94,7 @@ class ActiveSupport::TestCase
    
 end
 
-# Redefining this so we don't have to go out to the interwebs everytime we create a clipping
+# Redefining this so we don't have to go out to the interwebs everytime we create a clipping in a test
 # file paramater must equal http://www.google.com/intl/en_ALL/images/logo.gif; all other strings are considered an invalid URL
 module UrlUpload
   include ActionDispatch::TestProcess  

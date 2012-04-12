@@ -1,5 +1,5 @@
 class ForumsController < BaseController
-  before_filter :login_required, :except => [:index, :show]
+  before_filter :admin_required, :except => [:index, :show]
   before_filter :find_or_initialize_forum
 
   uses_tiny_mce do    
@@ -10,7 +10,7 @@ class ForumsController < BaseController
     @forums = Forum.find(:all, :order => "position")
     respond_to do |format|
       format.html
-      format.xml { render :xml => @forums.to_xml }
+      format.xml { render :xml => @forums }
     end
   end
 
@@ -24,15 +24,12 @@ class ForumsController < BaseController
       end
       
       format.xml do
-        render :xml => @forum.to_xml
+        render :xml => @forum
       end
     end
   end
-
-  # new renders new.rhtml
   
   def create
-    @forum.attributes = params[:forum]
     @forum.tag_list = params[:tag_list] || ''
     @forum.save!
     respond_to do |format|
@@ -42,9 +39,8 @@ class ForumsController < BaseController
   end
 
   def update
-    @forum.attributes = params[:forum]
     @forum.tag_list = params[:tag_list] || ''
-    @forum.save!
+    @forum.update_attributes!(params[:forum])
     respond_to do |format|
       format.html { redirect_to forums_path }
       format.xml  { head 200 }
@@ -61,11 +57,8 @@ class ForumsController < BaseController
   
   protected
     def find_or_initialize_forum
-      @forum = params[:id] ? Forum.find(params[:id]) : Forum.new
+      @forum = params[:id] ? Forum.find(params[:id]) : Forum.new(params[:forum])
     end
-
-  #overide in your app
-  def authorized?
-    current_user.admin?
-  end
+    
+    
 end
