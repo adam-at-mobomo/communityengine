@@ -3,7 +3,7 @@ require 'rails/all'
 
 module CommunityEngine
   class Engine < Rails::Engine
-    isolate_namespace MyEngine 
+    isolate_namespace CommunityEngine
     engine_name "community_engine"
 
     initializer engine_name do |app|
