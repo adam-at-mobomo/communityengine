@@ -3,7 +3,7 @@ module CommunityEngine
      MAJOR = 2
      MINOR = 0
      PATCH = 0
-     BUILD = 'beta4dev2'
+     BUILD = 'beta4dev4'
 
      STRING = [MAJOR, MINOR, PATCH, BUILD].compact.join('.')
    end
