@@ -1,4 +1,5 @@
 CommunityEngine::Engine.routes.draw do
+  devise_for :users, :controllers => { :sessions => "sessions" }
   match '/base/:action' => 'base'
 
   match '/forums/recent' => 'sb_posts#index', :as => :recent_forum_posts
@@ -237,5 +238,4 @@ CommunityEngine::Engine.routes.draw do
   resources :invitations
   match '/users/:user_id/posts/category/:category_name' => 'posts#index', :as => :users_posts_in_category
 
-  match ':controller(/:action(/:id(.:format)))'
 end
