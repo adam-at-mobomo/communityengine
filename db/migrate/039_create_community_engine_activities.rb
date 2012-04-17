@@ -1,4 +1,4 @@
-class CreateCommunityEngineActivitiesTable < ActiveRecord::Migration
+class CreateCommunityEngineActivities < ActiveRecord::Migration
   def self.up
     create_table :community_engine_activities do |t|
       t.column :user_id, :integer, :limit => 10
