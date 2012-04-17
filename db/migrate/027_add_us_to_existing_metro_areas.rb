@@ -1,6 +1,6 @@
 class AddUsToExistingMetroAreas < ActiveRecord::Migration
   def self.up
-    CommunityEngine::MetroArea.update_all(:country_id => Country.get(:us))
+    CommunityEngine::MetroArea.update_all(:country_id => CommunityEngine::Country.get(:us))
   end
 
   def self.down
