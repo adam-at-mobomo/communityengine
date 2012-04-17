@@ -1,4 +1,4 @@
-Rails.application.routes.draw do
+CommunityEngine::Engine.routes.draw do
   match '/base/:action' => 'base'
 
   match '/forums/recent' => 'sb_posts#index', :as => :recent_forum_posts
