@@ -1,9 +1,9 @@
 class TrackEmailed < ActiveRecord::Migration
   def self.up
-    add_column :posts, :emailed_count, :integer, :default => 0
+    add_column :community_engine_posts, :emailed_count, :integer, :default => 0
   end
 
   def self.down
-    remove_column :posts, :emailed_count
+    remove_column :community_engine_posts, :emailed_count
   end
 end

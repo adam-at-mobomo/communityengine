@@ -1,0 +1,2 @@
+module CommunityEngine::MonitorshipsHelper
+end

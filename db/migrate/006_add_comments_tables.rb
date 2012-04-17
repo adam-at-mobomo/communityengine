@@ -1,6 +1,6 @@
 class AddCommentsTables < ActiveRecord::Migration
   def self.up
-    create_table :comments do |t|
+    create_table :community_engine_comments do |t|
       t.column :title, :string
       t.column :comment, :string
       t.references :commentable, :polymorphic => true
@@ -9,10 +9,10 @@ class AddCommentsTables < ActiveRecord::Migration
       t.timestamps      
     end
 
-    add_index :comments, ["user_id"], :name => "fk_comments_user"
+    add_index :community_engine_comments, ["user_id"], :name => "fk_community_engine_comments_user"
   end
 
   def self.down
-    drop_table :comments
+    drop_table :community_engine_comments
   end
 end

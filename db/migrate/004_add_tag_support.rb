@@ -1,11 +1,11 @@
 class AddTagSupport < ActiveRecord::Migration
   def self.up
     #Table for your Tags
-    create_table :tags do |t|
+    create_table :community_engine_tags do |t|
       t.column :name, :string
     end
 
-    create_table :taggings do |t|
+    create_table :community_engine_taggings do |t|
       t.column :tag_id, :integer
       #id of tagged object
       t.column :taggable_id, :integer
@@ -15,7 +15,7 @@ class AddTagSupport < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :tags
-    drop_table :taggings
+    drop_table :community_engine_tags
+    drop_table :community_engine_taggings
   end
 end

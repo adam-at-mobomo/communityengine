@@ -1,6 +1,6 @@
 class CreateInitialSchema < ActiveRecord::Migration
   def self.up
-    create_table "forums" do |t|
+    create_table "community_engine_forums" do |t|
       t.column "name",             :string
       t.column "description",      :string
       t.column "topics_count",     :integer, :default => 0
@@ -11,20 +11,20 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.column "owner_id",         :integer
     end
 
-    create_table "moderatorships" do |t|
+    create_table "community_engine_moderatorships" do |t|
       t.column "forum_id", :integer
       t.column "user_id",  :integer
     end
 
-    add_index "moderatorships", ["forum_id"], :name => "index_moderatorships_on_forum_id"
+    add_index "community_engine_moderatorships", ["forum_id"], :name => "index_community_engine_moderatorships_on_forum_id"
 
-    create_table "monitorships" do |t|
+    create_table "community_engine_monitorships" do |t|
       t.column "topic_id", :integer
       t.column "user_id",  :integer
       t.column "active",   :boolean, :default => true
     end
 
-    create_table "sb_posts" do |t|
+    create_table "community_engine_sb_posts" do |t|
       t.column "user_id",    :integer
       t.column "topic_id",   :integer
       t.column "body",       :text
@@ -34,10 +34,10 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.column "body_html",  :text
     end
 
-    add_index "sb_posts", ["forum_id", "created_at"], :name => "index_sb_posts_on_forum_id"
-    add_index "sb_posts", ["user_id", "created_at"], :name => "index_sb_posts_on_user_id"
+    add_index "community_engine_sb_posts", ["forum_id", "created_at"], :name => "index_community_engine_sb_posts_on_forum_id"
+    add_index "community_engine_sb_posts", ["user_id", "created_at"], :name => "index_community_engine_sb_posts_on_user_id"
 
-    create_table "topics" do |t|
+    create_table "community_engine_topics" do |t|
       t.column "forum_id",     :integer
       t.column "user_id",      :integer
       t.column "title",        :string
@@ -52,22 +52,22 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.column "last_post_id", :integer
     end
 
-    add_column :users, :sb_posts_count, :integer, :default => 0
-    add_column :users, :sb_last_seen_at, :datetime        
+    add_column :community_engine_users, :sb_posts_count, :integer, :default => 0
+    add_column :community_engine_users, :sb_last_seen_at, :datetime        
 
-    add_index "topics", ["forum_id"], :name => "index_topics_on_forum_id"
-    add_index "topics", ["forum_id", "sticky", "replied_at"], :name => "index_topics_on_sticky_and_replied_at"
-    add_index "topics", ["forum_id", "replied_at"], :name => "index_topics_on_forum_id_and_replied_at"    
+    add_index "community_engine_topics", ["forum_id"], :name => "index_topics_on_forum_id"
+    add_index "community_engine_topics", ["forum_id", "sticky", "replied_at"], :name => "index_community_engine_topics_on_sticky_and_replied_at"
+    add_index "community_engine_topics", ["forum_id", "replied_at"], :name => "index_community_engine_topics_on_forum_id_and_replied_at"    
   end
 
   def self.down
-    drop_table :topics
-    drop_table :sb_posts
-    drop_table :monitorships
-    drop_table :moderatorships
-    drop_table :forums   
+    drop_table :community_engine_topics
+    drop_table :community_engine_sb_posts
+    drop_table :community_engine_monitorships
+    drop_table :community_engine_moderatorships
+    drop_table :community_engine_forums   
     
-    remove_column :users, :sb_posts_count
-    remove_column :users, :sb_last_seen_at             
+    remove_column :community_engine_users, :sb_posts_count
+    remove_column :community_engine_users, :sb_last_seen_at             
   end
 end

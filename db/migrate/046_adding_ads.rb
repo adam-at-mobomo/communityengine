@@ -1,6 +1,6 @@
 class AddingAds < ActiveRecord::Migration
   def self.up
-    create_table :ads do |t|
+    create_table :community_engine_ads do |t|
       t.column :name, :string
       t.column :html, :text
       t.column :frequency, :integer
@@ -15,6 +15,6 @@ class AddingAds < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :ads
+    drop_table :community_engine_ads
   end
 end

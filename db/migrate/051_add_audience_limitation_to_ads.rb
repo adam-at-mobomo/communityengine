@@ -1,9 +1,9 @@
 class AddAudienceLimitationToAds < ActiveRecord::Migration
   def self.up
-    add_column :ads, :audience, :string, :default => 'all'
+    add_column :community_engine_ads, :audience, :string, :default => 'all'
   end
 
   def self.down
-    remove_column :ads, :audience
+    remove_column :community_engine_ads, :audience
   end
 end
