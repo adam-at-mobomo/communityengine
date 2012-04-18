@@ -28,7 +28,7 @@ class CommunityEngine::BaseController < ApplicationController
   end
 
   def site_index
-    @posts = Post.find_recent
+    @posts = CommunityEngine::Post.find_recent
 
     @rss_title = "#{configatron.community_name} "+:recent_posts.l
     @rss_url = rss_url
@@ -79,7 +79,7 @@ class CommunityEngine::BaseController < ApplicationController
     end
   
     def find_user
-      if @user = User.active.find(params[:user_id] || params[:id])
+      if @user = CommunityEngine::User.active.find(params[:user_id] || params[:id])
         @is_current_user = (@user && @user.eql?(current_user))
         unless logged_in? || @user.profile_public?
           flash[:error] = :private_user_profile_message.l
@@ -94,7 +94,7 @@ class CommunityEngine::BaseController < ApplicationController
     end
   
     def require_current_user
-      @user ||= User.find(params[:user_id] || params[:id] )
+      @user ||= CommunityEngine::User.find(params[:user_id] || params[:id] )
       unless admin? || (@user && (@user.eql?(current_user)))
         redirect_to :controller => 'sessions', :action => 'new' and return false
       end
@@ -107,11 +107,11 @@ class CommunityEngine::BaseController < ApplicationController
   
 
     def get_recent_footer_content
-      @recent_clippings = Clipping.find_recent(:limit => 10)
-      @recent_photos = Photo.find_recent(:limit => 10)
-      @recent_comments = Comment.find_recent(:limit => 13)
+      @recent_clippings = CommunityEngine::Clipping.find_recent(:limit => 10)
+      @recent_photos = CommunityEngine::Photo.find_recent(:limit => 10)
+      @recent_comments = CommunityEngine::Comment.find_recent(:limit => 13)
       @popular_tags = popular_tags(30)
-      @recent_activity = User.recent_activity(:size => 15, :current => 1)
+      @recent_activity = CommunityEngine::User.recent_activity(:size => 15, :current => 1)
     
     end
 
@@ -120,15 +120,15 @@ class CommunityEngine::BaseController < ApplicationController
       @homepage_features = HomepageFeature.find_features
       @homepage_features_data = @homepage_features.collect {|f| [f.id, f.image.url(:large) ]  }
     
-      @active_users = User.find_by_activity({:limit => 5, :require_avatar => false})
-      @featured_writers = User.find_featured
+      @active_users = CommunityEngine::User.find_by_activity({:limit => 5, :require_avatar => false})
+      @featured_writers = CommunityEngine::User.find_featured
 
-      @featured_posts = Post.find_featured
+      @featured_posts = CommunityEngine::Post.find_featured
     
-      @topics = Topic.find(:all, :limit => 5, :order => "replied_at DESC")
+      @topics = CommunityEngine::Topic.find(:all, :limit => 5, :order => "replied_at DESC")
 
-      @popular_posts = Post.find_popular({:limit => 10})    
-      @popular_polls = Poll.find_popular(:limit => 8)
+      @popular_posts = CommunityEngine::Post.find_popular({:limit => 10})    
+      @popular_polls = CommunityEngine::Poll.find_popular(:limit => 8)
     end
 
 
