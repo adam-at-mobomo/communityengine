@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   rakismet_attrs :author => :login, :comment_type => 'registration', :content => :description, :user_ip => :last_login_ip, :author_email => :email
   attr_protected :admin, :featured, :role_id, :akismet_attrs
       
-  friendly_id :login, :use_slug => true, :cache_column => 'login_slug'
+  friendly_id :login, :use => :slugged, :slug_column => 'login_slug'
   
   MALE    = 'M'
   FEMALE  = 'F'
