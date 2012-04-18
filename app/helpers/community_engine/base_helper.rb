@@ -39,7 +39,7 @@ module CommunityEngine::BaseHelper
   end
 
   def box(html_options = {}, &block)
-    block_to_partial('shared/box', html_options, &block)
+    block_to_partial('community_engine/shared/box', html_options, &block)
   end
     
   def city_cloud(cities, classes)
