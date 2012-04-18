@@ -2,7 +2,7 @@
   -box :class => "alt first_alt" do 
     %h3
       =:get_started.l + ' ' + :tell_us_about_yourself.l
-    = render :partial => 'shared/bio_help'
+    = render :partial => 'community_engine/shared/bio_help'
     %p
       =:remember_you_can_always_change_this_later.l
     %p
@@ -45,7 +45,7 @@
             = text_field :user, :zip, :size => 10
             %br
             %br
-            = render :partial => 'shared/location_chooser', :locals => {:selected_country => @user.country_id, :selected_state => @user.state_id, :selected_metro_area => @user.metro_area_id, :states => @states, :metro_areas => @metro_areas}
+            = render :partial => 'community_engine/shared/location_chooser', :locals => {:selected_country => @user.country_id, :selected_state => @user.state_id, :selected_metro_area => @user.metro_area_id, :states => @states, :metro_areas => @metro_areas}
         .yui-u
           -box :class => "alt" do 
             %h3= :tag_yourself.l

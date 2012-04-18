@@ -2,7 +2,7 @@ if @post.new_record?
   page.select('#reply .errors').invoke('update', flash[:notice])
   page << "new Effect.Highlight($$('#reply .errors')[0]);"  
 else
-  page.insert_html(:bottom, 'posts', :partial => 'sb_posts/sb_post', :locals => {:post => @post} )
+  page.insert_html(:bottom, 'posts', :partial => 'community_engine/sb_posts/sb_post', :locals => {:post => @post} )
   page.visual_effect :highlight, "post-body-#{@post.id}", :duration => 1.5  
   page << "$('reply').hide();"
   page << "$$('#reply form').invoke('reset');"

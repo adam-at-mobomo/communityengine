@@ -78,7 +78,7 @@
   %br
   %table#posts.wide{"cellspacing"=>"0", "border"=>"0", "cellpadding"=>"0"}
     - for post in @posts do
-      =render :partial => 'sb_posts/sb_post', :locals => {:post => post}
+      =render :partial => 'community_engine/sb_posts/sb_post', :locals => {:post => post}
 
 
   - if @posts.total_count > 1
@@ -94,7 +94,7 @@
       %h6.all.right= link_to_function :reply_to_topic.l, "ReplyForm.init()", :class => "utility"
       #reply.editbox
         .container
-          =render :partial => 'sb_posts/reply_form'
+          =render :partial => 'community_engine/sb_posts/reply_form'
           
     -content_for :end_javascript do      
       = javascript_tag "$('reply').hide();"

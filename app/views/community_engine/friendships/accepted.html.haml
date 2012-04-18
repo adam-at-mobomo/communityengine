@@ -1,4 +1,4 @@
-.yui-b= render :partial => 'users/profile_user_info_sidebar'
+.yui-b= render :partial => 'community_engine/users/profile_user_info_sidebar'
 
 #yui-main
   .yui-b
@@ -9,5 +9,5 @@
       .pagination=paginating_links @friendships if @friendships.total_count > 1
       
       .clear
-      .user_list= render :partial => "friendships/friendship", :collection => @friendships
+      .user_list= render :partial => "community_engine/friendships/friendship", :collection => @friendships
 

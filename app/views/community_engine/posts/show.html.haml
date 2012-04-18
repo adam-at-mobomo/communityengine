@@ -49,7 +49,7 @@
         / vcard
         .entry-content
           = @post.post.html_safe
-          = render :partial => 'polls/poll_ui', :locals => {:poll => @post.polls.first} unless @post.polls.empty?
+          = render :partial => 'community_engine/polls/poll_ui', :locals => {:poll => @post.polls.first} unless @post.polls.empty?
           - unless @post.tags.empty?
             %ul.tags
               - @post.tags.each do |t|
@@ -60,9 +60,9 @@
     -box :class => 'hfeed comments', :id => 'comments' do      
       %h3= :post_comments.l 
       %h2= :add_your_comment.l
-      = render :partial => 'comments/comment_form', :locals => {:commentable => @post}
+      = render :partial => 'community_engine/comments/comment_form', :locals => {:commentable => @post}
       %a#newest_comment
-      = render :partial => 'comments/comment', :collection => @comments
+      = render :partial => 'community_engine/comments/comment', :collection => @comments
       %span#more_comments_links= more_comments_links(@post)
     / ends box
   / yui-b

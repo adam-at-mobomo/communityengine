@@ -1,1 +1,1 @@
-page['clipping_image_list'].update render(:partial => 'clippings/images', :formats => [:html], :locals => {:images => @images})
+page['clipping_image_list'].update render(:partial => 'community_engine/clippings/images', :formats => [:html], :locals => {:images => @images})

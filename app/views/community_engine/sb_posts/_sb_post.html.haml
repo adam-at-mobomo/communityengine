@@ -27,7 +27,7 @@
           = link_to_remote(:edit_post.l, {:url => edit_forum_topic_sb_post_path(@forum, @topic, post), :method => :get, :before => "EditForm.init(#{post.id});", :condition => "!EditForm.isEditing(#{post.id})" }, {:class => "utility"})
         - if admin? && post.user && !post.user.admin?
           %div{"class"=>"make-moderator-#{post.user_id}"}
-            = render :partial => '/moderators/toggle', :locals => {:user => post.user, :forum => @forum}
+            = render :partial => 'community_engine/moderators/toggle', :locals => {:user => post.user, :forum => @forum}
 
   %td.body.entry-content{"id"=>"post-body-#{post.id}", :width => '85%'}
     = link_to_function image_tag('clearbits/comment.gif', :class => 'icon reply'), "$('reply').toggle()" if logged_in?

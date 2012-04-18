@@ -16,7 +16,7 @@
         / vcard
         .entry-content
           = @post.post
-          = render :partial => 'polls/poll_ui', :locals => {:poll => @post.polls.first} unless @post.polls.empty?
+          = render :partial => 'community_engine/polls/poll_ui', :locals => {:poll => @post.polls.first} unless @post.polls.empty?
           - unless @post.tags.empty?
             %ul.tags
               - @post.tags.each do |t|

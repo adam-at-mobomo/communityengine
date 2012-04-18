@@ -26,7 +26,7 @@
     = f.text_field :location
 
     %h3= :metro_area.l
-    = render :partial => 'shared/location_chooser', :locals => {:selected_country => @country_id, :selected_state => @state_id, :selected_metro_area => @metro_area_id, :states => @states, :metro_areas => @metro_areas}
+    = render :partial => 'community_engine/shared/location_chooser', :locals => {:selected_country => @country_id, :selected_state => @state_id, :selected_metro_area => @metro_area_id, :states => @states, :metro_areas => @metro_areas}
 
     %p
       = submit_tag :save.l

@@ -2,7 +2,7 @@
 - @meta = { :description => "#{@clipping.description}.",:keywords => "#{@clipping.tags.join(', ') if @clipping.tags}"}
 
 .yui-b
-  =render :partial => 'posts/author_profile', :locals => {:user => @user}
+  =render :partial => 'community_engine/posts/author_profile', :locals => {:user => @user}
 
   - if @previous || @next
     -box :class => "alt" do 
@@ -50,7 +50,7 @@
     -box :class => 'hfeed comments', :id => 'comments' do
       %h3=:clipping_comments.l
       %h2=:add_your_comment.l
-      = render :partial => 'comments/comment_form', :locals => {:commentable => @clipping}
+      = render :partial => 'community_engine/comments/comment_form', :locals => {:commentable => @clipping}
       %a#newest_comment
-      = render :partial => 'comments/comment', :collection => @clipping.comments
+      = render :partial => 'community_engine/comments/comment', :collection => @clipping.comments
       %span#more_comments_links= more_comments_links(@clipping)

@@ -33,7 +33,7 @@
           %h6.all= link_to :all_posts_tagged.l(:tag_name => @tags_raw), show_tag_type_path(:id => @tags_raw, :type => 'Post') unless params[:type]
       -else 
         -box :class => 'first_alt hfeed' do
-          = render :partial => 'posts/post', :collection => @posts      
+          = render :partial => 'community_engine/posts/post', :collection => @posts      
           - if @pages
             = paginate @pages
           

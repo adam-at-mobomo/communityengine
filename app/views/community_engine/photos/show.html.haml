@@ -1,6 +1,6 @@
 .profile
   .yui-b
-    = render :partial => 'posts/author_profile', :locals => {:user => @user}
+    = render :partial => 'community_engine/posts/author_profile', :locals => {:user => @user}
 
     - if @photo.album
       -box :class => "photo_nav alt" do
@@ -46,8 +46,8 @@
       -box :class => "hfeed comments", :id => 'comments' do
         %h3=:photo_comments.l
         %h2=:add_your_comment.l
-        %p= render :partial => 'comments/comment_form', :locals => {:commentable => @photo}
+        %p= render :partial => 'community_engine/comments/comment_form', :locals => {:commentable => @photo}
         %a#newest_comment
-        = render :partial => 'comments/comment', :collection => @photo.comments
+        = render :partial => 'community_engine/comments/comment', :collection => @photo.comments
         %span#more_comments_links= more_comments_links(@photo)
 

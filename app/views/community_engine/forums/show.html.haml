@@ -82,4 +82,4 @@
           %th{:width=>"1%"}= :view_count.l
           %th.la= :author.l
           -@related.each do |post|
-            = render :partial => 'sb_posts/dummy_forum_post', :locals => {:post => post}
+            = render :partial => 'community_engine/sb_posts/dummy_forum_post', :locals => {:post => post}

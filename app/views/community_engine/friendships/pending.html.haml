@@ -1,7 +1,7 @@
-.yui-b= render :partial => 'users/profile_user_info_sidebar'
+.yui-b= render :partial => 'community_engine/users/profile_user_info_sidebar'
 
 #yui-main
   .yui-b
     -box :id => "friends" do
       %h3= :pending_friendships.l
-      .user_list= render :partial => "friendships/friendship", :collection => @friendships
+      .user_list= render :partial => "community_engine/friendships/friendship", :collection => @friendships

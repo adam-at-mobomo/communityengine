@@ -1,9 +1,9 @@
 .yui-b
   -box :id => 'category_tips' do
     -if @post.category
-      = render :partial => "categories/tips", :locals => {:category => @post.category}
+      = render :partial => "community_engine/categories/tips", :locals => {:category => @post.category}
     - else 
-      = render :partial => "categories/tips", :locals => {:category => nil}
+      = render :partial => "community_engine/categories/tips", :locals => {:category => nil}
     
 #yui-main
   .yui-b
@@ -46,7 +46,7 @@
             = image_tag 'icons/poll.png'
             = :add_a_poll.l
           %em=:optional.l
-        #poll-ui{:style => 'display:none'}=render :partial => 'polls/new'
+        #poll-ui{:style => 'display:none'}=render :partial => 'community_engine/polls/new'
 
         %label
           =:save_post_as.l

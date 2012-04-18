@@ -1,7 +1,7 @@
 - @section = (params[:metro_area_id] ? 'metro_area' : 'users')
 
 .yui-b
-  = render :partial => 'users/search_options'
+  = render :partial => 'community_engine/users/search_options'
 
 #yui-main
   .yui-b
@@ -12,7 +12,7 @@
   
       %br.clear
   
-      = render :partial => "users/user", :collection => @users
+      = render :partial => "community_engine/users/user", :collection => @users
       
       %br.clear
       = paginate @users

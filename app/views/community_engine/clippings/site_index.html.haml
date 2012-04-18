@@ -12,7 +12,7 @@
         - @clippings.to_a.in_groups_of(2) do |group|
           .row  
             - group.compact.each do |clipping|
-              =render :partial => 'clippings/clipping', :locals => {:clipping => clipping}
+              =render :partial => 'community_engine/clippings/clipping', :locals => {:clipping => clipping}
             .clear
       
       -if @clippings.total_count > 1      
