@@ -1,6 +1,6 @@
 module CommunityEngine
 class CommentSweeper < ActionController::Caching::Sweeper
-  observe Comment
+  observe CommunityEngine::Comment
 
   def after_create(comment)
     expire_cache_for(comment)
@@ -19,10 +19,10 @@ class CommentSweeper < ActionController::Caching::Sweeper
   private
   def expire_cache_for(record)
     # Expire the footer content
-    expire_action :controller => 'base', :action => 'footer_content'
+    expire_action :controller => 'base', :action => 'footer_content', :module => 'community_engine'
 
     if record.commentable_type.eql?('Post') 
-      expire_action :controller => 'posts', :action => 'show', :id => record.commentable.to_param , :user_id => record.commentable.user.to_param
+      expire_action :controller => 'posts', :action => 'show', :id => record.commentable.to_param , :user_id => record.commentable.user.to_param, :module => 'community_engine'
       
       if Post.find_recent(:limit => 16).include?(record.commentable)
         # Expire the home page    

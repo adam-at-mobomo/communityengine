@@ -1,6 +1,6 @@
 module CommunityEngine
 class EventSweeper < ActionController::Caching::Sweeper
-  observe Event # This sweeper is going to keep an eye on the Event model
+  observe CommunityEngine::Event # This sweeper is going to keep an eye on the Event model
 
   # If our sweeper detects that an Event was created call this
   def after_create(event)
@@ -20,7 +20,7 @@ class EventSweeper < ActionController::Caching::Sweeper
   private
   def expire_cache_for(record)
     # Expire the ical page
-    expire_page(:controller => 'events', :action => 'ical', :format => 'ics')
+    expire_page(:controller => 'events', :action => 'ical', :format => 'ics', :module => 'community_engine')
   end
 end
 end

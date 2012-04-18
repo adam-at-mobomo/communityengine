@@ -191,7 +191,7 @@ class Post < ActiveRecord::Base
   end
   
   def has_been_favorited_by(user = nil, remote_ip = nil)
-    f = Favorite.find_by_user_or_ip_address(self, user, remote_ip)
+    f = CommunityEngine::Favorite.find_by_user_or_ip_address(self, user, remote_ip)
     return f
   end  
   

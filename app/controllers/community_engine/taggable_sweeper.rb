@@ -1,6 +1,6 @@
 module CommunityEngine
 class TaggableSweeper < ActionController::Caching::Sweeper
-  observe User, Post, Clipping, Photo # This sweeper is going to keep an eye on taggable models
+  observe CommunityEngine::User, CommunityEngine::Post, CommunityEngine::Clipping, CommunityEngine::Photo # This sweeper is going to keep an eye on taggable models
 
   # If our sweeper detects that a taggable (User) was activated 
   def after_activate(taggable)
@@ -31,7 +31,7 @@ class TaggableSweeper < ActionController::Caching::Sweeper
   def expire_cache_for(record)
     # Expire the tag show pages
     record.tags.each do |tag|
-      expire_action({:action=>"show", :controller=>"tags", :id => tag.id})      
+      expire_action({:action=>"show", :controller=>"tags", :id => tag.id, :module => 'community_engine'})      
     end
   end
   
