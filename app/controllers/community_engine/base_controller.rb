@@ -51,7 +51,7 @@ class CommunityEngine::BaseController < ApplicationController
   end
   
   def homepage_features
-    @homepage_features = HomepageFeature.find_features
+    @homepage_features = CommunityEngine::HomepageFeature.find_features
     @homepage_features.shift
     render :partial => 'homepage_feature', :collection => @homepage_features and return
   end
@@ -117,7 +117,7 @@ class CommunityEngine::BaseController < ApplicationController
 
     def get_additional_homepage_data
       @sidebar_right = true
-      @homepage_features = HomepageFeature.find_features
+      @homepage_features = CommunityEngine::HomepageFeature.find_features
       @homepage_features_data = @homepage_features.collect {|f| [f.id, f.image.url(:large) ]  }
     
       @active_users = CommunityEngine::User.find_by_activity({:limit => 5, :require_avatar => false})
