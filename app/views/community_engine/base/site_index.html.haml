@@ -1,17 +1,17 @@
 - @meta = { :description => configatron.meta_description, :keywords => configatron.meta_keywords, :robots => configatron.robots_meta_list_content }
 
--unless logged_in?
-  =render :partial => 'base/homepage_banner_message'
+-unless current_user
+  =render :partial => 'community_engine/base/homepage_banner_message'
 
 #yui-main
   .yui-b
     -box :class => "hfeed" do 
       %h3
         =:recent_posts.l
-      = render :partial => 'posts/post', :collection => @posts
+      = render :partial => 'community_engine/posts/post', :collection => @posts
       %h6.all= link_to :see_all_recent_posts.l, recent_path
 .yui-b  
-  =render :partial => 'shared/explore'
+  =render :partial => 'community_engine/shared/explore'
 
   -box :class => "alt" do 
     %h3
@@ -19,7 +19,7 @@
       
     %ul.list.page
       -@popular_posts.each do |post|
-        =render :partial => 'posts/sidebar_post', :locals => {:post => post}
+        =render :partial => 'community_engine/posts/sidebar_post', :locals => {:post => post}
     %h6.all
       %a{:href=>popular_url}= :see_all.l
 
@@ -27,9 +27,9 @@
     %h3
       =:featured_writer.l
     -@featured_writers.each do |user|
-      =render :partial => "users/sidebar_user", :locals => {:user => user}
+      =render :partial => "community_engine/users/sidebar_user", :locals => {:user => user}
 
   -box :class => "alt" do 
     %h3= :active_users.l
     -@active_users.each do |user|    
-      =render :partial => "users/sidebar_user", :locals => {:user => user}      
+      =render :partial => "community_engine/users/sidebar_user", :locals => {:user => user}      

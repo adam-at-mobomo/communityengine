@@ -43,7 +43,7 @@
           =:rsvped_for_an_event.l
           = link_to activity.item.event.name, event_path(activity.item.event)
         -else
-          =render :partial => 'activities/unhandled_item', :locals => {:activity => activity}
+          =render :partial => 'community_engine/activities/unhandled_item', :locals => {:activity => activity}
     - else
       - case activity.action
         - when 'updated_profile'
