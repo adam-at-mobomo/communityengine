@@ -8,7 +8,7 @@ class MigrateToActsAsTaggableOn < ActiveRecord::Migration
       t.datetime :created_at      
     end
     
-    add_index :community_engine_taggings, [:taggable_id, :taggable_type, :context]
+    add_index :community_engine_taggings, [:taggable_id, :taggable_type, :context], :name => "index_community_engine_taggings_taggable"
   end  
   
   def self.down
