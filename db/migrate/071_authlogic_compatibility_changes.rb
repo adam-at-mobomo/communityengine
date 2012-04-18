@@ -19,25 +19,25 @@ class AuthlogicCompatibilityChanges < ActiveRecord::Migration
       t.column :last_login_ip,       :string                 
     end
 
-    add_index :users, :login
-    add_index :users, :persistence_token
-    add_index :users, :last_request_at
+    add_index :community_engine_users, :login
+    add_index :community_engine_users, :persistence_token
+    add_index :community_engine_users, :last_request_at
   end
 
   def self.down
-    remove_index :users, :login
-    remove_index :users, :persistence_token
-    remove_index :users, :last_request_at
+    remove_index :community_engine_users, :login
+    remove_index :community_engine_users, :persistence_token
+    remove_index :community_engine_users, :last_request_at
 
-    change_table :users do |t|
+    change_table :community_engine_users do |t|
       t.remove :single_access_token, :perishable_token, :login_count, :failed_login_count,
         :last_request_at, :current_login_at, :current_login_ip, :last_login_ip
     end
 
-    rename_column :users, :persistence_token, :remember_token
+    rename_column :community_engine_users, :persistence_token, :remember_token
 
-    add_column :users, :remember_token_expires_at, :datetime, :default => nil
-    rename_column :users, :password_salt, :salt
+    add_column :community_engine_users, :remember_token_expires_at, :datetime, :default => nil
+    rename_column :community_engine_users, :password_salt, :salt
   end
 
 end
