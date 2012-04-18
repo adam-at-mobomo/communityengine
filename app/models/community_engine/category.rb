@@ -1,5 +1,6 @@
 module CommunityEngine
 class Category < ActiveRecord::Base
+  extend FriendlyId
   has_many :posts, :order => "published_at desc"
   validates_presence_of :name
   

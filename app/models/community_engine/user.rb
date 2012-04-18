@@ -2,6 +2,7 @@ require 'digest/sha1'
 
 module CommunityEngine
 class User < ActiveRecord::Base
+  extend FriendlyId
   include UrlUpload
   include FacebookProfile
   include TwitterProfile
