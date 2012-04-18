@@ -1,4 +1,4 @@
-class CreateStaticPages < ActiveRecord::Migration
+class CreateCommunityEngineStaticPages < ActiveRecord::Migration
   def self.up
 
     # Not using this anymore, but leaving the migration for compatibility
