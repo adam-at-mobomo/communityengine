@@ -357,7 +357,7 @@ class User < ActiveRecord::Base
   def comments_activity(page = {}, since = 1.week.ago)
     page.reverse_merge :per_page => 10, :page => 1
 
-    Activity.recent.since(since).where('comments.recipient_id = ? AND activities.user_id != ?', self.id, self.id).joins("LEFT JOIN comments ON comments.id = activities.item_id AND activities.item_type = 'Comment'").page(page[:per_page]).per(page[:page])
+    Activity.recent.since(since).where('community_engine_comments.recipient_id = ? AND community_engine_activities.user_id != ?', self.id, self.id).joins("LEFT JOIN community_engine_comments ON community_engine_comments.id = community_engine_activities.item_id AND community_engine_activities.item_type = 'Comment'").page(page[:per_page]).per(page[:page])
   end
 
   def friends_ids
@@ -367,7 +367,7 @@ class User < ActiveRecord::Base
   
   def recommended_posts(since = 1.week.ago)
     return [] if tags.empty?
-    rec_posts = Post.tagged_with(tags.map(&:name), :any => true).where(['posts.user_id != ? AND published_at > ?', self.id, since ])
+    rec_posts = Post.tagged_with(tags.map(&:name), :any => true).where(['community_engine_posts.user_id != ? AND published_at > ?', self.id, since ])
     rec_posts = rec_posts.order('published_at DESC').limit(10)
     rec_posts
   end
@@ -406,7 +406,7 @@ class User < ActiveRecord::Base
   end
   
   def unread_message_count
-    message_threads_as_recipient.count(:conditions => ["messages.recipient_id = ? AND messages.recipient_deleted = ? AND read_at IS NULL", self.id, false], :include => :message)
+    message_threads_as_recipient.count(:conditions => ["community_engine_messages.recipient_id = ? AND community_engine_messages.recipient_deleted = ? AND read_at IS NULL", self.id, false], :include => :message)
   end
   
   def deliver_password_reset_instructions!

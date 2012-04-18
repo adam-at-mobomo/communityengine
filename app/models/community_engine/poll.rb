@@ -19,22 +19,22 @@ class Poll < ActiveRecord::Base
 
   def self.find_recent(options = {})
     options.reverse_merge! :limit => 5
-    find(:all, :order => "polls.created_at desc", :limit => options[:limit], :include => [:post => :user])
+    find(:all, :order => "community_engine_polls.created_at desc", :limit => options[:limit], :include => [:post => :user])
   end
 
   def self.find_popular(options = {})
     options.reverse_merge! :limit => 5, :since => 10.days.ago
     
-    find(:all, :order => "polls.votes_count desc", 
+    find(:all, :order => "community_engine_polls.votes_count desc", 
       :limit => options[:limit], 
       :include => [:post => :user],
-      :conditions => ["polls.created_at > ?", options[:since]]
+      :conditions => ["community_engine_polls.created_at > ?", options[:since]]
     )
   end
 
   def self.find_popular_in_category(category, options = {})
     options.reverse_merge! :limit => 5
-    self.includes(:post).order('polls.votes_count desc').limit(options[:limit]).where('posts.category_id = ?', category.id)
+    self.includes(:post).order('community_engine_polls.votes_count desc').limit(options[:limit]).where('community_engine_posts.category_id = ?', category.id)
   end
 
 end

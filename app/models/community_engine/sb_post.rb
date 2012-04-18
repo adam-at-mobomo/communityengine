@@ -29,8 +29,8 @@ class SbPost < ActiveRecord::Base
   after_create :monitor_topic
   after_create :notify_monitoring_users  
   
-  scope :with_query_options, :select => 'sb_posts.*, topics.title as topic_title, forums.name as forum_name', :joins => 'inner join topics on sb_posts.topic_id = topics.id inner join forums on topics.forum_id = forums.id', :order => 'sb_posts.created_at desc'
-  scope :recent, :order => 'sb_posts.created_at ASC'
+  scope :with_query_options, :select => 'community_engine_sb_posts.*, community_engine_topics.title as topic_title, community_engine_forums.name as forum_name', :joins => 'inner join community_engine_topics on community_engine_sb_posts.topic_id = community_engine_topics.id inner join community_engine_forums on community_engine_topics.forum_id = community_engine_forums.id', :order => 'community_engine_sb_posts.created_at desc'
+  scope :recent, :order => 'community_engine_sb_posts.created_at ASC'
   validate :check_spam    
     
   def monitor_topic

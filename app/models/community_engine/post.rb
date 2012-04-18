@@ -39,22 +39,22 @@ class Post < ActiveRecord::Base
     
     # Scopes    
     def by_featured_writers
-      where("users.featured_writer = ?", true).includes(:user)
+      where("community_engine_users.featured_writer = ?", true).includes(:user)
     end
     def popular
-      order('posts.view_count DESC')
+      order('community_engine_posts.view_count DESC')
     end
     def since(days)
-      where("posts.published_at > ?", days.ago)    
+      where("community_engine_posts.published_at > ?", days.ago)    
     end
     def recent
-      order("posts.published_at DESC")    
+      order("community_engine_posts.published_at DESC")    
     end
   
     def find_related_to(post, options = {})
       options.reverse_merge!({:limit => 8, 
           :order => 'published_at DESC', 
-          :conditions => [ 'posts.id != ? AND published_as = ?', post.id, 'live' ]
+          :conditions => [ 'community_engine_posts.id != ? AND published_as = ?', post.id, 'live' ]
       })
 
       limit(options[:limit]).order(options[:order]).where(options[:conditions]).tagged_with(post.tag_list, :any => true)
@@ -76,9 +76,9 @@ class Post < ActiveRecord::Base
 
     def find_most_commented(limit = 10, since = 7.days.ago)
       Post.find(:all, 
-        :select => 'posts.*, count(*) as comments_count',
-        :joins => "LEFT JOIN comments ON comments.commentable_id = posts.id",
-        :conditions => ['comments.commentable_type = ? AND posts.published_at > ?', 'Post', since],
+        :select => 'community_engine_posts.*, count(*) as community_engine_comments_count',
+        :joins => "LEFT JOIN community_engine_comments ON community_engine_comments.commentable_id = community_engine_posts.id",
+        :conditions => ['community_engine_comments.commentable_type = ? AND community_engine_posts.published_at > ?', 'Post', since],
         :group => self.columns.map{|column| self.table_name + "." + column.name}.join(","),
         :order => 'comments_count DESC',
         :limit => limit
