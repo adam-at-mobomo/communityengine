@@ -4,14 +4,14 @@ require 'pp'
 
 class CommunityEngine::BaseController < ApplicationController
 
-#  include AuthenticatedSystem
+  include AuthenticatedSystem
   include LocalizedApplication
   around_filter :set_locale  
   skip_before_filter :verify_authenticity_token, :only => :footer_content
   helper_method :commentable_url, :logged_in?
   before_filter :initialize_header_tabs
   before_filter :initialize_admin_tabs
-#  before_filter :store_location
+  before_filter :store_location
 
   caches_action :site_index, :footer_content, :if => Proc.new{|c| c.cache_action? }
   
