@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
   
   acts_as_taggable  
   acts_as_commentable
-  has_enumerated :role      
+  has_enumerated :role, :class_name => 'CommunityEngine::Role', :foreign_key => 'role_id'      
   tracks_unlinked_activities [:logged_in, :invited_friends, :updated_profile, :joined_the_site]  
   
   #callbacks  
