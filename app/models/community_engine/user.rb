@@ -4,8 +4,8 @@ module CommunityEngine
 class User < ActiveRecord::Base
   extend FriendlyId
   include UrlUpload
-  include FacebookProfile
-  include TwitterProfile
+  include CommunityEngine::FacebookProfile
+  include CommunityEngine::TwitterProfile
   
   include Rakismet::Model
   rakismet_attrs :author => :login, :comment_type => 'registration', :content => :description, :user_ip => :last_login_ip, :author_email => :email
@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   FEMALE  = 'F'
   
   acts_as_authentic do |c|
-    c.crypto_provider = CommunityEngineSha1CryptoMethod
+    c.crypto_provider = CommunityEngine::CommunityEngineSha1CryptoMethod
     
     c.validates_length_of_password_field_options = { :within => 6..20, :if => :password_required? }
     c.validates_length_of_password_confirmation_field_options = { :within => 6..20, :if => :password_required? }
@@ -59,44 +59,44 @@ class User < ActiveRecord::Base
     has_many :albums, :dependent => :destroy    
 
     #friendship associations
-    has_many :friendships, :class_name => "Friendship", :foreign_key => "user_id", :dependent => :destroy
-    has_many :accepted_friendships, :class_name => "Friendship", :conditions => ['friendship_status_id = ?', 2]
-    has_many :pending_friendships, :class_name => "Friendship", :conditions => ['initiator = ? AND friendship_status_id = ?', false, 1]
-    has_many :friendships_initiated_by_me, :class_name => "Friendship", :foreign_key => "user_id", :conditions => ['initiator = ?', true], :dependent => :destroy
-    has_many :friendships_not_initiated_by_me, :class_name => "Friendship", :foreign_key => "user_id", :conditions => ['initiator = ?', false], :dependent => :destroy
-    has_many :occurances_as_friend, :class_name => "Friendship", :foreign_key => "friend_id", :dependent => :destroy
+    has_many :friendships, :class_name => "CommunityEngine::Friendship", :foreign_key => "user_id", :dependent => :destroy
+    has_many :accepted_friendships, :class_name => "CommunityEngine::Friendship", :conditions => ['friendship_status_id = ?', 2]
+    has_many :pending_friendships, :class_name => "CommunityEngine::Friendship", :conditions => ['initiator = ? AND friendship_status_id = ?', false, 1]
+    has_many :friendships_initiated_by_me, :class_name => "CommunityEngine::Friendship", :foreign_key => "user_id", :conditions => ['initiator = ?', true], :dependent => :destroy
+    has_many :friendships_not_initiated_by_me, :class_name => "CommunityEngine::Friendship", :foreign_key => "user_id", :conditions => ['initiator = ?', false], :dependent => :destroy
+    has_many :occurances_as_friend, :class_name => "CommunityEngine::Friendship", :foreign_key => "friend_id", :dependent => :destroy
 
     #forums
     has_many :moderatorships, :dependent => :destroy
-    has_many :forums, :through => :moderatorships, :order => 'forums.name'
+    has_many :forums, :through => :moderatorships, :order => 'community_engine_forums.name'
     has_many :sb_posts, :dependent => :destroy
     has_many :topics, :dependent => :destroy
     has_many :monitorships, :dependent => :destroy
-    has_many :monitored_topics, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :order => 'topics.replied_at desc', :source => :topic
+    has_many :monitored_topics, :through => :monitorships, :conditions => ['community_engine_monitorships.active = ?', true], :order => 'community_engine_topics.replied_at desc', :source => :topic
 
-    belongs_to  :avatar, :class_name => "Photo", :foreign_key => "avatar_id", :inverse_of => :user_as_avatar
+    belongs_to  :avatar, :class_name => "CommunityEngine::Photo", :foreign_key => "avatar_id", :inverse_of => :user_as_avatar
     belongs_to  :metro_area, :counter_cache => true
     belongs_to  :state
     belongs_to  :country
-    has_many    :comments_as_author, :class_name => "Comment", :foreign_key => "user_id", :order => "created_at desc", :dependent => :destroy
-    has_many    :comments_as_recipient, :class_name => "Comment", :foreign_key => "recipient_id", :order => "created_at desc", :dependent => :destroy
+    has_many    :comments_as_author, :class_name => "CommunityEngine::Comment", :foreign_key => "user_id", :order => "created_at desc", :dependent => :destroy
+    has_many    :comments_as_recipient, :class_name => "CommunityEngine::Comment", :foreign_key => "recipient_id", :order => "created_at desc", :dependent => :destroy
     has_many    :clippings, :order => "created_at desc", :dependent => :destroy
     has_many    :favorites, :order => "created_at desc", :dependent => :destroy
     
     #messages
-    has_many :all_sent_messages, :class_name => "Message", :foreign_key => "sender_id", :dependent => :destroy
+    has_many :all_sent_messages, :class_name => "CommunityEngine::Message", :foreign_key => "sender_id", :dependent => :destroy
     has_many :sent_messages,
-             :class_name => 'Message',
+             :class_name => 'CommunityEngine::Message',
              :foreign_key => 'sender_id',
-             :order => "messages.created_at DESC",
-             :conditions => ["messages.sender_deleted = ?", false]
+             :order => "community_engine_messages.created_at DESC",
+             :conditions => ["community_engine_messages.sender_deleted = ?", false]
 
     has_many :received_messages,
-             :class_name => 'Message',
+             :class_name => 'CommunityEngine::Message',
              :foreign_key => 'recipient_id',
-             :order => "message.created_at DESC",
-             :conditions => ["message.recipient_deleted = ?", false]
-    has_many :message_threads_as_recipient, :class_name => "MessageThread", :foreign_key => "recipient_id"               
+             :order => "community_engine_message.created_at DESC",
+             :conditions => ["community_engine_message.recipient_deleted = ?", false]
+    has_many :message_threads_as_recipient, :class_name => "CommunityEngine::MessageThread", :foreign_key => "recipient_id"               
     
   #named scopes
   scope :recent, order('community_engine_users.created_at DESC')
@@ -151,8 +151,8 @@ class User < ActiveRecord::Base
   end
   
   def self.build_conditions_for_search(search)
-    user = User.arel_table
-    users = User.active
+    user = CommunityEngine::User.arel_table
+    users = CommunityEngine::User.active
     if search['country_id'] && !(search['metro_area_id'] || search['state_id'])
       users = users.where(user[:country_id].eq(search['country_id']))
     end
@@ -177,7 +177,7 @@ class User < ActiveRecord::Base
   def self.find_by_activity(options = {})
     options.reverse_merge! :limit => 30, :require_avatar => true, :since => 7.days.ago   
 
-    activities = Activity.since(options[:since]).find(:all, 
+    activities = CommunityEngine::Activity.since(options[:since]).find(:all, 
       :select => 'activities.user_id, count(*) as count', 
       :group => 'activities.user_id', 
       :conditions => "#{options[:require_avatar] ? ' users.avatar_id IS NOT NULL AND ' : ''} users.activated_at IS NOT NULL", 
@@ -204,11 +204,11 @@ class User < ActiveRecord::Base
   
   def self.recent_activity(options = {})
     options.reverse_merge! :per_page => 10, :page => 1
-    Activity.recent.joins("LEFT JOIN users ON users.id = activities.user_id").where('users.activated_at IS NOT NULL').select('activities.*').page(options[:page]).per(options[:per_page])
+    CommunityEngine::Activity.recent.joins("LEFT JOIN users ON community_engine_users.id = community_engine_activities.user_id").where('community_engine_users.activated_at IS NOT NULL').select('community_engine_activities.*').page(options[:page]).per(options[:per_page])
   end
 
   def self.currently_online
-    User.find(:all, :conditions => ["sb_last_seen_at > ?", Time.now.utc-5.minutes])
+    CommunityEngine::User.find(:all, :conditions => ["sb_last_seen_at > ?", Time.now.utc-5.minutes])
   end
   
   def self.search(query, options = {})
@@ -352,13 +352,13 @@ class User < ActiveRecord::Base
     
     ids = ((friends_ids | metro_area_people_ids) - [self.id])[0..100] #don't pull TOO much activity for now
     
-    Activity.recent.since(since).by_users(ids).page(page[:page]).per(page[:per_page])          
+    CommunityEngine::Activity.recent.since(since).by_users(ids).page(page[:page]).per(page[:per_page])          
   end
 
   def comments_activity(page = {}, since = 1.week.ago)
     page.reverse_merge :per_page => 10, :page => 1
 
-    Activity.recent.since(since).where('community_engine_comments.recipient_id = ? AND community_engine_activities.user_id != ?', self.id, self.id).joins("LEFT JOIN community_engine_comments ON community_engine_comments.id = community_engine_activities.item_id AND community_engine_activities.item_type = 'Comment'").page(page[:per_page]).per(page[:page])
+    Activity.recent.since(since).where('community_engine_comments.recipient_id = ? AND community_engine_activities.user_id != ?', self.id, self.id).joins("LEFT JOIN community_engine_comments ON community_engine_comments.id = community_engine_activities.item_id AND community_engine_activities.item_type = 'CommunityEngine::Comment'").page(page[:per_page]).per(page[:page])
   end
 
   def friends_ids
@@ -368,7 +368,7 @@ class User < ActiveRecord::Base
   
   def recommended_posts(since = 1.week.ago)
     return [] if tags.empty?
-    rec_posts = Post.tagged_with(tags.map(&:name), :any => true).where(['community_engine_posts.user_id != ? AND published_at > ?', self.id, since ])
+    rec_posts = CommnityEngine::Post.tagged_with(tags.map(&:name), :any => true).where(['community_engine_posts.user_id != ? AND published_at > ?', self.id, since ])
     rec_posts = rec_posts.order('published_at DESC').limit(10)
     rec_posts
   end
@@ -378,15 +378,15 @@ class User < ActiveRecord::Base
   end
   
   def admin?
-    role && role.eql?(Role[:admin])
+    role && role.eql?(CommunityEngine::Role[:admin])
   end
 
   def moderator?
-    role && role.eql?(Role[:moderator])
+    role && role.eql?(CommunityEngine::Role[:moderator])
   end
 
   def member?
-    role && role.eql?(Role[:member])
+    role && role.eql?(CommunityEngine::Role[:member])
   end
   
   def male?
@@ -398,7 +398,7 @@ class User < ActiveRecord::Base
   end
 
   def update_last_seen_at
-    User.update_all ['sb_last_seen_at = ?', Time.now.utc], ['id = ?', self.id]
+    CommunityEngine::User.update_all ['sb_last_seen_at = ?', Time.now.utc], ['id = ?', self.id]
     self.sb_last_seen_at = Time.now.utc
   end
   
@@ -412,7 +412,7 @@ class User < ActiveRecord::Base
   
   def deliver_password_reset_instructions!
     reset_perishable_token!
-    UserNotifier.password_reset_instructions(self).deliver
+    CommunityEngine::UserNotifier.password_reset_instructions(self).deliver
   end  
   
   def valid_birthday
@@ -421,7 +421,7 @@ class User < ActiveRecord::Base
   end
   
   def self.find_or_create_from_authorization(auth)
-    user = User.find_or_initialize_by_email(:email => auth.email)
+    user = CommunityEngine::User.find_or_initialize_by_email(:email => auth.email)
     user.login ||= auth.nickname
     
     if user.new_record?
