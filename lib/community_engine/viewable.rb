@@ -1,3 +1,4 @@
+module ::CommunityEngine
 module Viewable
   protected
   def update_view_count(viewable)     
@@ -9,4 +10,5 @@ module Viewable
       viewable.class.update_counters(viewable.id, {:view_count => 1}) 
     end
   end
+end
 end

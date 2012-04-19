@@ -1,3 +1,4 @@
+module ::CommunityEngine
 module UrlUpload
             
   def data_from_url(uri)
@@ -11,5 +12,6 @@ module UrlUpload
   def validate
     errors.add("filename", "is invalid") if filename? && %w(index.html index.htm).include?(filename.downcase)
   end
-      
+
+end      
 end

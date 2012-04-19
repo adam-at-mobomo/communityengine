@@ -34,3 +34,16 @@ require 'sanitize'
 
 
 include EnginesExtensions
+
+module CommunityEngine
+  mattr_accessor :user_class
+
+
+  def self.user_class
+    if @@user_class.is_a?(Class)
+      raise "You cannot set CommunityEngine.user_class to be a class. Please use a string instead.\n\n "
+    elsif @@user_class.is_a?(String)
+      @@user_class.constantize
+    end
+  end
+end

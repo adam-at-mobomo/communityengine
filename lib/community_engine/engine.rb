@@ -1,10 +1,17 @@
 require "community_engine"
 require 'rails/all'
 
-module CommunityEngine
+module ::CommunityEngine
   class Engine < Rails::Engine
     isolate_namespace CommunityEngine
     engine_name "community_engine"
+
+    class << self
+      attr_accessor :root
+      def root
+        @root ||= Pathname.new(File.expand_path('../../', __FILE__))
+      end
+    end
 
     initializer engine_name do |app|
       require root.join('config','application_config.rb')
@@ -34,9 +41,14 @@ module CommunityEngine
       end
     end
     
-    
-
-     
+    # Fix for #88
+    config.to_prepare do
+      if CommunityEngine.user_class
+        CommunityEngine.user_class.send :include, CommunityEngine::FacebookProfile
+        CommunityEngine.user_class.send :include, CommunityEngine::TwitterProfile
+        CommunityEngine.user_class.send :include, CommunityEngine::UrlUpload
+      end
+    end
   end
 end
 
