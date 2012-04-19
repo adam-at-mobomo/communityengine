@@ -5,8 +5,8 @@ class Friendship < ActiveRecord::Base
   cattr_accessor :daily_request_limit
 
   belongs_to :user
-  belongs_to :friend, :class_name => "User", :foreign_key => "friend_id"   
-  has_enumerated :friendship_status, :class_name => 'FriendshipStatus', :foreign_key => 'friendship_status_id'
+  belongs_to :friend, :class_name => "CommunityEngine::User", :foreign_key => "friend_id"   
+  has_enumerated :friendship_status, :class_name => 'CommunityEngine::FriendshipStatus', :foreign_key => 'friendship_status_id'
 
   validates_presence_of   :friendship_status
   validates_presence_of   :user
@@ -20,7 +20,7 @@ class Friendship < ActiveRecord::Base
   # named scopes
   scope :accepted, lambda {
     #hack: prevents FriendshipStatus[:accepted] from getting called before the friendship_status records are in the db (only matters in testing ENV)
-    {:conditions => ["friendship_status_id = ?", FriendshipStatus[:accepted].id]    }
+    {:conditions => ["friendship_status_id = ?", CommunityEngine::FriendshipStatus[:accepted].id]    }
   }
   
   def cannot_request_if_daily_limit_reached  
@@ -35,32 +35,32 @@ class Friendship < ActiveRecord::Base
   attr_protected :friendship_status_id
   
   def reverse
-    Friendship.find(:first, :conditions => ['user_id = ? and friend_id = ?', self.friend_id, self.user_id])
+    CommunityEngine::Friendship.find(:first, :conditions => ['user_id = ? and friend_id = ?', self.friend_id, self.user_id])
   end
 
   def denied?
-    friendship_status.eql?(FriendshipStatus[:denied])
+    friendship_status.eql?(CommunityEngine::FriendshipStatus[:denied])
   end
   
   def pending?
-    friendship_status.eql?(FriendshipStatus[:pending])
+    friendship_status.eql?(CommunityEngine::FriendshipStatus[:pending])
   end
   
   def accepted?
-    friendship_status.eql?(FriendshipStatus[:accepted])    
+    friendship_status.eql?(CommunityEngine::FriendshipStatus[:accepted])    
   end
   
   def self.friends?(user, friend)
-    find(:first, :conditions => ["user_id = ? AND friend_id = ? AND friendship_status_id = ?", user.id, friend.id, FriendshipStatus[:accepted].id ])
+    find(:first, :conditions => ["user_id = ? AND friend_id = ? AND friendship_status_id = ?", user.id, friend.id, CommunityEngine::FriendshipStatus[:accepted].id ])
   end
   
   def notify_requester
-    UserNotifier.friendship_accepted(self).deliver
+    CommunityEngine::UserNotifier.friendship_accepted(self).deliver
   end
     
   private
   def set_pending
-    friendship_status_id = FriendshipStatus[:pending].id
+    friendship_status_id = CommunityEngine::FriendshipStatus[:pending].id
   end  
 end
 end

@@ -21,8 +21,8 @@ class Photo < ActiveRecord::Base
   has_one :user_as_avatar, :class_name => "User", :foreign_key => "avatar_id", :inverse_of => :avatar
   
   #Named scopes
-  scope :recent, :order => "photos.created_at DESC"
-  scope :new_this_week, :order => "photos.created_at DESC", :conditions => ["photos.created_at > ?", 7.days.ago.iso8601]
+  scope :recent, :order => "community_engine_photos.created_at DESC"
+  scope :new_this_week, :order => "community_engine_photos.created_at DESC", :conditions => ["community_engine_photos.created_at > ?", 7.days.ago.iso8601]
   attr_accessible :name, :description, :photo, :crop_x, :crop_y, :crop_w, :crop_h, :user_id
 
   def display_name

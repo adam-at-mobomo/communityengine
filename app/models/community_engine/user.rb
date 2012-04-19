@@ -99,9 +99,9 @@ class User < ActiveRecord::Base
     has_many :message_threads_as_recipient, :class_name => "MessageThread", :foreign_key => "recipient_id"               
     
   #named scopes
-  scope :recent, order('users.created_at DESC')
+  scope :recent, order('community_engine_users.created_at DESC')
   scope :featured, where(:featured_writer => true)
-  scope :active, where("users.activated_at IS NOT NULL")
+  scope :active, where("community_engine_users.activated_at IS NOT NULL")
   scope :vendors, where(:vendor => true)
   
 

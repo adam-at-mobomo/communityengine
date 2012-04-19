@@ -18,7 +18,7 @@ class Clipping < ActiveRecord::Base
   acts_as_taggable
   acts_as_activity :user
     
-  scope :recent, :order => 'clippings.created_at DESC'    
+  scope :recent, :order => 'community_engine_clippings.created_at DESC'    
     
     
   def self.find_related_to(clipping, options = {})
