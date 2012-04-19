@@ -1,6 +1,6 @@
 module CommunityEngine
 class PostsController < BaseController
-  include Viewable
+  include CommunityEngine::Viewable
 
   uses_tiny_mce do
     {:only => [:new, :edit, :update, :create ], :options => configatron.default_mce_options}
@@ -21,16 +21,16 @@ class PostsController < BaseController
   skip_before_filter :verify_authenticity_token, :only => [:update_views, :send_to_friend] #called from ajax on cached pages 
   
   def manage
-    Post.unscoped do
-      @search = Post.search(params[:search])
+    CommunityEngine::Post.unscoped do
+      @search = CommunityEngine::Post.search(params[:search])
       @search.meta_sort ||= 'created_at.desc'
       @posts = @search.where(:user_id => @user.id).page(params[:page]).per(params[:size]||10)
     end
   end
 
   def index
-    @user = User.find(params[:user_id])            
-    @category = Category.find_by_name(params[:category_name]) if params[:category_name]
+    @user = CommunityEngine::User.find(params[:user_id])            
+    @category = CommunityEngine::Category.find_by_name(params[:category_name]) if params[:category_name]
 
     @posts = @user.posts.recent
     @posts = @post.where('category_id = ?', @category.id) if @category
@@ -47,7 +47,7 @@ class PostsController < BaseController
       format.html # index.rhtml
       format.rss {
         render_rss_feed_for(@posts,
-           { :feed => {:title => @rss_title, :link => url_for(:controller => 'posts', :action => 'index', :user_id => @user) },
+           { :feed => {:title => @rss_title, :link => url_for(:controller => 'community_engine/posts', :action => 'index', :user_id => @user) },
              :item => {:title => :title,
                        :description => :post,
                        :link => Proc.new {|post| user_post_url(post.user, post)},
@@ -63,50 +63,50 @@ class PostsController < BaseController
     @rss_title = "#{configatron.community_name}: #{@user.login}'s posts"
     @rss_url = user_posts_path(@user,:format => :rss)
     
-    @post = Post.unscoped.find(params[:id])
+    @post = CommunityEngine::Post.unscoped.find(params[:id])
 
     @user = @post.user
     @is_current_user = @user.eql?(current_user)
-    @comment = Comment.new(params[:comment])
+    @comment = CommunityEngine::Comment.new(params[:comment])
 
     @comments = @post.comments.includes(:user).order('created_at DESC').limit(20)
 
     @previous = @post.previous_post
     @next = @post.next_post    
     @popular_posts = @user.posts.except(:order).order('view_count DESC').limit(10).all
-    @related = Post.find_related_to(@post)
-    @most_commented = Post.find_most_commented    
+    @related = CommunityEngine::Post.find_related_to(@post)
+    @most_commented = CommunityEngine::Post.find_most_commented    
   end
   
   def update_views
-    @post = Post.find(params[:id])
+    @post = CommunityEngine::Post.find(params[:id])
     updated = update_view_count(@post)
     render :text => updated ? 'updated' : 'duplicate'
   end
   
   def preview
-    @post = Post.unscoped.find(params[:id])
+    @post = CommunityEngine::Post.unscoped.find(params[:id])
     redirect_to(:controller => 'sessions', :action => 'new') and return false unless @post.user.eql?(current_user) || admin? || moderator?
   end
   
   # GET /posts/new
   def new
-    @user = User.find(params[:user_id])    
-    @post = Post.new(params[:post])
+    @user = CommunityEngine::User.find(params[:user_id])    
+    @post = CommunityEngine::Post.new(params[:post])
     @post.published_as = 'live'
     @categories = Category.find(:all)
   end
   
   # GET /posts/1;edit
   def edit
-    @post = Post.unscoped.find(params[:id])
+    @post = CommunityEngine::Post.unscoped.find(params[:id])
   end
 
   # POST /posts
   # POST /posts.xml
   def create    
-    @user = User.find(params[:user_id])
-    @post = Post.new(params[:post])
+    @user = CommunityEngine::User.find(params[:user_id])
+    @post = CommunityEngine::Post.new(params[:post])
     @post.user = @user
     @post.tag_list = params[:tag_list] || ''
     
@@ -133,7 +133,7 @@ class PostsController < BaseController
   # PUT /posts/1
   # PUT /posts/1.xml
   def update
-    @post = Post.unscoped.find(params[:id])
+    @post = CommunityEngine::Post.unscoped.find(params[:id])
     @user = @post.user
     @post.tag_list = params[:tag_list] || ''
     
@@ -151,8 +151,8 @@ class PostsController < BaseController
   # DELETE /posts/1
   # DELETE /posts/1.xml
   def destroy
-    @user = User.find(params[:user_id])
-    @post = Post.find(params[:id])
+    @user = CommunityEngine::User.find(params[:user_id])
+    @post = CommunityEngine::Post.find(params[:id])
     @post.destroy
     
     respond_to do |format|
@@ -165,7 +165,7 @@ class PostsController < BaseController
     
   def send_to_friend
     unless params[:emails]
-      render :partial => 'posts/send_to_friend', :locals => {:user_id => params[:user_id], :post_id => params[:post_id]} and return
+      render :partial => 'community_engine/posts/send_to_friend', :locals => {:user_id => params[:user_id], :post_id => params[:post_id]} and return
     end
     @post = Post.find(params[:id])
     if @post.send_to(params[:emails], params[:message], (current_user || nil))
@@ -177,7 +177,7 @@ class PostsController < BaseController
 
 
   def popular
-    @posts = Post.find_popular({:limit => 15, :since => 3.days})
+    @posts = CommunityEngine::Post.find_popular({:limit => 15, :since => 3.days})
 
     @monthly_popular_posts = CommunityEngine::Post.find_popular({:limit => 20, :since => 30.days})
     
@@ -198,10 +198,10 @@ class PostsController < BaseController
   end
   
   def recent
-    @posts = Post.recent.page(params[:page]).per(20)
+    @posts = CommunityEngine::Post.recent.page(params[:page]).per(20)
 
-    @recent_clippings = Clipping.find_recent(:limit => 15)
-    @recent_photos = Photo.find_recent(:limit => 10)
+    @recent_clippings = CommunityEngine::Clipping.find_recent(:limit => 15)
+    @recent_photos = CommunityEngine::Photo.find_recent(:limit => 10)
     
     @rss_title = "#{configatron.community_name} "+:recent_posts.l
     @rss_url = recent_rss_url
@@ -216,8 +216,8 @@ class PostsController < BaseController
   end
   
   def featured
-    @posts = Post.by_featured_writers.recent.page(params[:page])
-    @featured_writers = User.featured
+    @posts = CommunityEngine::Post.by_featured_writers.recent.page(params[:page])
+    @featured_writers = CommunityEngine::User.featured
         
     @rss_title = "#{configatron.community_name} "+:featured_posts.l
     @rss_url = featured_rss_url
@@ -233,7 +233,7 @@ class PostsController < BaseController
   
   def category_tips_update
     return unless request.xhr?
-    @category = Category.find(params[:post_category_id] )
+    @category = CommunityEngine::Category.find(params[:post_category_id] )
     render :partial => "categories/tips", :locals => {:category => @category}    
   rescue ActiveRecord::RecordNotFound
     render :partial => "categories/tips", :locals => {:category => nil}    
@@ -242,8 +242,8 @@ class PostsController < BaseController
   private
   
   def require_ownership_or_moderator
-    @user ||= User.find(params[:user_id])
-    @post ||= Post.unscoped.find(params[:id]) if params[:id]
+    @user ||= CommunityEngine::User.find(params[:user_id])
+    @post ||= CommunityEngine::Post.unscoped.find(params[:id]) if params[:id]
     unless admin? || moderator? || (@post && (@post.user.eql?(current_user))) || (!@post && @user && @user.eql?(current_user))
       redirect_to :controller => 'sessions', :action => 'new' and return false
     end
