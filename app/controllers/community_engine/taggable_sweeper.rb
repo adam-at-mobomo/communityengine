@@ -31,7 +31,7 @@ class TaggableSweeper < ActionController::Caching::Sweeper
   def expire_cache_for(record)
     # Expire the tag show pages
     record.tags.each do |tag|
-      expire_action({:action=>"show", :controller=>"tags", :id => tag.id, :module => 'community_engine'})      
+      expire_action({:action=>"show", :controller=>"community_engine/tags", :id => tag.id})      
     end
   end
   
