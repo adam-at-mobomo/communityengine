@@ -50,5 +50,6 @@ Gem::Specification.new do |s|
   s.add_dependency(%q<tinymce-rails>, ["~> 3.4.7"])
   s.add_dependency(%q<bborn-acts-as-taggable-on>, ['~> 2.2.1'])
   s.add_dependency(%q<sanitize>, [">= 2.0.3"])
+  s.add_dependency(%q<power_enum>, [">= 0.6.2"])
 end
 
