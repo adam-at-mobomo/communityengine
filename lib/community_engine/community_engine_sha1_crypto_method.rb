@@ -1,3 +1,4 @@
+module CommunityEngine
 class CommunityEngineSha1CryptoMethod
   def self.encrypt(*tokens)
     tokens = tokens.flatten
@@ -9,4 +10,5 @@ class CommunityEngineSha1CryptoMethod
   def self.matches?(crypted, *tokens)
     encrypt(*tokens) == crypted
   end
+end
 end

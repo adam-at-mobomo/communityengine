@@ -1,3 +1,4 @@
+module CommunityEngine
 module AuthenticatedTestHelper
 
   # Assert the block redirects to the login
@@ -19,6 +20,7 @@ module AuthenticatedTestHelper
       instance_variable_set(var, instance_variable_get(var).class.new)
     end
   end
+end
 end
 
 class BaseLoginProxy
@@ -53,7 +55,7 @@ class HttpLoginProxy < BaseLoginProxy
     end
     
     def check
-      @controller.assert_redirected_to :controller => 'sessions', :action => 'new'
+      @controller.assert_redirected_to :controller => 'community_engine/sessions', :action => 'new'
     end
 end
 
