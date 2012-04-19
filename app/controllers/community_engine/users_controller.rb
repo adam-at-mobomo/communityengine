@@ -25,10 +25,9 @@ class UsersController < BaseController
   before_filter :admin_required, :only => [:assume, :destroy, :featured, :toggle_featured, :toggle_moderator]
   before_filter :admin_or_current_user_required, :only => [:statistics]  
 
-=begin
   def activate
     redirect_to signup_path and return if params[:id].blank?
-    @user = User.find_by_activation_code(params[:id]) 
+    @user = CommunityEngine::User.find_by_activation_code(params[:id]) 
     if @user and @user.activate
       self.current_user = @user
       @user.track_activity(:joined_the_site)
@@ -46,7 +45,6 @@ class UsersController < BaseController
     flash[:notice] = :deactivate_completed.l
     redirect_to login_path
   end
-=end
 
   def index
     @users, @search, @metro_areas, @states = CommunityEngine::User.search_conditions_with_metros_and_states(params)
