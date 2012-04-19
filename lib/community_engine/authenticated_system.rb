@@ -1,7 +1,7 @@
 module AuthenticatedSystem
   def update_last_seen_at
      return unless logged_in?
-     User.update_all ['sb_last_seen_at = ?', Time.now.utc], ['id = ?', current_user.id] 
+     CommunityEngine::User.update_all ['sb_last_seen_at = ?', Time.now.utc], ['id = ?', current_user.id] 
      current_user.sb_last_seen_at = Time.now.utc
   end
   
@@ -23,7 +23,7 @@ module AuthenticatedSystem
     # Create a user session without credentials.
     def current_user=(user)
       return if current_user # Use act_as_user= to switch to another user account
-      @current_user_session = UserSession.create(user, true)
+      @current_user_session = CommunityEngine::UserSession.create(user, true)
       @current_user = @current_user_session.record
     end
 
@@ -31,7 +31,7 @@ module AuthenticatedSystem
     def assume_user(new_user)
       return unless current_user && current_user.admin? && !new_user.admin?
       session[:admin_id] = current_user.id
-      UserSession.create(new_user, true)
+      CommunityEngine::UserSession.create(new_user, true)
     end
 
     def return_to_admin
@@ -43,7 +43,7 @@ module AuthenticatedSystem
       admin = User.find(session[:admin_id])
       if admin && admin.admin?
         session[:admin_id] = nil
-        UserSession.create(admin, true)
+        CommunityEngine::UserSession.create(admin, true)
         redirect_to user_path(admin)
       else
         current_user_session.destroy
@@ -54,7 +54,7 @@ module AuthenticatedSystem
     # Accesses the current session.
     def current_user_session
       return @current_user_session if defined?(@current_user_session)
-      @current_user_session = UserSession.find
+      @current_user_session = CommunityEngine::UserSession.find
     end
 
     # Check if the user is authorized.
