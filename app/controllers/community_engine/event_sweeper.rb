@@ -20,7 +20,7 @@ class EventSweeper < ActionController::Caching::Sweeper
   private
   def expire_cache_for(record)
     # Expire the ical page
-    expire_page(:controller => 'events', :action => 'ical', :format => 'ics', :module => 'community_engine')
+    expire_page(:controller => 'community_engine/events', :action => 'ical', :format => 'ics')
   end
 end
 end

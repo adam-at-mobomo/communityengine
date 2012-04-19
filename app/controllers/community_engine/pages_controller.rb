@@ -4,7 +4,7 @@ class PagesController < BaseController
     {:only => [:new, :edit, :update, :create ], :options => configatron.default_mce_options}
   end
 
-  cache_sweeper :page_sweeper, :only => [:create, :update, :destroy]
+  cache_sweeper CommunityEngine::PageSweeper, :only => [:create, :update, :destroy]
   caches_action :show, :if => Proc.new{|c| c.cache_action? }
 
   def cache_action?
@@ -15,16 +15,16 @@ class PagesController < BaseController
   before_filter :require_moderator, :only => [:index, :new, :edit, :update, :destroy, :create, :preview]
 
   def index
-    @pages = Page.unscoped.order('created_at DESC').page(params[:page])
+    @pages = CommunityEngine::Page.unscoped.order('created_at DESC').page(params[:page])
   end
 
   def preview
-    @page = Page.find(params[:id])
+    @page = CommunityEngine::Page.find(params[:id])
     render :action => :show
   end
 
   def show
-    @page = Page.live.find(params[:id])
+    @page = CommunityEngine::Page.live.find(params[:id])
     unless logged_in? || @page.page_public
       flash[:error] = :page_not_public_warning.l
       redirect_to :controller => 'sessions', :action => 'new'      
@@ -35,7 +35,7 @@ class PagesController < BaseController
   end
 
   def create
-    @page = Page.new(params[:page])
+    @page = CommunityEngine::Page.new(params[:page])
     if @page.save
       flash[:notice] = :page_was_successfully_created.l
       redirect_to admin_pages_path
@@ -62,9 +62,9 @@ class PagesController < BaseController
   private
   
   def require_moderator
-    @page ||= Page.find(params[:id]) if params[:id]
+    @page ||= CommunityEngine::Page.find(params[:id]) if params[:id]
     unless admin? || moderator?
-      redirect_to :controller => 'sessions', :action => 'new' and return false
+      redirect_to :controller => 'community_engine/sessions', :action => 'new' and return false
     end
   end
 

@@ -19,16 +19,16 @@ class CommentSweeper < ActionController::Caching::Sweeper
   private
   def expire_cache_for(record)
     # Expire the footer content
-    expire_action :controller => 'base', :action => 'footer_content', :module => 'community_engine'
+    expire_action :controller => 'community_engine/base', :action => 'footer_content'
 
-    if record.commentable_type.eql?('Post') 
-      expire_action :controller => 'posts', :action => 'show', :id => record.commentable.to_param , :user_id => record.commentable.user.to_param, :module => 'community_engine'
+    if record.commentable_type.eql?('CommunityEngine::Post') 
+      expire_action :controller => 'community_engine/posts', :action => 'show', :id => record.commentable.to_param , :user_id => record.commentable.user.to_param
       
-      if Post.find_recent(:limit => 16).include?(record.commentable)
+      if CommunityEngine::Post.find_recent(:limit => 16).include?(record.commentable)
         # Expire the home page    
-        expire_action :controller => 'base', :action => 'site_index', :module => 'community_engine'
+        expire_action :controller => 'community_engine/base', :action => 'site_index'
         # Expire the category pages
-        expire_action :controller => 'categories', :action => 'show', :id => record.commentable.category, :module => 'community_engine'
+        expire_action :controller => 'community_engine/categories', :action => 'show', :id => record.commentable.category
       end
     end
 

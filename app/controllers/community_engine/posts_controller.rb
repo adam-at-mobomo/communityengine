@@ -10,8 +10,8 @@ class PostsController < BaseController
     {:only => [:show], :options => configatron.simple_mce_options}
   end
          
-  cache_sweeper :post_sweeper, :only => [:create, :update, :destroy]
-  cache_sweeper :taggable_sweeper, :only => [:create, :update, :destroy]    
+  cache_sweeper CommunityEngine::PostSweeper, :only => [:create, :update, :destroy]
+  cache_sweeper CommunityEngine::TaggableSweeper, :only => [:create, :update, :destroy]    
   caches_action :show, :if => Proc.new{|c| !logged_in? }
                            
   before_filter :login_required, :only => [:new, :edit, :update, :destroy, :create, :manage, :preview]
@@ -86,7 +86,7 @@ class PostsController < BaseController
   
   def preview
     @post = CommunityEngine::Post.unscoped.find(params[:id])
-    redirect_to(:controller => 'sessions', :action => 'new') and return false unless @post.user.eql?(current_user) || admin? || moderator?
+    redirect_to(:controller => 'community_engine/sessions', :action => 'new') and return false unless @post.user.eql?(current_user) || admin? || moderator?
   end
   
   # GET /posts/new
@@ -94,7 +94,7 @@ class PostsController < BaseController
     @user = CommunityEngine::User.find(params[:user_id])    
     @post = CommunityEngine::Post.new(params[:post])
     @post.published_as = 'live'
-    @categories = Category.find(:all)
+    @categories = CommunityEngine::Category.find(:all)
   end
   
   # GET /posts/1;edit
@@ -167,7 +167,7 @@ class PostsController < BaseController
     unless params[:emails]
       render :partial => 'community_engine/posts/send_to_friend', :locals => {:user_id => params[:user_id], :post_id => params[:post_id]} and return
     end
-    @post = Post.find(params[:id])
+    @post = CommunityEngine::Post.find(params[:id])
     if @post.send_to(params[:emails], params[:message], (current_user || nil))
       render :inline => "It worked!"            
     else
@@ -234,9 +234,9 @@ class PostsController < BaseController
   def category_tips_update
     return unless request.xhr?
     @category = CommunityEngine::Category.find(params[:post_category_id] )
-    render :partial => "categories/tips", :locals => {:category => @category}    
+    render :partial => "community_engine/categories/tips", :locals => {:category => @category}    
   rescue ActiveRecord::RecordNotFound
-    render :partial => "categories/tips", :locals => {:category => nil}    
+    render :partial => "community_engine/categories/tips", :locals => {:category => nil}    
   end
   
   private
@@ -245,7 +245,7 @@ class PostsController < BaseController
     @user ||= CommunityEngine::User.find(params[:user_id])
     @post ||= CommunityEngine::Post.unscoped.find(params[:id]) if params[:id]
     unless admin? || moderator? || (@post && (@post.user.eql?(current_user))) || (!@post && @user && @user.eql?(current_user))
-      redirect_to :controller => 'sessions', :action => 'new' and return false
+      redirect_to :controller => 'community_engine/sessions', :action => 'new' and return false
     end
     return @user
   end

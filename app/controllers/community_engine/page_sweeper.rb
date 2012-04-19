@@ -20,16 +20,16 @@ class PageSweeper < ActionController::Caching::Sweeper
   private
   def expire_cache_for(record)
     # Expire the home page
-    expire_action(:controller => 'base', :action => 'site_index', :module => 'community_engine')
+    expire_action(:controller => 'community_engine/base', :action => 'site_index')
 
     # Expire the footer content
-    expire_action(:controller => 'base', :action => 'footer_content', :module => 'community_engine')
+    expire_action(:controller => 'communitye_engine/base', :action => 'footer_content')
     
     # Also expire the sitemap
-    expire_action(:controller => 'sitemap', :action => 'index', :module => 'community_engine')
+    expire_action(:controller => 'community_engine/sitemap', :action => 'index')
 
     # Also expire the show pages, in case we just edited/deleted a page
-    expire_action(:controller => 'pages', :action => 'show', :id => record.to_param, :module => 'community_engine')
+    expire_action(:controller => 'community_engine/pages', :action => 'show', :id => record.to_param)
   end
 end
 end

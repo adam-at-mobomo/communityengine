@@ -3,7 +3,7 @@ class EventsController < BaseController
 
   require 'htmlentities'
   caches_page :ical
-  cache_sweeper :event_sweeper, :only => [:create, :update, :destroy]
+  cache_sweeper CommunityEngine::EventSweeper, :only => [:create, :update, :destroy]
  
 
   uses_tiny_mce do
@@ -37,38 +37,38 @@ class EventsController < BaseController
 
   def show
     @is_admin_user = (current_user && current_user.admin?)
-    @event = Event.find(params[:id])
+    @event = CommunityEngine::Event.find(params[:id])
     @comments = @event.comments.find(:all, :limit => 20, :order => 'created_at DESC', :include => :user)
   end
 
   def index
     @is_admin_user = (current_user && current_user.admin?)
-    @events = Event.upcoming.page(params[:page])
+    @events = CommunityEngine::Event.upcoming.page(params[:page])
   end
 
   def past
     @is_admin_user = (current_user && current_user.admin?)
-    @events = Event.past.page(params[:page])
-    render :template => 'events/index'
+    @events = CommunityEngine::Event.past.page(params[:page])
+    render :template => 'community_engine/events/index'
   end
 
   def new
-    @event = Event.new(params[:event])
+    @event = CommunityEngine::Event.new(params[:event])
     @metro_areas, @states = setup_metro_area_choices_for(current_user)
     @metro_area_id, @state_id, @country_id = setup_location_for(current_user)
   end
   
   def edit
-    @event = Event.find(params[:id])
+    @event = CommunityEngine::Event.find(params[:id])
     @metro_areas, @states = setup_metro_area_choices_for(@event)
     @metro_area_id, @state_id, @country_id = setup_location_for(@event)
   end
     
   def create
-    @event = Event.new(params[:event])
+    @event = CommunityEngine::Event.new(params[:event])
     @event.user = current_user
     if params[:metro_area_id]
-      @event.metro_area = MetroArea.find(params[:metro_area_id])
+      @event.metro_area = CommunityEngine::MetroArea.find(params[:metro_area_id])
     else
       @event.metro_area = nil
     end
@@ -92,9 +92,9 @@ class EventsController < BaseController
   end
 
   def update
-    @event = Event.find(params[:id])
+    @event = CommunityEngine::Event.find(params[:id])
     if params[:metro_area_id]
-      @event.metro_area = MetroArea.find(params[:metro_area_id])
+      @event.metro_area = CommunityEngine::MetroArea.find(params[:metro_area_id])
     else
       @event.metro_area = nil
     end
@@ -117,7 +117,7 @@ class EventsController < BaseController
   end
   
   def destroy
-    @event = Event.find(params[:id])
+    @event = CommunityEngine::Event.find(params[:id])
     @event.destroy
     
     respond_to do |format|
@@ -126,10 +126,10 @@ class EventsController < BaseController
   end
 
   def clone
-    @event = Event.find(params[:id]).clone
+    @event = CommunityEngine::Event.find(params[:id]).clone
     @metro_areas, @states = setup_metro_area_choices_for(@event)
     @metro_area_id, @state_id, @country_id = setup_location_for(@event)
-    render :template => 'events/new'
+    render :template => 'community_engine/events/new'
   end
 
   protected
@@ -137,14 +137,14 @@ class EventsController < BaseController
   def setup_metro_area_choices_for(object)
     metro_areas = states = []
     if object.metro_area
-      if object.is_a? Event
+      if object.is_a? CommunityEngine::Event
         states = object.metro_area.country.states
         if object.metro_area.state
           metro_areas = object.metro_area.state.metro_areas.all(:order=>"name")
         else
           metro_areas = object.metro_area.country.metro_areas.all(:order=>"name")
         end        
-      elsif object.is_a? User
+      elsif object.is_a? CommunityEngine::User
         states = object.country.states if object.country
         if object.state
           metro_areas = object.state.metro_areas.all(:order => "name")
@@ -160,10 +160,10 @@ class EventsController < BaseController
     metro_area_id = state_id = country_id = nil
     if object.metro_area
       metro_area_id = object.metro_area_id
-      if object.is_a? Event
+      if object.is_a? CommunityEngine::Event
         state_id = object.metro_area.state_id
         country_id = object.metro_area.country_id
-      elsif object.is_a? User
+      elsif object.is_a? CommunityEngine::User
         state_id = object.state_id
         country_id = object.country_id
       end

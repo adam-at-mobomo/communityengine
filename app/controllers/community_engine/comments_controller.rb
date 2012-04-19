@@ -12,17 +12,17 @@ class CommentsController < BaseController
     {:only => [:index, :edit, :update], :options => configatron.simple_mce_options}
   end
 
-  cache_sweeper :comment_sweeper, :only => [:create, :destroy]
+  cache_sweeper CommunityEngine::CommentSweeper, :only => [:create, :destroy]
   
   def edit
-    @comment = Comment.find(params[:id])
+    @comment = CommunityEngine::Comment.find(params[:id])
     respond_to do |format|
       format.js
     end
   end
 
   def update
-    @comment = Comment.find(params[:id])
+    @comment = CommunityEngine::Comment.find(params[:id])
     @comment.update_attributes(params[:comment])    
     respond_to do |format|
       format.js
@@ -92,7 +92,7 @@ class CommentsController < BaseController
     commentable_type = get_commentable_type(params[:commentable_type])
     @commentable = commentable_type.singularize.constantize.find(params[:commentable_id])
 
-    @comment = Comment.new(params[:comment])
+    @comment = CommunityEngine::Comment.new(params[:comment])
 
     @comment.commentable = @commentable
     @comment.recipient = @commentable.owner
@@ -115,7 +115,7 @@ class CommentsController < BaseController
   end
 
   def destroy
-    @comment = Comment.find(params[:id])
+    @comment = ComunityEngine::Comment.find(params[:id])
     if @comment.can_be_deleted_by(current_user) && @comment.destroy
       if params[:spam] && !configatron.akismet_key.nil?
         @comment.spam!
@@ -137,7 +137,7 @@ class CommentsController < BaseController
     if request.post?
       if params[:delete]
         params[:delete].each { |id|
-          comment = Comment.find(id)
+          comment = CommunityEngine::Comment.find(id)
           comment.spam! if params[:spam] && !configatron.akismet_key.nil?
           comment.destroy if comment.can_be_deleted_by(current_user)
         }
@@ -149,7 +149,7 @@ class CommentsController < BaseController
 
   
   def unsubscribe
-    @comment = Comment.find(params[:comment_id])
+    @comment = CommunityEngine::Comment.find(params[:comment_id])
     if @comment.token_for(params[:email]).eql?(params[:token])
       @comment.unsubscribe_notifications(params[:email])
       flash[:notice] = :comment_unsubscribe_succeeded.l

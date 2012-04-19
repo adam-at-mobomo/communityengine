@@ -1,5 +1,4 @@
-module CommunityEngine
-class PostSweeper < ActionController::Caching::Sweeper
+class CommunityEngine::PostSweeper < ActionController::Caching::Sweeper
   observe CommunityEngine::Post # This sweeper is going to keep an eye on the Post model
 
   # If our sweeper detects that a Post was created call this
@@ -20,19 +19,18 @@ class PostSweeper < ActionController::Caching::Sweeper
   private
   def expire_cache_for(record)
     # Expire the home page
-    expire_action(:controller => 'base', :action => 'site_index', :module => "community_engine")
+    expire_action(:controller => 'community_engine/base', :action => 'site_index')
 
     # Expire the footer content
-    expire_action(:controller => 'base', :action => 'footer_content', :module => "community_engine")
+    expire_action(:controller => 'community_engine/base', :action => 'footer_content')
     
     # Also expire the sitemap
-    expire_action(:controller => 'sitemap', :action => 'index', :module => "community_engine")
+    expire_action(:controller => 'community_engine/sitemap', :action => 'index')
 
     # Expire the category pages
-    expire_action(:controller => 'categories', :action => 'show', :module => "community_engine")
+    expire_action(:controller => 'community_engine/categories', :action => 'show')
 
     # Also expire the show pages, in case we just edited a blog entry
-    expire_action(:controller => 'posts', :action => 'show', :id => record.to_param, :user_id => record.user.to_param, :module => "community_engine")
+    expire_action(:controller => 'community_engine/posts', :action => 'show', :id => record.to_param, :user_id => record.user.to_param)
   end
-end
 end

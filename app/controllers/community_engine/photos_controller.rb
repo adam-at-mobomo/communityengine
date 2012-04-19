@@ -2,7 +2,7 @@ require 'pp'
 
 module CommunityEngine
 class PhotosController < BaseController
-  include Viewable  
+  include CommunityEngine::Viewable  
   before_filter :login_required, :only => [:new, :edit, :update, :destroy, :create, :swfupload]
   before_filter :find_user, :only => [:new, :edit, :index, :show]
   before_filter :require_current_user, :only => [:new, :edit, :update, :destroy]
@@ -13,23 +13,23 @@ class PhotosController < BaseController
     {:only => [:show], :options => configatron.simple_mce_options}
   end
 
-  cache_sweeper :taggable_sweeper, :only => [:create, :update, :destroy]    
+  cache_sweeper CommunityEngine::TaggableSweeper, :only => [:create, :update, :destroy]    
 
   def recent
-    @photos = Photo.recent.page(params[:page])
+    @photos = CommunityEngine::Photo.recent.page(params[:page])
   end
   
   def index
-    @user = User.find(params[:user_id])
+    @user = CommunityEngine::User.find(params[:user_id])
 
-    @photos = Photo.where(:user_id => @user.id).includes(:tags)
+    @photos = CommunityEngine::Photo.where(:user_id => @user.id).includes(:tags)
     if params[:tag_name]
       @photos = @photos.where('tags.name = ?', params[:tag_name])
     end
     
     @photos = @photos.recent.page(params[:page]).per(20)
   
-    @tags = Photo.includes(:taggings).where(:user_id => @user.id).tag_counts(:limit => 20)
+    @tags = CommunityEngine::Photo.includes(:taggings).where(:user_id => @user.id).tag_counts(:limit => 20)
   
     @rss_title = "#{configatron.community_name}: #{@user.login}'s photos"
     @rss_url = user_photos_path(@user,:format => :rss)
@@ -71,7 +71,7 @@ class PhotosController < BaseController
     update_view_count(@photo) if current_user && current_user.id != @photo.user_id
     
     @is_current_user = @user.eql?(current_user)
-    @comment = Comment.new(params[:comment])
+    @comment = CommunityEngine::Comment.new(params[:comment])
 
     @previous = @photo.previous_photo
     @next = @photo.next_photo
@@ -84,8 +84,8 @@ class PhotosController < BaseController
 
   # GET /photos/new
   def new
-    @user = User.find(params[:user_id])
-    @photo = Photo.new
+    @user = CommunityEngine::User.find(params[:user_id])
+    @photo = CommunityEngine::Photo.new
     if params[:inline]
       render :action => 'inline_new', :layout => false
     end
@@ -94,7 +94,7 @@ class PhotosController < BaseController
 
   # GET /photos/1;edit
   def edit
-    @photo = Photo.find(params[:id])
+    @photo = CommunityEngine::Photo.find(params[:id])
     @user = @photo.user
   end
 
@@ -102,7 +102,7 @@ class PhotosController < BaseController
   # POST /photos.xml
   def create
     @user = current_user
-    @photo = Photo.new(params[:photo])
+    @photo = CommunityEngine::Photo.new(params[:photo])
     @photo.user = @user
     @photo.tag_list = params[:tag_list] || ''
     
@@ -149,7 +149,7 @@ class PhotosController < BaseController
   # PUT /photos/1
   # PUT /photos/1.xml
   def update
-    @photo = Photo.find(params[:id])
+    @photo = CommunityEngine::Photo.find(params[:id])
     @user = @photo.user
     @photo.tag_list = params[:tag_list] || ''
     @photo.album_id = params[:photo][:album_id]
@@ -167,8 +167,8 @@ class PhotosController < BaseController
   # DELETE /photos/1
   # DELETE /photos/1.xml
   def destroy
-    @user = User.find(params[:user_id])
-    @photo = Photo.find(params[:id])
+    @user = CommunityEngine::User.find(params[:user_id])
+    @photo = CommunityEngine::Photo.find(params[:id])
     if @user.avatar.eql?(@photo)
       @user.avatar = nil
       @user.save!
