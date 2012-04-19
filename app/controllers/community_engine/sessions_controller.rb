@@ -1,7 +1,7 @@
-module CommunityEngine
 # This controller handles the login/logout function of the site.  
-class SessionsController < Devise::SessionsController
-=begin
+module CommunityEngine
+class SessionsController < BaseController
+
   skip_before_filter :store_location, :only => [:new, :create]
 
   def index
@@ -10,11 +10,11 @@ class SessionsController < Devise::SessionsController
 
   def new
     redirect_to user_path(current_user) and return if current_user
-    @user_session = UserSession.new
+    @user_session = CommunityEngine::UserSession.new
   end
 
   def create
-    @user_session = UserSession.new(:login => params[:email], :password => params[:password], :remember_me => params[:remember_me])
+    @user_session = CommunityEngine::UserSession.new(:login => params[:email], :password => params[:password], :remember_me => params[:remember_me])
 
     if @user_session.save
 
@@ -34,6 +34,6 @@ class SessionsController < Devise::SessionsController
     flash[:notice] = :youve_been_logged_out_hope_you_come_back_soon.l
     redirect_to new_session_path
   end
-=end
+
 end
 end
