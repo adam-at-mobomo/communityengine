@@ -177,10 +177,10 @@ class User < ActiveRecord::Base
   def self.find_by_activity(options = {})
     options.reverse_merge! :limit => 30, :require_avatar => true, :since => 7.days.ago   
 
-    activities = CommunityEngine::Activity.since(options[:since]).find(:all, 
+    activities = Activity.since(options[:since]).find(:all, 
       :select => 'activities.user_id, count(*) as count', 
       :group => 'activities.user_id', 
-      :conditions => "#{options[:require_avatar] ? ' users.avatar_id IS NOT NULL AND ' : ''} users.activated_at IS NOT NULL", 
+      :conditions => "#{options[:require_avatar] ? ' community_engine_users.avatar_id IS NOT NULL AND ' : ''} community_engine_users.activated_at IS NOT NULL", 
       :order => 'count DESC', 
       :joins => "LEFT JOIN users ON users.id = activities.user_id",
       :limit => options[:limit]
@@ -204,7 +204,7 @@ class User < ActiveRecord::Base
   
   def self.recent_activity(options = {})
     options.reverse_merge! :per_page => 10, :page => 1
-    CommunityEngine::Activity.recent.joins("LEFT JOIN users ON community_engine_users.id = community_engine_activities.user_id").where('community_engine_users.activated_at IS NOT NULL').select('community_engine_activities.*').page(options[:page]).per(options[:per_page])
+    Activity.recent.joins("LEFT JOIN users ON community_engine_users.id = activities.user_id").where('community_engine_users.activated_at IS NOT NULL').select('activities.*').page(options[:page]).per(options[:per_page])
   end
 
   def self.currently_online
@@ -352,13 +352,13 @@ class User < ActiveRecord::Base
     
     ids = ((friends_ids | metro_area_people_ids) - [self.id])[0..100] #don't pull TOO much activity for now
     
-    CommunityEngine::Activity.recent.since(since).by_users(ids).page(page[:page]).per(page[:per_page])          
+    Activity.recent.since(since).by_users(ids).page(page[:page]).per(page[:per_page])          
   end
 
   def comments_activity(page = {}, since = 1.week.ago)
     page.reverse_merge :per_page => 10, :page => 1
 
-    Activity.recent.since(since).where('community_engine_comments.recipient_id = ? AND community_engine_activities.user_id != ?', self.id, self.id).joins("LEFT JOIN community_engine_comments ON community_engine_comments.id = community_engine_activities.item_id AND community_engine_activities.item_type = 'CommunityEngine::Comment'").page(page[:per_page]).per(page[:page])
+    Activity.recent.since(since).where('community_engine_comments.recipient_id = ? AND activities.user_id != ?', self.id, self.id).joins("LEFT JOIN community_engine_comments ON community_engine_comments.id = activities.item_id AND activities.item_type = 'CommunityEngine::Comment'").page(page[:per_page]).per(page[:page])
   end
 
   def friends_ids
