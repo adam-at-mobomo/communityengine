@@ -103,7 +103,11 @@ CommunityEngine::Engine.routes.draw do
     end
   end
 
-  resources :tags
+  resources :tags do
+    collection do
+      get 'auto_complete_for_tag_name'
+    end
+  end
   match '/tags/:id/:type' => 'tags#show', :as => :show_tag_type
   match '/search/tags' => 'tags#show', :as => :search_tags
   resources :categories

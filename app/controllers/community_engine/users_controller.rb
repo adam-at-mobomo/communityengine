@@ -78,7 +78,7 @@ class UsersController < BaseController
     @photos         = @user.photos.find(:all, :limit => 5)
     @comment        = CommunityEngine::Comment.new(params[:comment])
     
-    @my_activity = CommunityEngine::Activity.recent.by_users([@user.id]).find(:all, :limit => 10) 
+    @my_activity = Activity.recent.by_users([@user.id]).find(:all, :limit => 10) 
 
     update_view_count(@user) unless current_user && current_user.eql?(@user)
   end

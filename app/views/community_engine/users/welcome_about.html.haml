@@ -27,10 +27,10 @@
       %h3=:gender.l
       %fieldset
         %label
-          = radio_button :user, :gender, User::MALE
+          = radio_button :user, :gender, CommunityEngine::User::MALE
           =:male.l
         %label
-          = radio_button :user, :gender, User::FEMALE
+          = radio_button :user, :gender, CommunityEngine::User::FEMALE
           =:female.l
                 
       %h3=:more_about_you.l
@@ -53,7 +53,7 @@
             #tag_list_auto_complete.auto_complete/
             
             -content_for :end_javascript do
-              = auto_complete_field 'tag_list', {:url => { :controller => "tags", :action => 'auto_complete_for_tag_name'}, :tokens => [','] }
+              = auto_complete_field 'tag_list', {:url => { :controller => "community_engine/tags", :action => 'auto_complete_for_tag_name'}, :tokens => [','] }
 
             %br
             %small
