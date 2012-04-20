@@ -39,7 +39,7 @@
             |
             = link_to(:delete_this_photo.l, user_photo_path(@user, @photo), :method => :delete) + "<br class='clear' />".html_safe
 
-        %p.centered= tag(:img, :src => @photo.photo(:large), :class => "polaroid" )
+        %p.centered= image_tag(@photo.photo(:large), :class => "polaroid")
         %p= h @photo.description
         %p= @photo.tags.collect{|t| link_to( h(t.name), tag_url(t), :class => 'tag') }.join(" ").html_safe
 
