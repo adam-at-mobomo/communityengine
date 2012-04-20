@@ -173,9 +173,9 @@ module CommunityEngine::BaseHelper
   end
   
   def more_comments_links(commentable)
-    html = link_to "&raquo; ".html_safe + :all_comments.l, commentable_comments_url(commentable.class.to_s.tableize, commentable.to_param)
+    html = link_to "&raquo; ".html_safe + :all_comments.l, commentable_comments_url(commentable.class.to_s.demodulize.tableize, commentable.to_param)
     html += "<br />".html_safe
-		html += link_to "&raquo; ".html_safe + :comments_rss.l, commentable_comments_url(commentable.class.to_s.tableize, commentable.to_param, :format => :rss)
+		html += link_to "&raquo; ".html_safe + :comments_rss.l, commentable_comments_url(commentable.class.to_s.demodulize.tableize, commentable.to_param, :format => :rss)
 		html.html_safe
   end
     
