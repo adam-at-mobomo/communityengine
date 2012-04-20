@@ -1,10 +1,10 @@
 class AddCommunityEngineMetroAreas < ActiveRecord::Migration
   class CommunityEngine::State < ActiveRecord::Base
-    has_many :metro_areas
+    has_many :metro_areas, :class => 'CommunityEngine::MetroArea'
   end
   
   class CommunityEngine::MetroArea < ActiveRecord::Base
-    belongs_to :state
+    belongs_to :state, :class => 'CommunityEngine::State'
   end
   
   def self.up
@@ -284,11 +284,11 @@ class AddCommunityEngineMetroAreas < ActiveRecord::Migration
       a = ma.split(', ')
       city_name = a[0]
       state_name = a[1]
-      state = CommunityEngine::State.find(:first, :conditions => "name = '#{state_name}'")
+      state = AddCommunityEngineMetroAreas::CommunityEngine::State.find(:first, :conditions => "name = '#{state_name}'")
 
       next if state.nil?
       
-      ma = CommunityEngine::MetroArea.new(:name => a[0], :state => state, :country_id => 0)
+      ma = AddCommunityEngineMetroAreas::CommunityEngine::MetroArea.new(:name => a[0], :state => state, :country_id => 0)
       ma.save
     end
     if failed.size > 0
