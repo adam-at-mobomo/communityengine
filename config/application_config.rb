@@ -44,8 +44,8 @@ configuration = {
   :max_age => 90,
   
   :photo => {
-    :missing_thumb => '/assets/icon_missing_thumb.gif',
-    :missing_medium => "/assets/icon_missing_medium.gif",
+    :missing_thumb => 'community_engine/icon_missing_thumb.gif',
+    :missing_medium => "community_engine/icon_missing_medium.gif",
     :paperclip_options => {
       :styles => {
         :thumb => {
