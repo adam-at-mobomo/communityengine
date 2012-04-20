@@ -6,13 +6,13 @@
   %label= :state.l 
   = select_tag(:state_id, options_from_collection_for_select(states, "id", "name", (selected_state rescue nil)), {:disabled => states.empty? })
 
-  = image_tag 'spinner.gif', :style => 'display:none;'
+  = image_tag 'community_engine/spinner.gif', :style => 'display:none;'
 
   %br
   %label= :metro_area.l
   = select_tag(:metro_area_id, options_from_collection_for_select(metro_areas, "id", "name", (selected_metro_area rescue nil)), {:disabled => metro_areas.empty? })
 
-  = image_tag 'spinner.gif', :style => 'display:none;'
+  = image_tag 'community_engine/spinner.gif', :style => 'display:none;'
 
 %span
 

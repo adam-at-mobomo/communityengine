@@ -43,7 +43,7 @@
         
         %label
           %a{:href=> "#", :onclick => "$('poll-ui').toggle(); return false;"}
-            = image_tag 'icons/poll.png'
+            = image_tag 'community_engine/icons/poll.png'
             = :add_a_poll.l
           %em=:optional.l
         #poll-ui{:style => 'display:none'}=render :partial => 'community_engine/polls/new'

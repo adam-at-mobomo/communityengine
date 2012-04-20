@@ -11,7 +11,7 @@
     
       -if @user.pending_friendships.any?
         %p
-          =link_to "#{image_tag 'icons/user_add.png'} #{:you_have_pending_friendship_requests.l}".html_safe, pending_user_friendships_path(@user)
+          =link_to "#{image_tag 'community_engine/icons/user_add.png'} #{:you_have_pending_friendship_requests.l}".html_safe, pending_user_friendships_path(@user)
     
     
       -if @network_activity.empty? && @recommended_posts.empty?
