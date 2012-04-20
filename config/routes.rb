@@ -110,7 +110,11 @@ CommunityEngine::Engine.routes.draw do
   end
   match '/tags/:id/:type' => 'tags#show', :as => :show_tag_type
   match '/search/tags' => 'tags#show', :as => :search_tags
-  resources :categories
+  resources :categories do
+    collection do
+      get 'show_tips'
+    end
+  end
   
   resources :events do
     get 'page/:page', :action => :index, :on => :collection

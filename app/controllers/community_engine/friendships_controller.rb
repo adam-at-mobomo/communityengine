@@ -7,9 +7,9 @@ class FriendshipsController < BaseController
   def index
     @body_class = 'friendships-browser'
     
-    @user = (params[:id] ||params[:user_id]) ? User.find((params[:id] || params[:user_id] )): Friendship.find(:first).user
-    @friendships = Friendship.find(:all, :conditions => ['user_id = ? OR friend_id = ?', @user.id, @user.id], :limit => 40)
-    @users = User.find(:all, :conditions => ['users.id in (?)', @friendships.collect{|f| f.friend_id }])    
+    @user = (params[:id] ||params[:user_id]) ? CommunityEngine::User.find((params[:id] || params[:user_id] )): CommunityEngine::Friendship.find(:first).user
+    @friendships = CommunityEngine::Friendship.find(:all, :conditions => ['user_id = ? OR friend_id = ?', @user.id, @user.id], :limit => 40)
+    @users = CommunityEngine::User.find(:all, :conditions => ['community_engine_users.id in (?)', @friendships.collect{|f| f.friend_id }])    
     
     respond_to do |format|
       format.html 
@@ -18,11 +18,11 @@ class FriendshipsController < BaseController
   end
   
   def deny
-    @user = User.find(params[:user_id])    
+    @user = CommunityEngine::User.find(params[:user_id])    
     @friendship = @user.friendships.find(params[:id])
  
     respond_to do |format|
-      if @friendship.update_attributes(:friendship_status => FriendshipStatus[:denied]) && @friendship.reverse.update_attributes(:friendship_status => FriendshipStatus[:denied])
+      if @friendship.update_attributes(:friendship_status => CommunityEngine::FriendshipStatus[:denied]) && @friendship.reverse.update_attributes(:friendship_status => CommunityEngine::FriendshipStatus[:denied])
         flash[:notice] = :the_friendship_was_denied.l
         format.html { redirect_to denied_user_friendships_path(@user) }
       else
@@ -32,11 +32,11 @@ class FriendshipsController < BaseController
   end
 
   def accept
-    @user = User.find(params[:user_id])    
+    @user = CommunityEngine::User.find(params[:user_id])    
     @friendship = @user.friendships_not_initiated_by_me.find(params[:id])
  
     respond_to do |format|
-      if @friendship.update_attributes(:friendship_status => FriendshipStatus[:accepted]) && @friendship.reverse.update_attributes(:friendship_status => FriendshipStatus[:accepted])
+      if @friendship.update_attributes(:friendship_status => CommunityEngine::FriendshipStatus[:accepted]) && @friendship.reverse.update_attributes(:friendship_status => CommunityEngine::FriendshipStatus[:accepted])
         flash[:notice] = :the_friendship_was_accepted.l
         format.html { 
           redirect_to accepted_user_friendships_path(@user) 
@@ -48,8 +48,8 @@ class FriendshipsController < BaseController
   end
 
   def denied
-    @user = User.find(params[:user_id])    
-    @friendships = @user.friendships.where("friendship_status_id = ?", FriendshipStatus[:denied].id).page(params[:page])
+    @user = CommunityEngine::User.find(params[:user_id])    
+    @friendships = @user.friendships.where("friendship_status_id = ?", CommunityEngine::FriendshipStatus[:denied].id).page(params[:page])
     
     respond_to do |format|
       format.html
@@ -58,7 +58,7 @@ class FriendshipsController < BaseController
 
 
   def accepted
-    @user = User.find(params[:user_id])    
+    @user = CommunityEngine::User.find(params[:user_id])    
     @friend_count = @user.accepted_friendships.count
     @pending_friendships_count = @user.pending_friendships.count
           
@@ -70,8 +70,8 @@ class FriendshipsController < BaseController
   end
   
   def pending
-    @user = User.find(params[:user_id])    
-    @friendships = @user.friendships.find(:all, :conditions => ["initiator = ? AND friendship_status_id = ?", false, FriendshipStatus[:pending].id])
+    @user = CommunityEngine::User.find(params[:user_id])    
+    @friendships = @user.friendships.find(:all, :conditions => ["initiator = ? AND friendship_status_id = ?", false, CommunityEngine::FriendshipStatus[:pending].id])
     
     respond_to do |format|
       format.html
@@ -79,7 +79,7 @@ class FriendshipsController < BaseController
   end
   
   def show
-    @friendship = Friendship.find(params[:id])
+    @friendship = CommunityEngine::Friendship.find(params[:id])
     @user = @friendship.user
     
     respond_to do |format|
@@ -89,16 +89,16 @@ class FriendshipsController < BaseController
   
 
   def create
-    @user = User.find(params[:user_id])
-    @friendship = Friendship.new(:user_id => params[:user_id], :friend_id => params[:friend_id], :initiator => true )
-    @friendship.friendship_status_id = FriendshipStatus[:pending].id    
-    reverse_friendship = Friendship.new(params[:friendship])
-    reverse_friendship.friendship_status_id = FriendshipStatus[:pending].id 
+    @user = CommunityEngine::User.find(params[:user_id])
+    @friendship = CommunityEngine::Friendship.new(:user_id => params[:user_id], :friend_id => params[:friend_id], :initiator => true )
+    @friendship.friendship_status_id = CommunityEngine::FriendshipStatus[:pending].id    
+    reverse_friendship = CommunityEngine::Friendship.new(params[:friendship])
+    reverse_friendship.friendship_status_id = CommunityEngine::FriendshipStatus[:pending].id 
     reverse_friendship.user_id, reverse_friendship.friend_id = @friendship.friend_id, @friendship.user_id
     
     respond_to do |format|
       if @friendship.save && reverse_friendship.save
-        UserNotifier.friendship_request(@friendship).deliver if @friendship.friend.notify_friend_requests?
+        CommunityEngine::UserNotifier.friendship_request(@friendship).deliver if @friendship.friend.notify_friend_requests?
         format.html {
           flash[:notice] = :friendship_requested.l_with_args(:friend => @friendship.friend.login) 
           redirect_to accepted_user_friendships_path(@user)
@@ -113,9 +113,9 @@ class FriendshipsController < BaseController
   end
     
   def destroy
-    @user = User.find(params[:user_id])    
-    @friendship = Friendship.find(params[:id])
-    Friendship.transaction do 
+    @user = CommunityEngine::User.find(params[:user_id])    
+    @friendship = CommunityEngine::Friendship.find(params[:id])
+    CommunityEngine::Friendship.transaction do 
       @friendship.destroy
       @friendship.reverse.destroy
     end

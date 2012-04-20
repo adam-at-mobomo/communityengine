@@ -182,7 +182,7 @@ class User < ActiveRecord::Base
       :group => 'activities.user_id', 
       :conditions => "#{options[:require_avatar] ? ' community_engine_users.avatar_id IS NOT NULL AND ' : ''} community_engine_users.activated_at IS NOT NULL", 
       :order => 'count DESC', 
-      :joins => "LEFT JOIN users ON users.id = activities.user_id",
+      :joins => "LEFT JOIN community_engine_users ON community_engine_users.id = activities.user_id",
       :limit => options[:limit]
       )
     activities.map{|a| find(a.user_id) }
