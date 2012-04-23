@@ -8,6 +8,6 @@
           =render :partial => 'community_engine/favorites/favorite', :locals => {:favorite => @favorite}
         
   #sidebar.column.span-5.last
-    = Ad.display(:sidebar_1, logged_in?)
+    = CommunityEngine::Ad.display(:sidebar_1, logged_in?)
 
-    = Ad.display(:sidebar_2, logged_in?)
+    = CommunityEngine::Ad.display(:sidebar_2, logged_in?)

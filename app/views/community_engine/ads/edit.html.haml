@@ -9,10 +9,10 @@
     = f.text_area :html, :size => '80x10', :class => "rich_text_editor"
 
     %label=:frequency.l
-    = f.select :frequency, Ad.frequencies_for_select
+    = f.select :frequency, CommunityEngine::Ad.frequencies_for_select
 
     %label= :audience.l
-    = f.select :audience, Ad.audiences_for_select
+    = f.select :audience, CommunityEngine::Ad.audiences_for_select
 
     %fieldset{"for"=>"ad_published"}
       = f.check_box :published
@@ -34,7 +34,7 @@
 
     -content_for :end_javascript do
       :javascript
-        Event.observe("ad_time_constrained", "click", function(){$('time_constraints').toggle()})
+        CommunityEngine::Event.observe("ad_time_constrained", "click", function(){$('time_constraints').toggle()})
 
     %label= :location.l
     = f.text_field :location
