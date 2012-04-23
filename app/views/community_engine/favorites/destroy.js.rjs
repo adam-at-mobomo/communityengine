@@ -1,4 +1,4 @@
-case @favorite.favoritable.class.to_s.tableize
+case @favorite.favoritable.class.to_s.demodulize.tableize
   when 'clippings'
 
     page.select("#clipping_#{@favorite.favoritable.id}").each do |element|

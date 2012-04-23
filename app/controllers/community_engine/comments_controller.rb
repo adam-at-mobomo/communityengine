@@ -32,8 +32,8 @@ class CommentsController < BaseController
 
   def index
     commentable_type = get_commentable_type(params[:commentable_type])
-    commentable_class = commentable_type.singularize.constantize
-    commentable_type_humanized = commentable_type.humanize
+    commentable_class = get_commentable_class_name(params[:commentable_type]).constantize
+    commentable_type_humanized = commentable_class.model_name.human.pluralize
     commentable_type_tableized = commentable_type.tableize
     
     if @commentable = commentable_class.find(params[:commentable_id])
@@ -83,14 +83,15 @@ class CommentsController < BaseController
   end
 
   def new
-    @commentable = get_commentable_type(params[:commentable_type]).constantize.find(params[:commentable_id])
-    redirect_to commentable_comments_url(@commentable.class.to_s.tableize, @commentable.id)
+    @commentable = get_commentable_class_name(params[:commentable_type]).constantize.find(params[:commentable_id])
+    redirect_to commentable_comments_url(@commentable.class.to_s.demodulize.tableize, @commentable.id)
   end
 
 
   def create
     commentable_type = get_commentable_type(params[:commentable_type])
-    @commentable = commentable_type.singularize.constantize.find(params[:commentable_id])
+    commentable_class_name = get_commentable_class_name(params[:commentable_type])
+    @commentable = commentable_class_name.constantize.find(params[:commentable_id])
 
     @comment = CommunityEngine::Comment.new(params[:comment])
 
@@ -159,6 +160,9 @@ class CommentsController < BaseController
 
 
   private
+    def get_commentable_class_name(string)
+      "CommunityEngine::#{get_commentable_type(string).singularize}"
+    end
     
     def get_commentable_type(string)
       string.camelize
@@ -168,7 +172,7 @@ class CommentsController < BaseController
       render_rss_feed_for(comments,
         { :class => commentable.class,
           :feed => {  :title => title,
-                      :link => commentable_comments_url(commentable.class.to_s.tableize, commentable) },
+                      :link => commentable_comments_url(commentable.class.to_s.demodulize.tableize, commentable) },
           :item => { :title => :title_for_rss,
                      :description => :comment,
                      :link => Proc.new {|comment| commentable_url(comment)},

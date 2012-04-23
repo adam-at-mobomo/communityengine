@@ -2,7 +2,7 @@ if @favorite.new_record?
   #it didn't work
   page.alert(@favorite.errors.full_messages.join(', '))
 else
-  case @favorite.favoritable.class.to_s.tableize
+  case @favorite.favoritable.class.to_s.demodulize.tableize
     when 'clippings'
       page.select("#clipping_#{@favorite.favoritable.id}").each do |element|
         element.replace(render(:partial => 'community_engine/clippings/clipping', :object => @favorite.favoritable)) 
