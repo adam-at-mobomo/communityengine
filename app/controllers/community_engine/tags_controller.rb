@@ -79,25 +79,25 @@ class TagsController < BaseController
     if params[:type]
       case params[:type]
         when 'Post', 'posts'
-          @pages = @posts = Post.recent.tagged_with(tag_array).page(params[:page]).per(20)
+          @pages = @posts = CommunityEngine::Post.recent.tagged_with(tag_array).page(params[:page]).per(20)
           @photos, @users, @clippings = [], [], []
         when 'Photo', 'photos'
-          @pages = @photos = Photo.recent.tagged_with(tag_array).page(params[:page]).per(30)
+          @pages = @photos = CommunityEngine::Photo.recent.tagged_with(tag_array).page(params[:page]).per(30)
           @posts, @users, @clippings = [], [], []
         when 'User', 'users'
-          @pages = @users = User.recent.tagged_with(tag_array).page(params[:page]).per(30)
+          @pages = @users = CommunityEngine::User.recent.tagged_with(tag_array).page(params[:page]).per(30)
           @posts, @photos, @clippings = [], [], []
         when 'Clipping', 'clippings'
-          @pages = @clippings = Clipping.recent.tagged_with(tag_array).page(params[:page]).per(10)
+          @pages = @clippings = CommunityEngine::Clipping.recent.tagged_with(tag_array).page(params[:page]).per(10)
           @posts, @photos, @users = [], [], []
       else
         @clippings, @posts, @photos, @users = [], [], [], []
       end
     else
-      @posts      = Post.recent.limit(5).tagged_with(tag_array)
-      @photos     = Photo.recent.limit(10).tagged_with(tag_array)
-      @users      = User.recent.limit(10).tagged_with(tag_array)
-      @clippings  = Clipping.recent.limit(10).tagged_with(tag_array)
+      @posts      = CommunityEngine::Post.recent.limit(5).tagged_with(tag_array)
+      @photos     = CommunityEngine::Photo.recent.limit(10).tagged_with(tag_array)
+      @users      = CommunityEngine::User.recent.limit(10).tagged_with(tag_array)
+      @clippings  = CommunityEngine::Clipping.recent.limit(10).tagged_with(tag_array)
     end
   end
 
