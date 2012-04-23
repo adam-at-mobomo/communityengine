@@ -199,11 +199,13 @@ CommunityEngine::Engine.routes.draw do
       collection do 
         # get 'manage(/page/:page)', :action => :manage
         get :manage
+        get :category_tips_update
       end
       
       member do
         match :send_to_friend
         put :update_views
+        get :preview
       end
     end
 
