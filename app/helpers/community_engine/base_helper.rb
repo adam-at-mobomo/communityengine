@@ -159,7 +159,7 @@ module CommunityEngine::BaseHelper
 					:method => :post 
 				}, {:class => "add_friend button"}
 		html +=	"<span style='display:none;' class='spinner'>"
-		html += image_tag('spinner.gif')
+		html += image_tag('community_engine/spinner.gif')
 		html += "#{:requesting_friendship.l} ...</span></span>"
 		html.html_safe
   end
@@ -205,7 +205,7 @@ module CommunityEngine::BaseHelper
 
   def feed_icon_tag(title, url)
     (@feed_icons ||= []) << { :url => url, :title => title }
-    link_to image_tag('feed.png', :size => '14x14', :alt => :subscribe_to.l+" #{title}", :plugin => 'community_engine'), url
+    link_to image_tag('community_engine/feed.png', :size => '14x14', :alt => :subscribe_to.l+" #{title}", :plugin => 'community_engine'), url
   end
 
   def search_posts_title
