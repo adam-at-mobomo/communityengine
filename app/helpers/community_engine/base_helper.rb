@@ -13,7 +13,7 @@ module CommunityEngine::BaseHelper
   end
   
   def forum_page?
-    %w(forums topics sb_posts).include?(controller.controller_name)
+    %w(forums topics sb_posts).include?(controller.controller_name.demodulize)
   end
   
   def is_current_user_and_featured?(u)
@@ -86,7 +86,7 @@ module CommunityEngine::BaseHelper
     tagline = " #{divider} #{configatron.community_tagline}"
 		title = app_base
 
-		case controller.controller_name
+		case controller.controller_name.demodulize
 			when 'base'
         title += tagline
       when 'pages'
@@ -116,7 +116,7 @@ module CommunityEngine::BaseHelper
           title = :user_clippings.l(:user => @user.login) + divider + app_base + tagline
         end
       when 'tags'
-        case controller.action_name
+        case controller.action_name.demodulize
           when 'show'
             if params[:type]
               title = I18n.translate('all_' + params[:type].downcase.pluralize + '_tagged', :tag_name => @tags.map(&:name).join(', '))
@@ -142,7 +142,7 @@ module CommunityEngine::BaseHelper
     if @page_title
       title = @page_title + divider + app_base + tagline
     elsif title == app_base
-		  title = :showing.l + ' ' + controller.controller_name + divider + app_base + tagline
+		  title = :showing.l + ' ' + controller.controller_name.demodulize + divider + app_base + tagline
     end
 
     title

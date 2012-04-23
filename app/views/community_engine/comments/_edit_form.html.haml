@@ -26,4 +26,4 @@
   
   %p
     = submit_tag :add_comment.l
-    = link_to_remote :cancel.l, :url => {:controller => 'comments', :action => 'edit', :id => comment.id, :cancel => true}, :method => :get    
+    = link_to_remote :cancel.l, :url => {:controller => 'community_engine/comments', :action => 'edit', :id => comment.id, :cancel => true}, :method => :get    

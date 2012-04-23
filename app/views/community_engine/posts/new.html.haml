@@ -39,7 +39,7 @@
         .auto_complete#tag_list_auto_complete
         
         -content_for :end_javascript do        
-          = auto_complete_field 'tag_list', {:url => { :controller => "tags", :action => 'auto_complete_for_tag_name'}, :tokens => [','] }
+          = auto_complete_field 'tag_list', {:url => { :controller => "community_engine/tags", :action => 'auto_complete_for_tag_name'}, :tokens => [','] }
         
         %label
           %a{:href=> "#", :onclick => "$('poll-ui').toggle(); return false;"}
@@ -64,4 +64,4 @@
           = link_to :cancel_and_go_back_to_my_posts.l, user_posts_path(@user)
 
   -content_for :end_javascript do
-    = observe_field  "post_category_id", {:url => {:controller => 'categories', :action => 'show_tips'}, :with => "id", :update => "category_tips", :complete => visual_effect(:highlight, "category_tips", :duration => 0.5)}
+    = observe_field  "post_category_id", {:url => {:controller => 'community_engine/categories', :action => 'show_tips'}, :with => "id", :update => "category_tips", :complete => visual_effect(:highlight, "category_tips", :duration => 0.5)}
