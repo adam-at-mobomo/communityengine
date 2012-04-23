@@ -59,7 +59,7 @@ class CommentsController < BaseController
           }
         end              
       else
-        if @commentable.is_a?(User)
+        if @commentable.is_a?(CommunityEngine::User)
           @user = @commentable
           @title = @user.login
           @back_url = user_path(@user)

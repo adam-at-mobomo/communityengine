@@ -10,7 +10,7 @@
       = link_to @title, @back_url
 
     - if @comments.empty?
-      #emptycomments= :no_comments_found.l_with_args(:type => @commentable.class.to_s.underscore)
+      #emptycomments= :no_comments_found.l_with_args(:type => @commentable.class.model_name.human.downcase)
 
 
     %a#newest_comment

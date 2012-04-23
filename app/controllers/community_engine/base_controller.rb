@@ -52,7 +52,7 @@ class CommunityEngine::BaseController < ApplicationController
   
   def footer_content
     get_recent_footer_content 
-    render :partial => 'shared/footer_content' and return    
+    render :partial => 'community_engine/shared/footer_content' and return    
   end
   
   def homepage_features
