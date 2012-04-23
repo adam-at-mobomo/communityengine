@@ -14,7 +14,7 @@
 
       %p
         %label= :category.l
-        = f.select :category_id_equals, Category.all.collect{|c| [c.name, c.id]}, :include_blank => true
+        = f.select :category_id_equals, CommunityEngine::Category.all.collect{|c| [c.name, c.id]}, :include_blank => true
 
       %p
         %label= :status.l

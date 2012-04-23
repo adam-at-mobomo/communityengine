@@ -1,14 +1,14 @@
 - if activity.item
   - case activity.item_type
-    - when 'Post', 'SbPost', 'Topic'
+    - when 'CommunityEngine::Post', 'CommunityEngine::SbPost', 'CommunityEngine::Topic'
       = image_tag 'community_engine/icons/post.png', :plugin => 'community_engine'
-    - when 'Favorite'
+    - when 'CommunityEngine::Favorite'
       = image_tag 'community_engine/icons/heart.png', :plugin => 'community_engine'
-    - when 'Photo'
+    - when 'CommunityEngine::Photo'
       = image_tag 'community_engine/icons/picture.png', :plugin => 'community_engine'
-    - when 'Comment'
+    - when 'CommunityEngine::Comment'
       = image_tag 'community_engine/icons/comment.png', :plugin => 'community_engine'
-    - when 'Clipping'
+    - when 'CommunityEngine::Clipping'
       = image_tag 'community_engine/icons/clipping.png', :plugin => 'community_engine'
 - else
   =image_tag 'community_engine/icons/activity_default.png', :plugin => 'community_engine'

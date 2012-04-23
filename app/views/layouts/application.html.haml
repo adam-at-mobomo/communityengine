@@ -47,7 +47,7 @@
               %a{:href=>logout_url, :title=>:log_out_of_your.l + " #{configatron.community_name} " + :account.l}
                 =:log_out.l
 
-          - Page.find(:all).each do |page|
+          - CommunityEngine::Page.find(:all).each do |page|
             - if (logged_in? || page.page_public)
               %li= link_to page.title, pages_path(page) 
               

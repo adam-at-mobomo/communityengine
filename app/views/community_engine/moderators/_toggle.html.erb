@@ -5,7 +5,7 @@
       {:class => "utility"}
       ) %>      
 <% else %>
-  <% moderatorship = Moderatorship.find_by_user_id_and_forum_id(user.id, forum.id) %>
+  <% moderatorship = CommunityEngine::Moderatorship.find_by_user_id_and_forum_id(user.id, forum.id) %>
   <%= link_to_remote(:remove_moderator.l, 
     {:url => forum_moderator_path(forum, moderatorship.id), 
      :method => :delete}, 

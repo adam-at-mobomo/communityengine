@@ -19,7 +19,7 @@
         %label
           =:category.l
           \:
-        = f.collection_select(:category_id, Category.find(:all), :id, :name, {}, {})
+        = f.collection_select(:category_id, CommunityEngine::Category.find(:all), :id, :name, {}, {})
         %label
           =:body_text.l
           %em= '('+:required.l+')'
