@@ -31,10 +31,10 @@ class AdminController < BaseController
     user = CommunityEngine.user_class.arel_table
 
     if params['login']    
-      @users = @users.where('`community_engine_users`.login LIKE ?', "%#{params['login']}%")
+      @users = @users.where("`#{CommunityEngine.user_class.table_name}`.login LIKE ?", "%#{params['login']}%")
     end
     if params['email']
-      @users = @users.where('`community_engine_users`.email LIKE ?', "%#{params['email']}%")
+      @users = @users.where("`#{CommunityEngine.user_class.table_name}`.email LIKE ?", "%#{params['email']}%")
     end        
 
     @users = @users.page(params[:page]).per(100)
@@ -68,7 +68,7 @@ class AdminController < BaseController
   end  
   
   def subscribers
-    @users = CommunityEngine.user_class.find(:all, :conditions => ["notify_community_news = ? AND community_engine_users.activated_at IS NOT NULL", (params[:unsubs] ? false : true)])    
+    @users = CommunityEngine.user_class.find(:all, :conditions => ["notify_community_news = ? AND #{CommunityEngine.user_class.table_name}.activated_at IS NOT NULL", (params[:unsubs] ? false : true)])    
     
     respond_to do |format|
       format.xml {

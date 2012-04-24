@@ -22,7 +22,7 @@ class StatisticsController < BaseController
     
     @featured_writers = CommunityEngine.user_class.find_featured
 
-    @posts = CommunityEngine::Post.find(:all, :conditions => ['? <= community_engine_posts.published_at AND community_engine_posts.published_at <= ? AND community_engine_users.featured_writer = ?', Time.now.beginning_of_month, (Time.now.end_of_month + 1.day), true], :include => :user)        
+    @posts = CommunityEngine::Post.find(:all, :conditions => ["? <= community_engine_posts.published_at AND community_engine_posts.published_at <= ? AND #{CommunityEngine.user_class.table_name}.featured_writer = ?", Time.now.beginning_of_month, (Time.now.end_of_month + 1.day), true], :include => :user)        
   end  
 
       

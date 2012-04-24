@@ -30,7 +30,7 @@ class Comment < ActiveRecord::Base
   def previous_commenters_to_notify
     # only send a notification on recent comments
     # limit the number of emails we'll send (or posting will be slooowww)
-    User.all(:conditions => ["community_engine_users.id NOT IN (?) AND community_engine_users.notify_comments = ? 
+    CommunityEngine.user_class.all(:conditions => ["#{CommunityEngine.user_class.table_name}.id NOT IN (?) AND #{CommunityEngine.user_class.table_name}.notify_comments = ? 
                       AND commentable_id = ? AND commentable_type = ? 
                       AND community_engine_comments.notify_by_email = ? 
                       AND community_engine_comments.created_at > ?", [user_id, recipient_id.to_i], true, commentable_id, commentable_type, true, 2.weeks.ago], 

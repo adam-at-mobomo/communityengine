@@ -9,7 +9,7 @@ class FriendshipsController < BaseController
     
     @user = (params[:id] ||params[:user_id]) ? CommunityEngine.user_class.find((params[:id] || params[:user_id] )): CommunityEngine::Friendship.first.user
     @friendships = CommunityEngine::Friendship.all(:conditions => ['user_id = ? OR friend_id = ?', @user.id, @user.id], :limit => 40)
-    @users = CommunityEngine.user_class.all(:conditions => ['community_engine_users.id in (?)', @friendships.collect{|f| f.friend_id }])    
+    @users = CommunityEngine.user_class.all(:conditions => ["#{CommunityEngine.user_class.table_name}.id in (?)", @friendships.collect{|f| f.friend_id }])    
     
     respond_to do |format|
       format.html 

@@ -99,9 +99,9 @@ class User < ActiveRecord::Base
     has_many :message_threads_as_recipient, :class_name => "CommunityEngine::MessageThread", :foreign_key => "recipient_id"               
     
   #named scopes
-  scope :recent, order('community_engine_users.created_at DESC')
+  scope :recent, order("#{table_name}.created_at DESC")
   scope :featured, where(:featured_writer => true)
-  scope :active, where("community_engine_users.activated_at IS NOT NULL")
+  scope :active, where("#{table_name}.activated_at IS NOT NULL")
   scope :vendors, where(:vendor => true)
   
 
@@ -163,13 +163,13 @@ class User < ActiveRecord::Base
       users = users.where(user[:metro_area_id].eq(search['metro_area_id']))
     end
     if search['login']    
-      users = users.where('`community_engine_users`.login LIKE ?', "%#{search['login']}%")
+      users = users.where("`#{table_name}`.login LIKE ?", "%#{search['login']}%")
     end
     if search['vendor']
       users = users.where(user[:vendor].eq(true))
     end    
     if search['description']
-      users = users.where('`community_engine_users`.description LIKE ?', "%#{search['description']}%")
+      users = users.where("`#{table_name}`.description LIKE ?", "%#{search['description']}%")
     end    
     users
   end  
@@ -180,9 +180,9 @@ class User < ActiveRecord::Base
     activities = Activity.since(options[:since]).find(:all, 
       :select => 'activities.user_id, count(*) as count', 
       :group => 'activities.user_id', 
-      :conditions => "#{options[:require_avatar] ? ' community_engine_users.avatar_id IS NOT NULL AND ' : ''} community_engine_users.activated_at IS NOT NULL", 
+      :conditions => "#{options[:require_avatar] ? ' #{table_name}.avatar_id IS NOT NULL AND ' : ''} #{table_name}.activated_at IS NOT NULL", 
       :order => 'count DESC', 
-      :joins => "LEFT JOIN community_engine_users ON community_engine_users.id = activities.user_id",
+      :joins => "LEFT JOIN #{table_name} ON #{table_name}.id = activities.user_id",
       :limit => options[:limit]
       )
     activities.map{|a| find(a.user_id) }
@@ -204,7 +204,7 @@ class User < ActiveRecord::Base
   
   def self.recent_activity(options = {})
     options.reverse_merge! :per_page => 10, :page => 1
-    Activity.recent.joins("LEFT JOIN community_engine_users ON community_engine_users.id = activities.user_id").where('community_engine_users.activated_at IS NOT NULL').select('activities.*').page(options[:page]).per(options[:per_page])
+    Activity.recent.joins("LEFT JOIN #{table_name} ON #{table_name}.id = activities.user_id").where("#{table_name}.activated_at IS NOT NULL").select('activities.*').page(options[:page]).per(options[:per_page])
   end
 
   def self.currently_online

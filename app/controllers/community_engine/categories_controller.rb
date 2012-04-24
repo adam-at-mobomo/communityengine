@@ -33,7 +33,7 @@ class CategoriesController < BaseController
     @active_users = CommunityEngine.user_class.all(:include => :posts,
       :limit => 5,
       :conditions => ["community_engine_posts.category_id = ? AND community_engine_posts.published_at > ?", @category.id, 14.days.ago],
-      :order => "community_engine_users.view_count DESC"
+      :order => "#{CommunityEngine.user_class.table_name}.view_count DESC"
       )
     
     respond_to do |format|

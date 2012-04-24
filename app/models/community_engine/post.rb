@@ -39,7 +39,7 @@ class Post < ActiveRecord::Base
     
     # Scopes    
     def by_featured_writers
-      where("community_engine_users.featured_writer = ?", true).includes(:user)
+      where("#{CommunityEngine.user_class.table_name}.featured_writer = ?", true).includes(:user)
     end
     def popular
       order('community_engine_posts.view_count DESC')
