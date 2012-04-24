@@ -1,4 +1,5 @@
 require "community_engine"
+require 'commuinty_engine/user_methods'
 require 'rails/all'
 
 module ::CommunityEngine
@@ -134,6 +135,8 @@ module ::CommunityEngine
     :profile_public, :state_id, :stylesheet, :time_zone, :vendor, :zip, :avatar_attributes, :birthday
 
         CommunityEngine.user_class.send :attr_accessor, :authorizing_from_omniauth
+        
+        CommunityEngine.user_class.send :include, CommunityEngine::UserMethods
       end
     end
   end
