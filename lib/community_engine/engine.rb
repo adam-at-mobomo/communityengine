@@ -44,10 +44,14 @@ module ::CommunityEngine
     config.to_prepare do
       if CommunityEngine.user_class
         CommunityEngine.user_class.send :extend, FriendlyId
+        CommunityEngine.user_class.send :attr_protected, :admin, :featured, :role_id, :akismet_attrs
+        CommunityEngine.user_class.send :friendly_id, :login, :use => :slugged, :slug_column => 'login_slug'
+        
         CommunityEngine.user_class.send :include, CommunityEngine::FacebookProfile
         CommunityEngine.user_class.send :include, CommunityEngine::TwitterProfile
         CommunityEngine.user_class.send :include, CommunityEngine::UrlUpload
         CommunityEngine.user_class.send :include, Rakismet::Model
+        CommunityEngine.user_class.send :rakismet_attrs, :author => :login, :comment_type => 'registration', :content => :description, :user_ip => :last_login_ip, :author_email => :email
       end
     end
   end
