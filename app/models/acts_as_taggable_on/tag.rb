@@ -1,6 +1,7 @@
 require_dependency ActsAsTaggableOn::Engine.config.root.join('app', 'models', 'acts_as_taggable_on', 'tag.rb').to_s
 
 class ActsAsTaggableOn::Tag < ActiveRecord::Base
+  set_table_name "community_engine_tags"
   
   class << self
     def popular(limit = 20, type = nil)
@@ -60,11 +61,11 @@ class ActsAsTaggableOn::Tag < ActiveRecord::Base
     tagging_ids = taggables.map{|t| t.taggings.limit(10).map(&:id) }.flatten.uniq    
     return [] if tagging_ids.blank?
   
-    ActsAsTaggableOn::Tag.where("tags.id != '#{self.id}'").
-      select("tags.id, tags.name, COUNT(tags.id) as count").
+    ActsAsTaggableOn::Tag.where("community_engine_tags.id != '#{self.id}'").
+      select("community_engine_tags.id, community_engine_tags.name, COUNT(community_engine_tags.id) as count").
       joins(:taggings).
       where({:taggings => {:id => tagging_ids }}).
-      group("tags.id, tags.name").
+      group("community_engine_tags.id, community_engine_tags.name").
       order("count DESC").
       limit(limit)
   end
