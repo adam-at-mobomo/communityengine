@@ -5,7 +5,7 @@ class UserNotifier < ActionMailer::Base
   extend  ActionView::Helpers::SanitizeHelper::ClassMethods # Required for rails 2.2
   include CommunityEngine::BaseHelper
   
-  default_url_options[:host] = configatron.app_host
+#  default_url_options[:host] = configatron.app_host
   default :from => "#{:the_team.l(:site => configatron.community_name, :email => configatron.support_email)}"
 
   def signup_invitation(email, user, message)
