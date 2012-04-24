@@ -144,7 +144,7 @@ class EventsController < BaseController
         else
           metro_areas = object.metro_area.country.metro_areas.all(:order=>"name")
         end        
-      elsif object.is_a? CommunityEngine::User
+      elsif object.is_a? CommunityEngine.user_class
         states = object.country.states if object.country
         if object.state
           metro_areas = object.state.metro_areas.all(:order => "name")
@@ -163,7 +163,7 @@ class EventsController < BaseController
       if object.is_a? CommunityEngine::Event
         state_id = object.metro_area.state_id
         country_id = object.metro_area.country_id
-      elsif object.is_a? CommunityEngine::User
+      elsif object.is_a? CommunityEngine.user_class
         state_id = object.state_id
         country_id = object.country_id
       end

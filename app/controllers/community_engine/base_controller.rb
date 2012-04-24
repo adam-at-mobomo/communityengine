@@ -84,7 +84,7 @@ class CommunityEngine::BaseController < ApplicationController
     end
   
     def find_user
-      if @user = CommunityEngine::User.active.find(params[:user_id] || params[:id])
+      if @user = CommunityEngine.user_class.active.find(params[:user_id] || params[:id])
         @is_current_user = (@user && @user.eql?(current_user))
         unless logged_in? || @user.profile_public?
           flash[:error] = :private_user_profile_message.l
@@ -99,7 +99,7 @@ class CommunityEngine::BaseController < ApplicationController
     end
   
     def require_current_user
-      @user ||= CommunityEngine::User.find(params[:user_id] || params[:id] )
+      @user ||= CommunityEngine.user_class.find(params[:user_id] || params[:id] )
       unless admin? || (@user && (@user.eql?(current_user)))
         redirect_to :controller => 'community_engine/sessions', :action => 'new' and return false
       end
@@ -116,7 +116,7 @@ class CommunityEngine::BaseController < ApplicationController
       @recent_photos = CommunityEngine::Photo.find_recent(:limit => 10)
       @recent_comments = CommunityEngine::Comment.find_recent(:limit => 13)
       @popular_tags = popular_tags(30)
-      @recent_activity = CommunityEngine::User.recent_activity(:size => 15, :current => 1)
+      @recent_activity = CommunityEngine.user_class.recent_activity(:size => 15, :current => 1)
     
     end
 
@@ -125,8 +125,8 @@ class CommunityEngine::BaseController < ApplicationController
       @homepage_features = CommunityEngine::HomepageFeature.find_features
       @homepage_features_data = @homepage_features.collect {|f| [f.id, f.image.url(:large) ]  }
     
-      @active_users = CommunityEngine::User.find_by_activity({:limit => 5, :require_avatar => false})
-      @featured_writers = CommunityEngine::User.find_featured
+      @active_users = CommunityEngine.user_class.find_by_activity({:limit => 5, :require_avatar => false})
+      @featured_writers = CommunityEngine.user_class.find_featured
 
       @featured_posts = CommunityEngine::Post.find_featured
     
@@ -139,7 +139,7 @@ class CommunityEngine::BaseController < ApplicationController
 
     def commentable_url(comment)
       if comment.recipient && comment.commentable
-        if comment.commentable_type != "CommunityEngine::User"
+        if comment.commentable_type != CommunityEngine.user_class.name
           polymorphic_url([comment.recipient, comment.commentable])+"#comment_#{comment.id}"
         elsif comment
           user_url(comment.recipient)+"#comment_#{comment.id}"

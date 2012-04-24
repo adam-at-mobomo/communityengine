@@ -27,7 +27,7 @@ class SbPostsController < BaseController
 
     @posts = SbPost.with_query_options.where(conditions).page(params[:page])
     
-    @users = CommunityEngine::User.find(:all, :select => 'distinct *', :conditions => ['id in (?)', @posts.collect(&:user_id).uniq]).index_by(&:id)
+    @users = CommunityEngine.user_class.find(:all, :select => 'distinct *', :conditions => ['id in (?)', @posts.collect(&:user_id).uniq]).index_by(&:id)
   end
 
   def search
@@ -35,12 +35,12 @@ class SbPostsController < BaseController
     
     @posts = CommunityEngine::SbPost.with_query_options.where(conditions).page(params[:page])
 
-    @users = CommunityEngine::User.find(:all, :select => 'distinct *', :conditions => ['id in (?)', @posts.collect(&:user_id).uniq]).index_by(&:id)
+    @users = CommunityEngine.user_class.find(:all, :select => 'distinct *', :conditions => ['id in (?)', @posts.collect(&:user_id).uniq]).index_by(&:id)
     render :action => :index
   end
 
   def monitored
-    @user = CommunityEngine::User.find params[:user_id]    
+    @user = CommunityEngine.user_class.find params[:user_id]    
     @posts = CommunityEngine::SbPost.with_query_options.joins('INNER JOIN community_engine_monitorships ON community_engine_monitorships.topic_id = community_engine_topics.id').where('community_engine_monitorships.user_id = ? AND community_engine_sb_posts.user_id != ?', params[:user_id], @user.id).page(params[:page])
   end
 

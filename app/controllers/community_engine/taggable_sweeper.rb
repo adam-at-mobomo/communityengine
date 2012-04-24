@@ -1,6 +1,6 @@
 module CommunityEngine
 class TaggableSweeper < ActionController::Caching::Sweeper
-  observe CommunityEngine::User, CommunityEngine::Post, CommunityEngine::Clipping, CommunityEngine::Photo # This sweeper is going to keep an eye on taggable models
+  observe CommunityEngine.user_class, CommunityEngine::Post, CommunityEngine::Clipping, CommunityEngine::Photo # This sweeper is going to keep an eye on taggable models
 
   # If our sweeper detects that a taggable (User) was activated 
   def after_activate(taggable)

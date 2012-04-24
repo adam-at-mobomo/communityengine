@@ -27,7 +27,7 @@ class UsersController < BaseController
 
   def activate
     redirect_to signup_path and return if params[:id].blank?
-    @user = CommunityEngine::User.find_by_activation_code(params[:id]) 
+    @user = CommunityEngine.user_class.find_by_activation_code(params[:id]) 
     if @user and @user.activate
       self.current_user = @user
       @user.track_activity(:joined_the_site)
@@ -47,13 +47,13 @@ class UsersController < BaseController
   end
 
   def index
-    @users, @search, @metro_areas, @states = CommunityEngine::User.search_conditions_with_metros_and_states(params)
+    @users, @search, @metro_areas, @states = CommunityEngine.user_class.search_conditions_with_metros_and_states(params)
     
     @users = @users.active.recent.includes(:tags).page(params[:page]).per(20)
     
-    @metro_areas, @states = CommunityEngine::User.find_country_and_state_from_search_params(params)
+    @metro_areas, @states = CommunityEngine.user_class.find_country_and_state_from_search_params(params)
     
-    @tags = CommunityEngine::User.tag_counts :limit => 10
+    @tags = CommunityEngine.user_class.tag_counts :limit => 10
     
     setup_metro_areas_for_cloud
   end
@@ -84,13 +84,13 @@ class UsersController < BaseController
   end
   
   def new
-    @user         = CommunityEngine::User.new( {:birthday => Date.parse((Time.now - 25.years).to_s) }.merge(params[:user] || {}) )
+    @user         = CommunityEngine.user_class.new( {:birthday => Date.parse((Time.now - 25.years).to_s) }.merge(params[:user] || {}) )
     @inviter_id   = params[:id]
     @inviter_code = params[:code]
   end
 
   def create
-    @user       = CommunityEngine::User.new(params[:user])
+    @user       = CommunityEngine.user_class.new(params[:user])
     @user.role  = CommunityEngine::Role[:member]
 
     if (!configatron.require_captcha_on_signup || verify_recaptcha(@user)) && @user.save
@@ -149,7 +149,7 @@ class UsersController < BaseController
   end
   
   def change_profile_photo
-    @user   = CommunityEngine::User.find(params[:id])
+    @user   = CommunityEngine.user_class.find(params[:id])
     @photo  = CommunityEngine::Photo.find(params[:photo_id])
     @user.avatar = @photo
 
@@ -209,11 +209,11 @@ class UsersController < BaseController
   end
 
   def edit_pro_details
-    @user = CommunityEngine::User.find(params[:id])
+    @user = CommunityEngine.user_class.find(params[:id])
   end
 
   def update_pro_details
-    @user = CommunityEngine::User.find(params[:id])
+    @user = CommunityEngine.user_class.find(params[:id])
     
     if @user.update_attributes(params[:user])
       respond_to do |format|
@@ -253,26 +253,26 @@ class UsersController < BaseController
   end
   
   def signup_completed
-    @user = CommunityEngine::User.find(params[:id])
+    @user = CommunityEngine.user_class.find(params[:id])
     redirect_to home_path and return unless @user
   end
   
   def welcome_photo
-    @user = CommunityEngine::User.find(params[:id])
+    @user = CommunityEngine.user_class.find(params[:id])
     @avatar = (@user.avatar || @user.build_avatar)    
   end
 
   def welcome_about
-    @user = CommunityEngine::User.find(params[:id])
+    @user = CommunityEngine.user_class.find(params[:id])
     @metro_areas, @states = setup_locations_for(@user)
   end
     
   def welcome_invite
-    @user = CommunityEngine::User.find(params[:id])    
+    @user = CommunityEngine.user_class.find(params[:id])    
   end
   
   def invite
-    @user = CommunityEngine::User.find(params[:id])    
+    @user = CommunityEngine.user_class.find(params[:id])    
   end
   
   def welcome_complete
@@ -283,7 +283,7 @@ class UsersController < BaseController
   def forgot_username  
     return unless request.post?   
 
-    if @user = CommunityEngine::User.active.find_by_email(params[:email])
+    if @user = CommunityEngine.user_class.active.find_by_email(params[:email])
       CommunityEngine::UserNotifier.forgot_username(@user).deliver
       redirect_to login_url
       flash[:info] = :your_username_was_emailed_to_you.l      
@@ -296,9 +296,9 @@ class UsersController < BaseController
     return unless request.post?       
 
     if params[:email]
-      @user = CommunityEngine::User.find_by_email(params[:email])    
+      @user = CommunityEngine.user_class.find_by_email(params[:email])    
     else
-      @user = CommunityEngine::User.find(params[:id])
+      @user = CommunityEngine.user_class.find(params[:id])
     end
     
     if @user && !@user.active?
@@ -311,7 +311,7 @@ class UsersController < BaseController
   end
   
   def assume
-    user = CommunityEngine::User.find(params[:id])
+    user = CommunityEngine.user_class.find(params[:id])
     
     if assumed_user_session = self.assume_user(user)
       redirect_to user_path(assumed_user_session.record)
@@ -350,13 +350,13 @@ class UsersController < BaseController
   end
   
   def toggle_featured
-    @user = CommunityEngine::User.find(params[:id])
+    @user = CommunityEngine.user_class.find(params[:id])
     @user.toggle!(:featured_writer)
     redirect_to user_path(@user)
   end
 
   def toggle_moderator
-    @user = CommunityEngine::User.find(params[:id])
+    @user = CommunityEngine.user_class.find(params[:id])
     @user.role = @user.moderator? ? CommunityEngine::Role[:member] : CommunityEngine::Role[:moderator]
     @user.save!
     redirect_to user_path(@user)

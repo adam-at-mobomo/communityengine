@@ -13,9 +13,9 @@ class CreateCommunityEngineRoles < ActiveRecord::Migration
     add_column :community_engine_users, :role_id, :integer
 
     #set all existing users to 'member'
-    CommunityEngine::User.update_all("role_id = #{CommunityEngine::Role[:member].id}", ["admin = ?", false])
+    CommunityEngine.user_class.update_all("role_id = #{CommunityEngine::Role[:member].id}", ["admin = ?", false])
     #set admins to 'admin'
-    CommunityEngine::User.update_all("role_id = #{CommunityEngine::Role[:admin].id}", ["admin = ?", true])    
+    CommunityEngine.user_class.update_all("role_id = #{CommunityEngine::Role[:admin].id}", ["admin = ?", true])    
 
     remove_column :community_engine_users, :admin
   end

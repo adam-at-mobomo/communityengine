@@ -151,8 +151,8 @@ class User < ActiveRecord::Base
   end
   
   def self.build_conditions_for_search(search)
-    user = CommunityEngine::User.arel_table
-    users = CommunityEngine::User.active
+    user = CommunityEngine.user_class.arel_table
+    users = CommunityEngine.user_class.active
     if search['country_id'] && !(search['metro_area_id'] || search['state_id'])
       users = users.where(user[:country_id].eq(search['country_id']))
     end
@@ -208,7 +208,7 @@ class User < ActiveRecord::Base
   end
 
   def self.currently_online
-    CommunityEngine::User.find(:all, :conditions => ["sb_last_seen_at > ?", Time.now.utc-5.minutes])
+    CommunityEngine.user_class.find(:all, :conditions => ["sb_last_seen_at > ?", Time.now.utc-5.minutes])
   end
   
   def self.search(query, options = {})
@@ -268,14 +268,14 @@ class User < ActiveRecord::Base
 
   def deactivate
     return if admin? #don't allow admin deactivation
-    CommunityEngine::User.transaction do
+    CommunityEngine.user_class.transaction do
       update_attribute(:activated_at, nil)
       update_attribute(:activation_code, make_activation_code)
     end
   end
 
   def activate
-    CommunityEngine::User.transaction do
+    CommunityEngine.user_class.transaction do
       update_attribute(:activated_at, Time.now.utc)
       update_attribute(:activation_code, nil)
     end
@@ -398,7 +398,7 @@ class User < ActiveRecord::Base
   end
 
   def update_last_seen_at
-    CommunityEngine::User.update_all ['sb_last_seen_at = ?', Time.now.utc], ['id = ?', self.id]
+    CommunityEngine.user_class.update_all ['sb_last_seen_at = ?', Time.now.utc], ['id = ?', self.id]
     self.sb_last_seen_at = Time.now.utc
   end
   
@@ -421,7 +421,7 @@ class User < ActiveRecord::Base
   end
   
   def self.find_or_create_from_authorization(auth)
-    user = CommunityEngine::User.find_or_initialize_by_email(:email => auth.email)
+    user = CommunityEngine.user_class.find_or_initialize_by_email(:email => auth.email)
     user.login ||= auth.nickname
     
     if user.new_record?

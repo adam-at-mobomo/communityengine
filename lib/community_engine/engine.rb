@@ -41,12 +41,13 @@ module ::CommunityEngine
       end
     end
     
-    # Fix for #88
     config.to_prepare do
       if CommunityEngine.user_class
+        CommunityEngine.user_class.send :extend, FriendlyId
         CommunityEngine.user_class.send :include, CommunityEngine::FacebookProfile
         CommunityEngine.user_class.send :include, CommunityEngine::TwitterProfile
         CommunityEngine.user_class.send :include, CommunityEngine::UrlUpload
+        CommunityEngine.user_class.send :include, Rakismet::Model
       end
     end
   end

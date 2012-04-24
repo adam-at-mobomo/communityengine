@@ -39,10 +39,10 @@ def create_admin_user
   }
 
   
-  if CommunityEngine::User.find_by_login(login)
+  if CommunityEngine.user_class.find_by_login(login)
     puts "\nWARNING: There is already a user with the login: #{login}, so no account changes were made.  If you wish to create an additional admin user, please run 'rake community_engine:create_admin' again with a different login.\n\n"
   else
-    admin = CommunityEngine::User.create(attributes)
+    admin = CommunityEngine.user_class.create(attributes)
     # create an admin role and and assign the admin user to that role
     admin.role = CommunityEngine::Role[:admin]
     admin.activate

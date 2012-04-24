@@ -29,7 +29,7 @@ class PostsController < BaseController
   end
 
   def index
-    @user = CommunityEngine::User.find(params[:user_id])            
+    @user = CommunityEngine.user_class.find(params[:user_id])            
     @category = CommunityEngine::Category.find_by_name(params[:category_name]) if params[:category_name]
 
     @posts = @user.posts.recent
@@ -91,7 +91,7 @@ class PostsController < BaseController
   
   # GET /posts/new
   def new
-    @user = CommunityEngine::User.find(params[:user_id])    
+    @user = CommunityEngine.user_class.find(params[:user_id])    
     @post = CommunityEngine::Post.new(params[:post])
     @post.published_as = 'live'
     @categories = CommunityEngine::Category.find(:all)
@@ -105,7 +105,7 @@ class PostsController < BaseController
   # POST /posts
   # POST /posts.xml
   def create    
-    @user = CommunityEngine::User.find(params[:user_id])
+    @user = CommunityEngine.user_class.find(params[:user_id])
     @post = CommunityEngine::Post.new(params[:post])
     @post.user = @user
     @post.tag_list = params[:tag_list] || ''
@@ -151,7 +151,7 @@ class PostsController < BaseController
   # DELETE /posts/1
   # DELETE /posts/1.xml
   def destroy
-    @user = CommunityEngine::User.find(params[:user_id])
+    @user = CommunityEngine.user_class.find(params[:user_id])
     @post = CommunityEngine::Post.find(params[:id])
     @post.destroy
     
@@ -217,7 +217,7 @@ class PostsController < BaseController
   
   def featured
     @posts = CommunityEngine::Post.by_featured_writers.recent.page(params[:page])
-    @featured_writers = CommunityEngine::User.featured
+    @featured_writers = CommunityEngine.user_class.featured
         
     @rss_title = "#{configatron.community_name} "+:featured_posts.l
     @rss_url = featured_rss_url
@@ -242,7 +242,7 @@ class PostsController < BaseController
   private
   
   def require_ownership_or_moderator
-    @user ||= CommunityEngine::User.find(params[:user_id])
+    @user ||= CommunityEngine.user_class.find(params[:user_id])
     @post ||= CommunityEngine::Post.unscoped.find(params[:id]) if params[:id]
     unless admin? || moderator? || (@post && (@post.user.eql?(current_user))) || (!@post && @user && @user.eql?(current_user))
       redirect_to :controller => 'community_engine/sessions', :action => 'new' and return false

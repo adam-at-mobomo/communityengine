@@ -4,7 +4,7 @@ class SitemapController < BaseController
   caches_action :index
 
   def index
-    @users = CommunityEngine::User.active.select('id, login, updated_at, login_slug')
+    @users = CommunityEngine.user_class.active.select('id, login, updated_at, login_slug')
     @posts = CommunityEngine::Post.select('community_engine_posts.id, community_engine_posts.user_id, community_engine_posts.published_as, community_engine_posts.published_at, community_engine_users.id, community_engine_users.login_slug').joins(:user)   #"LEFT JOIN users ON users.id = posts.user_id")
 
     @categories = Category.find(:all)

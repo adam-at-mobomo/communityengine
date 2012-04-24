@@ -27,10 +27,10 @@
       %h3=:gender.l
       %fieldset
         %label
-          = radio_button :user, :gender, CommunityEngine::User::MALE
+          = radio_button :user, :gender, CommunityEngine.user_class::MALE
           =:male.l
         %label
-          = radio_button :user, :gender, CommunityEngine::User::FEMALE
+          = radio_button :user, :gender, CommunityEngine.user_class::FEMALE
           =:female.l
                 
       %h3=:more_about_you.l

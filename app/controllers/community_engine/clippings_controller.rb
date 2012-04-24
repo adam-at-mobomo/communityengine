@@ -38,7 +38,7 @@ class ClippingsController < BaseController
   # GET /clippings
   # GET /clippings.xml
   def index
-    @user = CommunityEngine::User.find(params[:user_id])
+    @user = CommunityEngine.user_class.find(params[:user_id])
 
     @clippings = CommunityEngine::Clipping.includes(:tags).where(:user_id => @user.id).order("clippings.created_at DESC")
 
@@ -72,7 +72,7 @@ class ClippingsController < BaseController
   # GET /clippings/1
   # GET /clippings/1.xml
   def show
-    @user = CommunityEngine::User.find(params[:user_id])
+    @user = CommunityEngine.user_class.find(params[:user_id])
     @clipping = CommunityEngine::Clipping.find(params[:id])
     @previous = @clipping.previous_clipping
     @next = @clipping.next_clipping
@@ -121,14 +121,14 @@ class ClippingsController < BaseController
 
   # GET /clippings/new
   def new
-    @user = CommunityEngine::User.find(params[:user_id])
+    @user = CommunityEngine.user_class.find(params[:user_id])
     @clipping = @user.clippings.new
   end
 
   # GET /clippings/1;edit
   def edit
     @clipping = CommunityEngine::Clipping.find(params[:id])
-    @user = CommunityEngine::User.find(params[:user_id])
+    @user = CommunityEngine.user_class.find(params[:user_id])
   end
 
   # POST /clippings
@@ -158,7 +158,7 @@ class ClippingsController < BaseController
   # PUT /clippings/1
   # PUT /clippings/1.xml
   def update
-    @user = CommunityEngine::User.find(params[:user_id])
+    @user = CommunityEngine.user_class.find(params[:user_id])
     @clipping = CommunityEngine::Clipping.find(params[:id])
     @clipping.tag_list = params[:tag_list] || ''
 
@@ -176,7 +176,7 @@ class ClippingsController < BaseController
   # DELETE /clippings/1
   # DELETE /clippings/1.xml
   def destroy
-    @user = CommunityEngine::User.find(params[:user_id])
+    @user = CommunityEngine.user_class.find(params[:user_id])
     @clipping = CommunityEngine::Clipping.find(params[:id])
     @clipping.destroy
 

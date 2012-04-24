@@ -12,7 +12,7 @@ class ActivitiesController < BaseController
   end
   
   def index
-    @activities = CommunityEngine::User.recent_activity(:per_page => 30, :page => params[:page], :limit => 1000)
+    @activities = CommunityEngine.user_class.recent_activity(:per_page => 30, :page => params[:page], :limit => 1000)
     @popular_tags = popular_tags(30)
   end
   

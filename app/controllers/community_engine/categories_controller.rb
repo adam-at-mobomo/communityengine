@@ -30,7 +30,7 @@ class CategoriesController < BaseController
     @rss_title = "#{configatron.community_name}: #{@category.name} "+:posts.l
     @rss_url = category_path(@category, :format => :rss)
 
-    @active_users = CommunityEngine::User.all(:include => :posts,
+    @active_users = CommunityEngine.user_class.all(:include => :posts,
       :limit => 5,
       :conditions => ["community_engine_posts.category_id = ? AND community_engine_posts.published_at > ?", @category.id, 14.days.ago],
       :order => "community_engine_users.view_count DESC"

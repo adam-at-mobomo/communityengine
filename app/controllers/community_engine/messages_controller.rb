@@ -7,7 +7,7 @@ class MessagesController < BaseController
   skip_before_filter :verify_authenticity_token, :only => [:auto_complete_for_username]
   
   def auto_complete_for_username
-    @users = CommunityEngine::User.all(:conditions => [ 'LOWER(login) LIKE ?', '%' + (params[:message][:to]) + '%' ])
+    @users = CommunityEngine.user_class.all(:conditions => [ 'LOWER(login) LIKE ?', '%' + (params[:message][:to]) + '%' ])
     render :inline => "<%= auto_complete_result(@users, 'login') %>"
   end
     
@@ -43,7 +43,7 @@ class MessagesController < BaseController
       render :action => :new and return
     else
       @message = CommunityEngine::Message.new(params[:message])          
-      @message.recipient = CommunityEngine::User.find_by_login(params[:message][:to].strip)
+      @message.recipient = CommunityEngine.user_class.find_by_login(params[:message][:to].strip)
       @message.sender = @user
       unless @message.valid?
         render :action => :new and return        
@@ -84,7 +84,7 @@ class MessagesController < BaseController
   
   private
     def find_user
-      @user = CommunityEngine::User.find(params[:user_id])
+      @user = CommunityEngine.user_class.find(params[:user_id])
     end
 
     def require_ownership_or_moderator

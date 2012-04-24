@@ -85,7 +85,7 @@ class TagsController < BaseController
           @pages = @photos = CommunityEngine::Photo.recent.tagged_with(tag_array).page(params[:page]).per(30)
           @posts, @users, @clippings = [], [], []
         when 'User', 'users'
-          @pages = @users = CommunityEngine::User.recent.tagged_with(tag_array).page(params[:page]).per(30)
+          @pages = @users = CommunityEngine.user_class.recent.tagged_with(tag_array).page(params[:page]).per(30)
           @posts, @photos, @clippings = [], [], []
         when 'Clipping', 'clippings'
           @pages = @clippings = CommunityEngine::Clipping.recent.tagged_with(tag_array).page(params[:page]).per(10)
@@ -96,7 +96,7 @@ class TagsController < BaseController
     else
       @posts      = CommunityEngine::Post.recent.limit(5).tagged_with(tag_array)
       @photos     = CommunityEngine::Photo.recent.limit(10).tagged_with(tag_array)
-      @users      = CommunityEngine::User.recent.limit(10).tagged_with(tag_array)
+      @users      = CommunityEngine.user_class.recent.limit(10).tagged_with(tag_array)
       @clippings  = CommunityEngine::Clipping.recent.limit(10).tagged_with(tag_array)
     end
   end

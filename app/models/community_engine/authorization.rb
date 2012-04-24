@@ -33,7 +33,7 @@ class Authorization < ActiveRecord::Base
     elsif self.user 
       self.user
     else
-      self.user = CommunityEngine::User.find_or_create_from_authorization(self)      
+      self.user = CommunityEngine.user_class.find_or_create_from_authorization(self)      
     end
   end
   

@@ -1,7 +1,7 @@
 module AuthenticatedSystem
   def update_last_seen_at
      return unless logged_in?
-     CommunityEngine::User.update_all ['sb_last_seen_at = ?', Time.now.utc], ['id = ?', current_user.id] 
+     CommunityEngine.user_class.update_all ['sb_last_seen_at = ?', Time.now.utc], ['id = ?', current_user.id] 
      current_user.sb_last_seen_at = Time.now.utc
   end
   
@@ -40,7 +40,7 @@ module AuthenticatedSystem
         return
       end
 
-      admin = CommunityEngine::User.find(session[:admin_id])
+      admin = CommunityEngine.user_class.find(session[:admin_id])
       if admin && admin.admin?
         session[:admin_id] = nil
         CommunityEngine::UserSession.create(admin, true)

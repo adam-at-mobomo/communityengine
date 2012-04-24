@@ -27,8 +27,8 @@ class AdminController < BaseController
   end
   
   def users
-    @users = CommunityEngine::User.recent
-    user = CommunityEngine::User.arel_table
+    @users = CommunityEngine.user_class.recent
+    user = CommunityEngine.user_class.arel_table
 
     if params['login']    
       @users = @users.where('`community_engine_users`.login LIKE ?', "%#{params['login']}%")
@@ -54,21 +54,21 @@ class AdminController < BaseController
   end
   
   def activate_user
-    user = CommunityEngine::User.find(params[:id])
+    user = CommunityEngine.user_class.find(params[:id])
     user.activate
     flash[:notice] = :the_user_was_activated.l
     redirect_to :action => :users
   end
   
   def deactivate_user
-    user = CommunityEngine::User.find(params[:id])
+    user = CommunityEngine.user_class.find(params[:id])
     user.deactivate
     flash[:notice] = :the_user_was_deactivated.l
     redirect_to :action => :users
   end  
   
   def subscribers
-    @users = CommunityEngine::User.find(:all, :conditions => ["notify_community_news = ? AND community_engine_users.activated_at IS NOT NULL", (params[:unsubs] ? false : true)])    
+    @users = CommunityEngine.user_class.find(:all, :conditions => ["notify_community_news = ? AND community_engine_users.activated_at IS NOT NULL", (params[:unsubs] ? false : true)])    
     
     respond_to do |format|
       format.xml {

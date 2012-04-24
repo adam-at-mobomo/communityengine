@@ -7,7 +7,7 @@ class Comment < ActiveRecord::Base
   
   belongs_to :commentable, :polymorphic => true
   belongs_to :user, :inverse_of => :comments_as_author, :foreign_key => 'user_id', :class_name => "User"
-  belongs_to :recipient, :class_name => "CommunityEngine::User", :foreign_key => "recipient_id"
+  belongs_to :recipient, :class_name => CommunityEngine.user_class.name, :foreign_key => "recipient_id"
   
   validates_presence_of :comment
   validates_presence_of :commentable_id, :commentable_type

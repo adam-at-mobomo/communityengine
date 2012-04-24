@@ -5,7 +5,7 @@ namespace :community_engine do
   desc  'Assign admin role to user. Usage: rake community_engine:make_admin email=admin@foo.com'
   task :make_admin => :environment do
     email = ENV["email"]
-    user = CommunityEngine::User.find_by_email(email)
+    user = CommunityEngine.user_class.find_by_email(email)
     if user
       user.role = CommunityEngine::Role[:admin]
       user.save!

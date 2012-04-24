@@ -16,7 +16,7 @@
     = "#{:topics.l},"
     = number_with_delimiter(CommunityEngine::SbPost.count)
     = "#{:posts.l},"
-    = number_with_delimiter(CommunityEngine::User.count(:conditions => "sb_posts_count>0"))
+    = number_with_delimiter(CommunityEngine.user_class.count(:conditions => "sb_posts_count>0"))
     = :voices.l
 
   %table{:border=>"0", :cellspacing=>"0", :cellpadding=>"0", :class=>"wide forums"}
@@ -60,7 +60,7 @@
   %p= link_to :recent_posts.l, recent_forum_posts_path
 
 
-  - online_users = CommunityEngine::User.currently_online 
+  - online_users = CommunityEngine.user_class.currently_online 
   - unless online_users.empty? 
     .stats
       .users

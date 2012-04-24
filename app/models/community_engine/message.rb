@@ -3,8 +3,8 @@ class Message < ActiveRecord::Base
   attr_accessor :to
   attr_accessor :reply_to
   
-  belongs_to :sender,     :class_name => 'CommunityEngine::User', :foreign_key => 'sender_id', :inverse_of => :sent_messages
-  belongs_to :recipient,  :class_name => 'CommunityEngine::User', :foreign_key => 'recipient_id', :inverse_of => :received_messages
+  belongs_to :sender,     :class_name => CommunityEngine.user_class.name, :foreign_key => 'sender_id', :inverse_of => :sent_messages
+  belongs_to :recipient,  :class_name => CommunityEngine.user_class.name, :foreign_key => 'recipient_id', :inverse_of => :received_messages
 
   belongs_to :parent, :class_name => "CommunityEngine::Message", :foreign_key => "parent_id", :inverse_of => :children
   has_many :children, :class_name => "CommunityEngine::Message", :foreign_key => "parent_id", :inverse_of => :parent

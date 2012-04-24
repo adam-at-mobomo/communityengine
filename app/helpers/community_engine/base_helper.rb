@@ -5,7 +5,7 @@ module CommunityEngine::BaseHelper
   include ActsAsTaggableOn::TagsHelper
   
   def commentable_url(comment)
-    if comment.commentable_type != "CommunityEngine::User"
+    if comment.commentable_type != CommunityEngine.user_class.name
       polymorphic_url([comment.recipient, comment.commentable])+"#comment_#{comment.id}"
     else
       user_url(comment.recipient)+"#comment_#{comment.id}"
@@ -210,7 +210,7 @@ module CommunityEngine::BaseHelper
 
   def search_posts_title
     (params[:q].blank? ? :recent_posts.l : :searching_for.l+" '#{h params[:q]}'").tap do |title|
-      title << " by #{h CommunityEngine::User.find(params[:user_id]).display_name}" if params[:user_id]
+      title << " by #{h CommunityEngine.user_class.find(params[:user_id]).display_name}" if params[:user_id]
       title << " in #{h CommunityEngine::Forum.find(params[:forum_id]).name}"       if params[:forum_id]
     end
   end

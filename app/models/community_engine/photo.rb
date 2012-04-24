@@ -18,7 +18,7 @@ class Photo < ActiveRecord::Base
   validates_presence_of :user
   
   belongs_to :user
-  has_one :user_as_avatar, :class_name => "CommunityEngine::User", :foreign_key => "avatar_id", :inverse_of => :avatar
+  has_one :user_as_avatar, :class_name => CommunityEngine.user_class.name, :foreign_key => "avatar_id", :inverse_of => :avatar
   
   #Named scopes
   scope :recent, :order => "community_engine_photos.created_at DESC"

@@ -7,9 +7,9 @@ class FriendshipsController < BaseController
   def index
     @body_class = 'friendships-browser'
     
-    @user = (params[:id] ||params[:user_id]) ? CommunityEngine::User.find((params[:id] || params[:user_id] )): CommunityEngine::Friendship.first.user
+    @user = (params[:id] ||params[:user_id]) ? CommunityEngine.user_class.find((params[:id] || params[:user_id] )): CommunityEngine::Friendship.first.user
     @friendships = CommunityEngine::Friendship.all(:conditions => ['user_id = ? OR friend_id = ?', @user.id, @user.id], :limit => 40)
-    @users = CommunityEngine::User.all(:conditions => ['community_engine_users.id in (?)', @friendships.collect{|f| f.friend_id }])    
+    @users = CommunityEngine.user_class.all(:conditions => ['community_engine_users.id in (?)', @friendships.collect{|f| f.friend_id }])    
     
     respond_to do |format|
       format.html 
@@ -18,7 +18,7 @@ class FriendshipsController < BaseController
   end
   
   def deny
-    @user = CommunityEngine::User.find(params[:user_id])    
+    @user = CommunityEngine.user_class.find(params[:user_id])    
     @friendship = @user.friendships.find(params[:id])
  
     respond_to do |format|
@@ -32,7 +32,7 @@ class FriendshipsController < BaseController
   end
 
   def accept
-    @user = CommunityEngine::User.find(params[:user_id])    
+    @user = CommunityEngine.user_class.find(params[:user_id])    
     @friendship = @user.friendships_not_initiated_by_me.find(params[:id])
  
     respond_to do |format|
@@ -48,7 +48,7 @@ class FriendshipsController < BaseController
   end
 
   def denied
-    @user = CommunityEngine::User.find(params[:user_id])    
+    @user = CommunityEngine.user_class.find(params[:user_id])    
     @friendships = @user.friendships.where("friendship_status_id = ?", CommunityEngine::FriendshipStatus[:denied].id).page(params[:page])
     
     respond_to do |format|
@@ -58,7 +58,7 @@ class FriendshipsController < BaseController
 
 
   def accepted
-    @user = CommunityEngine::User.find(params[:user_id])    
+    @user = CommunityEngine.user_class.find(params[:user_id])    
     @friend_count = @user.accepted_friendships.count
     @pending_friendships_count = @user.pending_friendships.count
           
@@ -70,7 +70,7 @@ class FriendshipsController < BaseController
   end
   
   def pending
-    @user = CommunityEngine::User.find(params[:user_id])    
+    @user = CommunityEngine.user_class.find(params[:user_id])    
     @friendships = @user.friendships.find(:all, :conditions => ["initiator = ? AND friendship_status_id = ?", false, CommunityEngine::FriendshipStatus[:pending].id])
     
     respond_to do |format|
@@ -89,7 +89,7 @@ class FriendshipsController < BaseController
   
 
   def create
-    @user = CommunityEngine::User.find(params[:user_id])
+    @user = CommunityEngine.user_class.find(params[:user_id])
     @friendship = CommunityEngine::Friendship.new(:user_id => params[:user_id], :friend_id => params[:friend_id], :initiator => true )
     @friendship.friendship_status_id = CommunityEngine::FriendshipStatus[:pending].id    
     reverse_friendship = CommunityEngine::Friendship.new(params[:friendship])
@@ -113,7 +113,7 @@ class FriendshipsController < BaseController
   end
     
   def destroy
-    @user = CommunityEngine::User.find(params[:user_id])    
+    @user = CommunityEngine.user_class.find(params[:user_id])    
     @friendship = CommunityEngine::Friendship.find(params[:id])
     CommunityEngine::Friendship.transaction do 
       @friendship.destroy

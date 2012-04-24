@@ -5,7 +5,7 @@ class Friendship < ActiveRecord::Base
   cattr_accessor :daily_request_limit
 
   belongs_to :user
-  belongs_to :friend, :class_name => "CommunityEngine::User", :foreign_key => "friend_id"   
+  belongs_to :friend, :class_name => CommunityEngine.user_class.name, :foreign_key => "friend_id"   
   has_enumerated :friendship_status, :class_name => 'CommunityEngine::FriendshipStatus', :foreign_key => 'friendship_status_id'
 
   validates_presence_of   :friendship_status

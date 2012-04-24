@@ -4,7 +4,7 @@ class ModeratorsController < BaseController
   
   def create
     @forum = CommunityEngine::Forum.find(params[:forum_id])
-    @user = CommunityEngine::User.find(params[:user_id])
+    @user = CommunityEngine.user_class.find(params[:user_id])
     @moderatorship = CommunityEngine::Moderatorship.create!(:forum => @forum, :user => @user)
     respond_to do |format|
       format.js

@@ -20,7 +20,7 @@ class PhotosController < BaseController
   end
   
   def index
-    @user = CommunityEngine::User.find(params[:user_id])
+    @user = CommunityEngine.user_class.find(params[:user_id])
 
     @photos = CommunityEngine::Photo.where(:user_id => @user.id).includes(:tags)
     if params[:tag_name]
@@ -84,7 +84,7 @@ class PhotosController < BaseController
 
   # GET /photos/new
   def new
-    @user = CommunityEngine::User.find(params[:user_id])
+    @user = CommunityEngine.user_class.find(params[:user_id])
     @photo = CommunityEngine::Photo.new
     if params[:inline]
       render :action => 'inline_new', :layout => false
@@ -167,7 +167,7 @@ class PhotosController < BaseController
   # DELETE /photos/1
   # DELETE /photos/1.xml
   def destroy
-    @user = CommunityEngine::User.find(params[:user_id])
+    @user = CommunityEngine.user_class.find(params[:user_id])
     @photo = CommunityEngine::Photo.find(params[:id])
     if @user.avatar.eql?(@photo)
       @user.avatar = nil
