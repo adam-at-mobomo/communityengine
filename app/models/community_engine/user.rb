@@ -14,91 +14,12 @@ class User < ActiveRecord::Base
     c.validates_length_of_email_field_options = { :within => 3..100, :if => :email_required? }
     c.validates_format_of_email_field_options = { :with => /^([^@\s]+)@((?:[-a-z0-9A-Z]+\.)+[a-zA-Z]{2,})$/, :if => :email_required? }
   end
-  
-  acts_as_taggable  
-  acts_as_commentable
-  has_enumerated :role, :class_name => 'CommunityEngine::Role', :foreign_key => 'role_id'      
-  tracks_unlinked_activities [:logged_in, :invited_friends, :updated_profile, :joined_the_site]  
-  
-  #callbacks  
-  before_create :make_activation_code
-  after_create  :update_last_login
-  after_create  :deliver_signup_notification
-  before_save   :whitelist_attributes  
-  after_save    :recount_metro_area_users
-  after_destroy :recount_metro_area_users
-
-  #validation
-  validates_presence_of     :metro_area, :if => Proc.new { |user| user.state }
-  validates_uniqueness_of   :login
-  validates_exclusion_of    :login, :in => configatron.reserved_logins
-
-  validate :valid_birthday, :if => :requires_valid_birthday?
-  validate :check_spam    
-  
-  #associations
-    has_many :authorizations, :dependent => :destroy
-    has_many :posts, :order => "published_at desc", :dependent => :destroy
-    has_many :photos, :order => "created_at desc", :dependent => :destroy
-    has_many :invitations, :dependent => :destroy
-    has_many :rsvps, :dependent => :destroy
-    has_many :albums, :dependent => :destroy    
-
-    #friendship associations
-    has_many :friendships, :class_name => "CommunityEngine::Friendship", :foreign_key => "user_id", :dependent => :destroy
-    has_many :accepted_friendships, :class_name => "CommunityEngine::Friendship", :conditions => ['friendship_status_id = ?', 2]
-    has_many :pending_friendships, :class_name => "CommunityEngine::Friendship", :conditions => ['initiator = ? AND friendship_status_id = ?', false, 1]
-    has_many :friendships_initiated_by_me, :class_name => "CommunityEngine::Friendship", :foreign_key => "user_id", :conditions => ['initiator = ?', true], :dependent => :destroy
-    has_many :friendships_not_initiated_by_me, :class_name => "CommunityEngine::Friendship", :foreign_key => "user_id", :conditions => ['initiator = ?', false], :dependent => :destroy
-    has_many :occurances_as_friend, :class_name => "CommunityEngine::Friendship", :foreign_key => "friend_id", :dependent => :destroy
-
-    #forums
-    has_many :moderatorships, :dependent => :destroy
-    has_many :forums, :through => :moderatorships, :order => 'community_engine_forums.name'
-    has_many :sb_posts, :dependent => :destroy
-    has_many :topics, :dependent => :destroy
-    has_many :monitorships, :dependent => :destroy
-    has_many :monitored_topics, :through => :monitorships, :conditions => ['community_engine_monitorships.active = ?', true], :order => 'community_engine_topics.replied_at desc', :source => :topic
-
-    belongs_to  :avatar, :class_name => "CommunityEngine::Photo", :foreign_key => "avatar_id", :inverse_of => :user_as_avatar
-    belongs_to  :metro_area, :counter_cache => true
-    belongs_to  :state
-    belongs_to  :country
-    has_many    :comments_as_author, :class_name => "CommunityEngine::Comment", :foreign_key => "user_id", :order => "created_at desc", :dependent => :destroy
-    has_many    :comments_as_recipient, :class_name => "CommunityEngine::Comment", :foreign_key => "recipient_id", :order => "created_at desc", :dependent => :destroy
-    has_many    :clippings, :order => "created_at desc", :dependent => :destroy
-    has_many    :favorites, :order => "created_at desc", :dependent => :destroy
-    
-    #messages
-    has_many :all_sent_messages, :class_name => "CommunityEngine::Message", :foreign_key => "sender_id", :dependent => :destroy
-    has_many :sent_messages,
-             :class_name => 'CommunityEngine::Message',
-             :foreign_key => 'sender_id',
-             :order => "community_engine_messages.created_at DESC",
-             :conditions => ["community_engine_messages.sender_deleted = ?", false]
-
-    has_many :received_messages,
-             :class_name => 'CommunityEngine::Message',
-             :foreign_key => 'recipient_id',
-             :order => "community_engine_message.created_at DESC",
-             :conditions => ["community_engine_message.recipient_deleted = ?", false]
-    has_many :message_threads_as_recipient, :class_name => "CommunityEngine::MessageThread", :foreign_key => "recipient_id"               
     
   #named scopes
   scope :recent, order("#{table_name}.created_at DESC")
   scope :featured, where(:featured_writer => true)
   scope :active, where("#{table_name}.activated_at IS NOT NULL")
   scope :vendors, where(:vendor => true)
-  
-
-  accepts_nested_attributes_for :avatar
-  attr_accessible :avatar_id, :company_name, :country_id, :description, :email,
-    :firstname, :fullname, :gender, :lastname, :login, :metro_area_id,
-    :middlename, :notify_comments, :notify_community_news,
-    :notify_friend_requests, :password, :password_confirmation,
-    :profile_public, :state_id, :stylesheet, :time_zone, :vendor, :zip, :avatar_attributes, :birthday
-
-  attr_accessor :authorizing_from_omniauth
 
   ## Class Methods
 
