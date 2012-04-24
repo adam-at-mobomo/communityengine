@@ -11,9 +11,9 @@ class ClippingsController < BaseController
   cache_sweeper CommunityEngine::TaggableSweeper, :only => [:create, :update, :destroy]    
 
   def site_index
-    @clippings = CommunityEngine::Clipping.includes(:tags).order(params[:recent] ? "created_at DESC" : "clippings.favorited_count DESC")
+    @clippings = CommunityEngine::Clipping.includes(:tags).order(params[:recent] ? "created_at DESC" : "community_engine_clippings.favorited_count DESC")
     
-    @clippings = @clippings.where('tags.name = ?', params[:tag_name]) if params[:tag_name]
+    @clippings = @clippings.where('community_engine_tags.name = ?', params[:tag_name]) if params[:tag_name]
     @clippings = @clippings.where('created_at > ?', 4.weeks.ago) unless params[:recent]
 
     @clippings = @clippings.page(params[:page])
@@ -24,7 +24,7 @@ class ClippingsController < BaseController
       format.html
       format.rss {
         render_rss_feed_for(@clippings,
-           { :feed => {:title => @rss_title, :link => url_for(:controller => 'clippings', :action => 'site_index') },
+           { :feed => {:title => @rss_title, :link => url_for(:controller => 'community_engine/clippings', :action => 'site_index') },
              :item => {:title => :title_for_rss,
                        :description => Proc.new {|clip| description_for_rss(clip)},
                        :link => Proc.new {|clip| user_clipping_url(clip.user, clip)},
@@ -40,9 +40,9 @@ class ClippingsController < BaseController
   def index
     @user = CommunityEngine.user_class.find(params[:user_id])
 
-    @clippings = CommunityEngine::Clipping.includes(:tags).where(:user_id => @user.id).order("clippings.created_at DESC")
+    @clippings = CommunityEngine::Clipping.includes(:tags).where(:user_id => @user.id).order("community_engine_clippings.created_at DESC")
 
-    @clippings = @clippings.where('tags.name = ?', params[:tag_name]) if params[:tag_name]
+    @clippings = @clippings.where('community_engine_tags.name = ?', params[:tag_name]) if params[:tag_name]
 
     @clippings = @clippings.page(params[:page])
     
@@ -56,10 +56,10 @@ class ClippingsController < BaseController
     respond_to do |format|
       format.html # index.rhtml
       format.js { render :inline => @clippings_data.to_json }
-      # format.widget { render :template => 'clippings/widget', :layout => false }
+      # format.widget { render :template => 'community_engine/clippings/widget', :layout => false }
       format.rss {
         render_rss_feed_for(@clippings,
-           { :feed => {:title => @rss_title, :link => url_for(:controller => 'clippings', :action => 'index', :user_id => @user) },
+           { :feed => {:title => @rss_title, :link => url_for(:controller => 'community_engine/clippings', :action => 'index', :user_id => @user) },
              :item => {:title => :title_for_rss,
                        :description => Proc.new {|clip| description_for_rss(clip)},
                        :link => :url,
