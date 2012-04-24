@@ -2,12 +2,6 @@ require 'digest/sha1'
 
 module CommunityEngine
 class User < ActiveRecord::Base
-  extend FriendlyId
-  include UrlUpload
-  include CommunityEngine::FacebookProfile
-  include CommunityEngine::TwitterProfile
-  
-  include Rakismet::Model
   rakismet_attrs :author => :login, :comment_type => 'registration', :content => :description, :user_ip => :last_login_ip, :author_email => :email
   attr_protected :admin, :featured, :role_id, :akismet_attrs
       
