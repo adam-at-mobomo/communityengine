@@ -43,6 +43,9 @@ module ::CommunityEngine
     
     config.to_prepare do
       if CommunityEngine.user_class
+        CommunityEngine.user_class.send :const_set, 'MALE', 'M'
+        CommunityEngine.user_class.send :const_set, 'FEMALE', 'F'
+
         CommunityEngine.user_class.send :extend, FriendlyId
         CommunityEngine.user_class.send :attr_protected, :admin, :featured, :role_id, :akismet_attrs
         CommunityEngine.user_class.send :friendly_id, :login, :use => :slugged, :slug_column => 'login_slug'

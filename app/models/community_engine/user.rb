@@ -2,9 +2,6 @@ require 'digest/sha1'
 
 module CommunityEngine
 class User < ActiveRecord::Base
-  MALE    = 'M'
-  FEMALE  = 'F'
-  
   acts_as_authentic do |c|
     c.crypto_provider = CommunityEngine::CommunityEngineSha1CryptoMethod
     
