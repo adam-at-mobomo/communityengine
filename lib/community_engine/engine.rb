@@ -1,5 +1,5 @@
 require "community_engine"
-require 'commuinty_engine/user_methods'
+require 'community_engine/user_methods'
 require 'rails/all'
 
 module ::CommunityEngine
