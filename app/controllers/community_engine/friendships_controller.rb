@@ -7,9 +7,9 @@ class FriendshipsController < BaseController
   def index
     @body_class = 'friendships-browser'
     
-    @user = (params[:id] ||params[:user_id]) ? CommunityEngine::User.find((params[:id] || params[:user_id] )): CommunityEngine::Friendship.find(:first).user
-    @friendships = CommunityEngine::Friendship.find(:all, :conditions => ['user_id = ? OR friend_id = ?', @user.id, @user.id], :limit => 40)
-    @users = CommunityEngine::User.find(:all, :conditions => ['community_engine_users.id in (?)', @friendships.collect{|f| f.friend_id }])    
+    @user = (params[:id] ||params[:user_id]) ? CommunityEngine::User.find((params[:id] || params[:user_id] )): CommunityEngine::Friendship.first.user
+    @friendships = CommunityEngine::Friendship.all(:conditions => ['user_id = ? OR friend_id = ?', @user.id, @user.id], :limit => 40)
+    @users = CommunityEngine::User.all(:conditions => ['community_engine_users.id in (?)', @friendships.collect{|f| f.friend_id }])    
     
     respond_to do |format|
       format.html 

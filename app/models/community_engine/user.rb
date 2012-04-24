@@ -121,9 +121,9 @@ class User < ActiveRecord::Base
   end
 
   def self.find_country_and_state_from_search_params(search)
-    country     = Country.find(search['country_id']) if !search['country_id'].blank?
-    state       = State.find(search['state_id']) if !search['state_id'].blank?
-    metro_area  = MetroArea.find(search['metro_area_id']) if !search['metro_area_id'].blank?
+    country     = CommunityEngine::Country.find(search['country_id']) if !search['country_id'].blank?
+    state       = CommunityEngine::State.find(search['state_id']) if !search['state_id'].blank?
+    metro_area  = CommunityEngine::MetroArea.find(search['metro_area_id']) if !search['metro_area_id'].blank?
 
     if metro_area && metro_area.country
       country ||= metro_area.country 
@@ -163,13 +163,13 @@ class User < ActiveRecord::Base
       users = users.where(user[:metro_area_id].eq(search['metro_area_id']))
     end
     if search['login']    
-      users = users.where('`users`.login LIKE ?', "%#{search['login']}%")
+      users = users.where('`community_engine_users`.login LIKE ?', "%#{search['login']}%")
     end
     if search['vendor']
       users = users.where(user[:vendor].eq(true))
     end    
     if search['description']
-      users = users.where('`users`.description LIKE ?', "%#{search['description']}%")
+      users = users.where('`community_engine_users`.description LIKE ?', "%#{search['description']}%")
     end    
     users
   end  
@@ -204,7 +204,7 @@ class User < ActiveRecord::Base
   
   def self.recent_activity(options = {})
     options.reverse_merge! :per_page => 10, :page => 1
-    Activity.recent.joins("LEFT JOIN users ON community_engine_users.id = activities.user_id").where('community_engine_users.activated_at IS NOT NULL').select('activities.*').page(options[:page]).per(options[:per_page])
+    Activity.recent.joins("LEFT JOIN community_engine_users ON community_engine_users.id = activities.user_id").where('community_engine_users.activated_at IS NOT NULL').select('activities.*').page(options[:page]).per(options[:per_page])
   end
 
   def self.currently_online
@@ -268,18 +268,18 @@ class User < ActiveRecord::Base
 
   def deactivate
     return if admin? #don't allow admin deactivation
-    User.transaction do
+    CommunityEngine::User.transaction do
       update_attribute(:activated_at, nil)
       update_attribute(:activation_code, make_activation_code)
     end
   end
 
   def activate
-    User.transaction do
+    CommunityEngine::User.transaction do
       update_attribute(:activated_at, Time.now.utc)
       update_attribute(:activation_code, nil)
     end
-    UserNotifier.activation(self).deliver    
+    CommunityEngine::UserNotifier.activation(self).deliver    
   end
   
   def active?
@@ -329,11 +329,11 @@ class User < ActiveRecord::Base
   end
 
   def friendship_exists_with?(friend)
-    Friendship.find(:first, :conditions => ["user_id = ? AND friend_id = ?", self.id, friend.id])
+    CommunityEngine::Friendship.first(:conditions => ["user_id = ? AND friend_id = ?", self.id, friend.id])
   end
     
   def deliver_signup_notification
-    UserNotifier.signup_notification(self).deliver    
+    CommunityEngine::UserNotifier.signup_notification(self).deliver    
   end
 
   def update_last_login

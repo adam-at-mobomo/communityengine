@@ -8,7 +8,7 @@ class PasswordResetsController < BaseController
   end
 
   def create
-    @user = User.find_by_email(params[:email])
+    @user = CommunityEngine::User.find_by_email(params[:email])
     if @user
       @user.deliver_password_reset_instructions!
 
@@ -43,7 +43,7 @@ class PasswordResetsController < BaseController
   private
 
   def load_user_using_perishable_token
-    @user = User.find_using_perishable_token(params[:id])
+    @user = CommunityEngine::User.find_using_perishable_token(params[:id])
     unless @user
       flash[:error] = :an_error_occurred.l
       redirect_to login_path

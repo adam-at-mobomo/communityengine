@@ -3,7 +3,7 @@ class UserNotifier < ActionMailer::Base
   include ActionView::Helpers::TextHelper
   include ActionView::Helpers::SanitizeHelper
   extend  ActionView::Helpers::SanitizeHelper::ClassMethods # Required for rails 2.2
-  include BaseHelper
+  include CommunityEngine::BaseHelper
   
   default_url_options[:host] = configatron.app_host
   default :from => "#{:the_team.l(:site => configatron.community_name, :email => configatron.support_email)}"

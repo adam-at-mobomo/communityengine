@@ -3,9 +3,9 @@ class ModeratorsController < BaseController
   before_filter :admin_required
   
   def create
-    @forum = Forum.find(params[:forum_id])
-    @user = User.find(params[:user_id])
-    @moderatorship = Moderatorship.create!(:forum => @forum, :user => @user)
+    @forum = CommunityEngine::Forum.find(params[:forum_id])
+    @user = CommunityEngine::User.find(params[:user_id])
+    @moderatorship = CommunityEngine::Moderatorship.create!(:forum => @forum, :user => @user)
     respond_to do |format|
       format.js
     end
@@ -13,7 +13,7 @@ class ModeratorsController < BaseController
   end
 
   def destroy
-    @moderatorship = Moderatorship.find(params[:id])
+    @moderatorship = CommunityEngine::Moderatorship.find(params[:id])
     @moderatorship.destroy
     respond_to do |format|
       format.js

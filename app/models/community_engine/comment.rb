@@ -7,7 +7,7 @@ class Comment < ActiveRecord::Base
   
   belongs_to :commentable, :polymorphic => true
   belongs_to :user, :inverse_of => :comments_as_author, :foreign_key => 'user_id', :class_name => "User"
-  belongs_to :recipient, :class_name => "User", :foreign_key => "recipient_id"
+  belongs_to :recipient, :class_name => "CommunityEngine::User", :foreign_key => "recipient_id"
   
   validates_presence_of :comment
   validates_presence_of :commentable_id, :commentable_type
@@ -24,22 +24,21 @@ class Comment < ActiveRecord::Base
   acts_as_activity :user, :if => Proc.new{|record| record.user } #don't record an activity if there's no user
   
   def self.find_photo_comments_for(user)
-    Comment.find(:all, :conditions => ["recipient_id = ? AND commentable_type = ?", user.id, 'Photo'], :order => 'created_at DESC')
+    CommunityEngine::Comment.find(:all, :conditions => ["recipient_id = ? AND commentable_type = ?", user.id, 'CommunityEngine::Photo'], :order => 'created_at DESC')
   end
       
   def previous_commenters_to_notify
     # only send a notification on recent comments
     # limit the number of emails we'll send (or posting will be slooowww)
-    User.find(:all, 
-      :conditions => ["users.id NOT IN (?) AND users.notify_comments = ? 
+    User.all(:conditions => ["community_engine_users.id NOT IN (?) AND community_engine_users.notify_comments = ? 
                       AND commentable_id = ? AND commentable_type = ? 
-                      AND comments.notify_by_email = ? 
-                      AND comments.created_at > ?", [user_id, recipient_id.to_i], true, commentable_id, commentable_type, true, 2.weeks.ago], 
+                      AND community_engine_comments.notify_by_email = ? 
+                      AND community_engine_comments.created_at > ?", [user_id, recipient_id.to_i], true, commentable_id, commentable_type, true, 2.weeks.ago], 
       :include => :comments_as_author, :limit => 20)
   end    
     
   def commentable_name
-    type = self.commentable_type.underscore
+    type = self.commentable_type.demodulize.underscore
     case type
       when 'user'
         commentable.login
@@ -50,7 +49,7 @@ class Comment < ActiveRecord::Base
       when 'photo'
         commentable.description || "Photo from #{commentable.user.login}"
       else 
-        commentable.class.to_s.humanize
+        commentable.class.model_name.human
     end
   end
   
@@ -63,7 +62,7 @@ class Comment < ActiveRecord::Base
   end
   
   def self.find_recent(options = {:limit => 5})
-    find(:all, :conditions => "created_at > '#{14.days.ago.iso8601}'", :order => "created_at DESC", :limit => options[:limit])
+    all(:conditions => "created_at > '#{14.days.ago.iso8601}'", :order => "created_at DESC", :limit => options[:limit])
   end
   
   def can_be_deleted_by(person)
@@ -79,20 +78,20 @@ class Comment < ActiveRecord::Base
   
   def notify_previous_commenters
     previous_commenters_to_notify.each do |commenter|
-      UserNotifier.follow_up_comment_notice(commenter, self).deliver if commenter.email
+      CommunityEngine::UserNotifier.follow_up_comment_notice(commenter, self).deliver if commenter.email
     end    
   end
   
   def notify_previous_anonymous_commenters
     anonymous_commenters_emails = commentable.comments.map{|c|  c.author_email if (c.notify_by_email? && !c.user && !c.author_email.eql?(self.author_email) && c.author_email) }.uniq.compact
     anonymous_commenters_emails.each do |email|
-      UserNotifier.follow_up_comment_notice_anonymous(email, self).deliver
+      CommunityEngine::UserNotifier.follow_up_comment_notice_anonymous(email, self).deliver
     end    
   end  
   
   def send_notifications
     return if commentable.respond_to?(:send_comment_notifications?) && !commentable.send_comment_notifications?    
-    UserNotifier.comment_notice(self).deliver if should_notify_recipient?
+    CommunityEngine::UserNotifier.comment_notice(self).deliver if should_notify_recipient?
     self.notify_previous_commenters
     self.notify_previous_anonymous_commenters if configatron.allow_anonymous_commenting
   end

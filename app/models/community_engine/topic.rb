@@ -6,11 +6,11 @@ class Topic < ActiveRecord::Base
   belongs_to :forum, :counter_cache => true
   belongs_to :user
   has_many :monitorships
-  has_many :monitors, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :source => :user
+  has_many :monitors, :through => :monitorships, :conditions => ['community_engine_monitorships.active = ?', true], :source => :user
 
   has_many :sb_posts, :dependent => :destroy
 
-  belongs_to :replied_by_user, :foreign_key => "replied_by", :class_name => "User"
+  belongs_to :replied_by_user, :foreign_key => "replied_by", :class_name => "CommunityEngine::User"
   
   validates_presence_of :forum, :user, :title
   before_create :set_default_replied_at_and_sticky
@@ -26,7 +26,7 @@ class Topic < ActiveRecord::Base
 
   def notify_of_new_post(post)
     monitorships.each do |m|
-      UserNotifier.new_forum_post_notice(m.user, post).deliver if (m.user != post.user) && m.user.notify_comments
+      CommunityEngine::UserNotifier.new_forum_post_notice(m.user, post).deliver if (m.user != post.user) && m.user.notify_comments
     end
   end
 
@@ -63,11 +63,11 @@ class Topic < ActiveRecord::Base
     end
 
     def set_post_topic_id
-      SbPost.update_all ['forum_id = ?', forum_id], ['topic_id = ?', id]
+      CommunityEngine::SbPost.update_all ['forum_id = ?', forum_id], ['topic_id = ?', id]
     end
     
     def create_monitorship_for_owner
-      monitorship = Monitorship.find_or_initialize_by_user_id_and_topic_id(user.id, self.id)
+      monitorship = CommunityEngine::Monitorship.find_or_initialize_by_user_id_and_topic_id(user.id, self.id)
       monitorship.update_attribute :active, true      
     end
 end

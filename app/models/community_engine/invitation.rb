@@ -30,7 +30,7 @@ class Invitation < ActiveRecord::Base
   def send_invite
     emails = self.email_addresses.split(",").collect{|email| email.strip }.uniq 
     emails.each{|email|
-      UserNotifier.signup_invitation(email, self.user, self.message).deliver
+      CommunityEngine::UserNotifier.signup_invitation(email, self.user, self.message).deliver
     }
   end
   

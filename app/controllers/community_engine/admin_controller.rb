@@ -18,23 +18,23 @@ class AdminController < BaseController
   end
   
   def events
-    @events = Event.order('start_time DESC').page(params[:page])
+    @events = CommunityEngine::Event.order('start_time DESC').page(params[:page])
   end
   
   def messages
     @user = current_user
-    @messages = Message.order('created_at DESC').page(params[:page]).per(50)
+    @messages = CommunityEngine::Message.order('created_at DESC').page(params[:page]).per(50)
   end
   
   def users
-    @users = User.recent
-    user = User.arel_table
+    @users = CommunityEngine::User.recent
+    user = CommunityEngine::User.arel_table
 
     if params['login']    
-      @users = @users.where('`users`.login LIKE ?', "%#{params['login']}%")
+      @users = @users.where('`community_engine_users`.login LIKE ?', "%#{params['login']}%")
     end
     if params['email']
-      @users = @users.where('`users`.email LIKE ?', "%#{params['email']}%")
+      @users = @users.where('`community_engine_users`.email LIKE ?', "%#{params['email']}%")
     end        
 
     @users = @users.page(params[:page]).per(100)
@@ -48,27 +48,27 @@ class AdminController < BaseController
   end
   
   def comments
-    @search = Comment.search(params[:search])
+    @search = CommunityEngine::Comment.search(params[:search])
     @search.meta_sort ||= 'created_at.desc'
     @comments = @search.page(params[:page]).per(100)
   end
   
   def activate_user
-    user = User.find(params[:id])
+    user = CommunityEngine::User.find(params[:id])
     user.activate
     flash[:notice] = :the_user_was_activated.l
     redirect_to :action => :users
   end
   
   def deactivate_user
-    user = User.find(params[:id])
+    user = CommunityEngine::User.find(params[:id])
     user.deactivate
     flash[:notice] = :the_user_was_deactivated.l
     redirect_to :action => :users
   end  
   
   def subscribers
-    @users = User.find(:all, :conditions => ["notify_community_news = ? AND users.activated_at IS NOT NULL", (params[:unsubs] ? false : true)])    
+    @users = CommunityEngine::User.find(:all, :conditions => ["notify_community_news = ? AND community_engine_users.activated_at IS NOT NULL", (params[:unsubs] ? false : true)])    
     
     respond_to do |format|
       format.xml {

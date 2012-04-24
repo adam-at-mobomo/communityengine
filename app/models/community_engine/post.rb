@@ -24,7 +24,7 @@ class Post < ActiveRecord::Base
   before_validation :set_published_at
   
   after_save do |post|
-    activity = Activity.find_by_item_type_and_item_id('Post', post.id)
+    activity = Activity.find_by_item_type_and_item_id('CommunityEngine::Post', post.id)
     if post.is_live? && !activity
       post.create_activity_from_self 
     elsif post.is_draft? && activity
@@ -154,7 +154,7 @@ class Post < ActiveRecord::Base
     else    
       emails = email_addresses.split(",").collect{|email| email.strip }.uniq 
       emails.each{|email|
-        UserNotifier.post_recommendation((user ? user.login : 'Someone'), email, self, message, user).deliver
+        CommunityEngine::UserNotifier.post_recommendation((user ? user.login : 'Someone'), email, self, message, user).deliver
       }
       self.increment(:emailed_count).save    
     end

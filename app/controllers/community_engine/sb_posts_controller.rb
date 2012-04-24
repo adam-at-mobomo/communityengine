@@ -21,27 +21,27 @@ class SbPostsController < BaseController
   def index
     conditions = []
     [:user_id, :forum_id].each { |attr| 
-      conditions << SbPost.send(:sanitize_sql, ["sb_posts.#{attr} = ?", params[attr].to_i]) if params[attr] 
+      conditions << SbPost.send(:sanitize_sql, ["community_engine_sb_posts.#{attr} = ?", params[attr].to_i]) if params[attr] 
     }
     conditions = conditions.any? ? conditions.collect { |c| "(#{c})" }.join(' AND ') : nil
 
     @posts = SbPost.with_query_options.where(conditions).page(params[:page])
     
-    @users = User.find(:all, :select => 'distinct *', :conditions => ['id in (?)', @posts.collect(&:user_id).uniq]).index_by(&:id)
+    @users = CommunityEngine::User.find(:all, :select => 'distinct *', :conditions => ['id in (?)', @posts.collect(&:user_id).uniq]).index_by(&:id)
   end
 
   def search
-    conditions = params[:q].blank? ? nil : SbPost.send(:sanitize_sql, ['LOWER(sb_posts.body) LIKE ?', "%#{params[:q]}%"])
+    conditions = params[:q].blank? ? nil : CommunityEngine::SbPost.send(:sanitize_sql, ['LOWER(community_engine_sb_posts.body) LIKE ?', "%#{params[:q]}%"])
     
-    @posts = SbPost.with_query_options.where(conditions).page(params[:page])
+    @posts = CommunityEngine::SbPost.with_query_options.where(conditions).page(params[:page])
 
-    @users = User.find(:all, :select => 'distinct *', :conditions => ['id in (?)', @posts.collect(&:user_id).uniq]).index_by(&:id)
+    @users = CommunityEngine::User.find(:all, :select => 'distinct *', :conditions => ['id in (?)', @posts.collect(&:user_id).uniq]).index_by(&:id)
     render :action => :index
   end
 
   def monitored
-    @user = User.find params[:user_id]    
-    @posts = SbPost.with_query_options.joins('INNER JOIN monitorships ON monitorships.topic_id = topics.id').where('monitorships.user_id = ? AND sb_posts.user_id != ?', params[:user_id], @user.id).page(params[:page])
+    @user = CommunityEngine::User.find params[:user_id]    
+    @posts = CommunityEngine::SbPost.with_query_options.joins('INNER JOIN community_engine_monitorships ON community_engine_monitorships.topic_id = community_engine_topics.id').where('community_engine_monitorships.user_id = ? AND community_engine_sb_posts.user_id != ?', params[:user_id], @user.id).page(params[:page])
   end
 
   def show
@@ -133,7 +133,7 @@ class SbPostsController < BaseController
     end
     
     def find_post
-      @post = SbPost.find_by_id_and_topic_id_and_forum_id(params[:id].to_i, params[:topic_id].to_i, params[:forum_id].to_i) || raise(ActiveRecord::RecordNotFound)
+      @post = CommunityEngine::SbPost.find_by_id_and_topic_id_and_forum_id(params[:id].to_i, params[:topic_id].to_i, params[:forum_id].to_i) || raise(ActiveRecord::RecordNotFound)
     end
     
 end

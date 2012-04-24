@@ -6,13 +6,13 @@ class AuthorizationsController < BaseController
     omniauth = request.env['omniauth.auth'] #this is where you get all the data from your provider through omniauth    
     provider_name = omniauth['provider'].capitalize    
     
-    @auth = Authorization.find_or_create_from_hash(omniauth, current_user)
+    @auth = CommunityEngine::Authorization.find_or_create_from_hash(omniauth, current_user)
 
     if logged_in?
       flash[:notice] = t('authorizations.create.success_existing_user', :provider => provider_name)
     elsif @auth.valid?
       flash[:notice] = t('authorizations.create.success_message', :provider => provider_name)
-      UserSession.create(@auth.user, true)
+      CommunityEngine::UserSession.create(@auth.user, true)
     end
 
     if logged_in?

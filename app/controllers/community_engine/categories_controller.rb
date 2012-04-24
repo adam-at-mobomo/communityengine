@@ -6,7 +6,7 @@ class CategoriesController < BaseController
   # GET /categories
   # GET /categories.xml
   def index
-    @categories = CommunityEngine::Category.find(:all)
+    @categories = CommunityEngine::Category.all
 
     respond_to do |format|
       format.html # index.rhtml
@@ -24,14 +24,13 @@ class CategoriesController < BaseController
 
     @posts = CommunityEngine::Post.includes(:tags).where('category_id = ?', @category.id).order(order).page(params[:page])
     
-    @popular_posts = @category.posts.order("view_count DESC").find(:all, :limit => 10)
+    @popular_posts = @category.posts.order("view_count DESC").all(:limit => 10)
     @popular_polls = CommunityEngine::Poll.find_popular_in_category(@category)
 
     @rss_title = "#{configatron.community_name}: #{@category.name} "+:posts.l
     @rss_url = category_path(@category, :format => :rss)
 
-    @active_users = CommunityEngine::User.find(:all,
-      :include => :posts,
+    @active_users = CommunityEngine::User.all(:include => :posts,
       :limit => 5,
       :conditions => ["community_engine_posts.category_id = ? AND community_engine_posts.published_at > ?", @category.id, 14.days.ago],
       :order => "community_engine_users.view_count DESC"

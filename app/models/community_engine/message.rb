@@ -3,11 +3,11 @@ class Message < ActiveRecord::Base
   attr_accessor :to
   attr_accessor :reply_to
   
-  belongs_to :sender,     :class_name => 'User', :foreign_key => 'sender_id', :inverse_of => :sent_messages
-  belongs_to :recipient,  :class_name => 'User', :foreign_key => 'recipient_id', :inverse_of => :received_messages
+  belongs_to :sender,     :class_name => 'CommunityEngine::User', :foreign_key => 'sender_id', :inverse_of => :sent_messages
+  belongs_to :recipient,  :class_name => 'CommunityEngine::User', :foreign_key => 'recipient_id', :inverse_of => :received_messages
 
-  belongs_to :parent, :class_name => "Message", :foreign_key => "parent_id", :inverse_of => :children
-  has_many :children, :class_name => "Message", :foreign_key => "parent_id", :inverse_of => :parent
+  belongs_to :parent, :class_name => "CommunityEngine::Message", :foreign_key => "parent_id", :inverse_of => :children
+  has_many :children, :class_name => "CommunityEngine::Message", :foreign_key => "parent_id", :inverse_of => :parent
   has_many :message_threads
   
   scope :parent_messages, where("parent_id IS NULL")
@@ -52,11 +52,11 @@ class Message < ActiveRecord::Base
   end
   
   def notify_recipient
-    UserNotifier.message_notification(self).deliver
+    CommunityEngine::UserNotifier.message_notification(self).deliver
   end
   
   def update_message_threads
-    recipients_thread = MessageThread.find_or_create_by_recipient_id_and_parent_message_id(self.recipient_id, (self.parent_id || self.id))
+    recipients_thread = CommunityEngine::MessageThread.find_or_create_by_recipient_id_and_parent_message_id(self.recipient_id, (self.parent_id || self.id))
     recipients_thread.sender = sender
     recipients_thread.recipient = recipient
     recipients_thread.message = self
@@ -64,7 +64,7 @@ class Message < ActiveRecord::Base
     recipients_thread.save
   
     if parent
-      senders_thread = MessageThread.find_or_create_by_recipient_id_and_parent_message_id(self.sender_id, self.parent_id)
+      senders_thread = CommunityEngine::MessageThread.find_or_create_by_recipient_id_and_parent_message_id(self.sender_id, self.parent_id)
       senders_thread.message = self
       senders_thread.save
     end

@@ -18,7 +18,7 @@ class Photo < ActiveRecord::Base
   validates_presence_of :user
   
   belongs_to :user
-  has_one :user_as_avatar, :class_name => "User", :foreign_key => "avatar_id", :inverse_of => :avatar
+  has_one :user_as_avatar, :class_name => "CommunityEngine::User", :foreign_key => "avatar_id", :inverse_of => :avatar
   
   #Named scopes
   scope :recent, :order => "community_engine_photos.created_at DESC"
@@ -61,7 +61,7 @@ class Photo < ActiveRecord::Base
   def self.find_related_to(photo, options = {})
     options.reverse_merge!({:limit => 8, 
         :order => 'created_at DESC', 
-        :conditions => ['photos.id != ?', photo.id]
+        :conditions => ['community_engine_photos.id != ?', photo.id]
     })
     limit(options[:limit]).order(options[:order]).where(options[:conditions]).tagged_with(photo.tags.collect{|t| t.name }, :any => true)
   end

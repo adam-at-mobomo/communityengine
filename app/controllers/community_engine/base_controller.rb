@@ -101,7 +101,7 @@ class CommunityEngine::BaseController < ApplicationController
     def require_current_user
       @user ||= CommunityEngine::User.find(params[:user_id] || params[:id] )
       unless admin? || (@user && (@user.eql?(current_user)))
-        redirect_to :controller => 'sessions', :action => 'new' and return false
+        redirect_to :controller => 'community_engine/sessions', :action => 'new' and return false
       end
       return @user
     end
@@ -139,7 +139,7 @@ class CommunityEngine::BaseController < ApplicationController
 
     def commentable_url(comment)
       if comment.recipient && comment.commentable
-        if comment.commentable_type != "User"
+        if comment.commentable_type != "CommunityEngine::User"
           polymorphic_url([comment.recipient, comment.commentable])+"#comment_#{comment.id}"
         elsif comment
           user_url(comment.recipient)+"#comment_#{comment.id}"

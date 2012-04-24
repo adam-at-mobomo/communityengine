@@ -12,7 +12,7 @@ class ActivitiesController < BaseController
   end
   
   def index
-    @activities = User.recent_activity(:per_page => 30, :page => params[:page], :limit => 1000)
+    @activities = CommunityEngine::User.recent_activity(:per_page => 30, :page => params[:page], :limit => 1000)
     @popular_tags = popular_tags(30)
   end
   
@@ -31,7 +31,7 @@ class ActivitiesController < BaseController
       @activity = Activity.find(params[:id])  
          
       unless @activity && @activity.can_be_deleted_by?(current_user)
-        redirect_to :controller => 'sessions', :action => 'new' and return false
+        redirect_to :controller => 'community_engine/sessions', :action => 'new' and return false
       end
       return @user
     end
