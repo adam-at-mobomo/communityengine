@@ -3,8 +3,8 @@ require 'open-uri'
 require 'pp'
 
 class CommunityEngine::BaseController < ApplicationController
-
   include AuthenticatedSystem
+  include AuthenticatedSystemEmbedded unless CommunityEngine.custom_user_class?
   include LocalizedApplication
   around_filter :set_locale  
   skip_before_filter :verify_authenticity_token, :only => :footer_content

@@ -50,4 +50,8 @@ module CommunityEngine
   def self.user_class_name
     "::#{user_class.name}"
   end
+  
+  def self.custom_user_class?
+    user_class != CommunityEngine::User
+  end
 end
