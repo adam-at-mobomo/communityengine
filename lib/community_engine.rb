@@ -46,4 +46,8 @@ module CommunityEngine
       @@user_class.constantize
     end
   end
+  
+  def self.user_class_name
+    "::#{user_class.name}"
+  end
 end
