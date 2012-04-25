@@ -213,20 +213,6 @@ module CommunityEngine
         "#{metro_area.name if self.metro_area}#{" , #{self.country.name}" if self.country}"
       end
       
-      def reset_password
-         new_password = newpass(8)
-         self.password = new_password
-         self.password_confirmation = new_password
-         return self.valid?
-      end
-    
-      def newpass( len )
-         chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
-         new_password = ""
-         1.upto(len) { |i| new_password << chars[rand(chars.size-1)] }
-         return new_password
-      end
-      
       def owner
         self
       end
@@ -321,33 +307,9 @@ module CommunityEngine
         message_threads_as_recipient.count(:conditions => ["community_engine_messages.recipient_id = ? AND community_engine_messages.recipient_deleted = ? AND read_at IS NULL", self.id, false], :include => :message)
       end
       
-      def deliver_password_reset_instructions!
-        reset_perishable_token!
-        CommunityEngine::UserNotifier.password_reset_instructions(self).deliver
-      end  
-      
       def valid_birthday
         date = configatron.min_age.years.ago
         errors.add(:birthday, "must be before #{date.strftime("%Y-%m-%d")}") unless birthday && (birthday.to_date <= date.to_date)    
-      end
-      
-      def self.find_or_create_from_authorization(auth)
-        user = CommunityEngine.user_class.find_or_initialize_by_email(:email => auth.email)
-        user.login ||= auth.nickname
-        
-        if user.new_record?
-          new_password = user.newpass(8)
-          user.password = new_password
-          user.password_confirmation = new_password
-        end
-        
-        user.authorizing_from_omniauth = true
-        
-        if user.save
-          user.activate unless user.active?
-          user.reset_persistence_token!
-        end
-        user    
       end
       
       def check_spam
@@ -356,36 +318,16 @@ module CommunityEngine
         end
       end  
       
-      
       ## End Instance Methods
     
       protected
-    
-      def make_activation_code
-        self.activation_code = Digest::SHA1.hexdigest( Time.now.to_s.split(//).sort_by {rand}.join )
-      end
   
       # before filters
       def whitelist_attributes
+        self.login = (self.name || "").gsub(/[^A-Za-z0-9\- ]+/, ' ').downcase.split.join("-") if self.login.blank?
         self.login = self.login.strip
         self.description = white_list(self.description )
         self.stylesheet = white_list(self.stylesheet )
-      end
-  
-      def password_required?
-        crypted_password.blank? || !password.blank?
-      end
-      
-      def email_required?
-        !omniauthed?
-      end
-          
-      def requires_valid_birthday?
-        !omniauthed?
-      end
-      
-      def omniauthed?
-        authorizing_from_omniauth || authorizations.any?      
       end
     end
   end

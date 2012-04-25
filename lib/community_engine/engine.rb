@@ -110,7 +110,6 @@ module ::CommunityEngine
         CommunityEngine.user_class.send :validates_uniqueness_of,   :login
         CommunityEngine.user_class.send :validates_exclusion_of,    :login, :in => configatron.reserved_logins
 
-        CommunityEngine.user_class.send :validate, :valid_birthday, :if => :requires_valid_birthday?
         CommunityEngine.user_class.send :validate, :check_spam    
     
     #messages
