@@ -138,7 +138,7 @@ module CommunityEngine
     ## Instance Methods
     module InstanceMethods
       def moderator_of?(forum)
-        moderatorships.count(:all, :conditions => ['forum_id = ?', (forum.is_a?(Forum) ? forum.id : forum)]) == 1
+        moderatorships.count(:all, :conditions => ['forum_id = ?', (forum.is_a?(CommunityEngine::Forum) ? forum.id : forum)]) == 1
       end
       
       def monitoring_topic?(topic)
@@ -148,7 +148,7 @@ module CommunityEngine
       def recount_metro_area_users
         return unless self.metro_area
         ma = self.metro_area
-        ma.users_count = User.count(:conditions => ["metro_area_id = ?", ma.id])
+        ma.users_count = CommunityEngine.use_class.count(:conditions => ["metro_area_id = ?", ma.id])
         ma.save
       end  
         
@@ -253,7 +253,7 @@ module CommunityEngine
       end
       
       def has_reached_daily_friend_request_limit?
-        friendships_initiated_by_me.count(:conditions => ['created_at > ?', Time.now.beginning_of_day]) >= Friendship.daily_request_limit
+        friendships_initiated_by_me.count(:conditions => ['created_at > ?', Time.now.beginning_of_day]) >= CommunityEngine::Friendship.daily_request_limit
       end
     
       def network_activity(page = {}, since = 1.week.ago)
