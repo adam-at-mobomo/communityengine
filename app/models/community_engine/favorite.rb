@@ -2,7 +2,7 @@ module CommunityEngine
 class Favorite < ActiveRecord::Base
   acts_as_activity :user
   belongs_to :favoritable, :polymorphic => true
-  belongs_to :user
+  belongs_to :user, :class_name => CommunityEngine.user_class_name
   
   validates_presence_of :favoritable
   

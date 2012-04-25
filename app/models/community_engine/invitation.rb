@@ -2,7 +2,7 @@ module CommunityEngine
 class Invitation < ActiveRecord::Base
   acts_as_activity :user
   
-  belongs_to :user
+  belongs_to :user, :class_name => CommunityEngine.user_class_name
   
   after_save :send_invite
 

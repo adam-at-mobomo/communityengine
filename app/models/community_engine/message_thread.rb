@@ -2,8 +2,8 @@ module CommunityEngine
 class MessageThread < ActiveRecord::Base
   belongs_to :message
   belongs_to :parent_message, :class_name => 'Message'
-  belongs_to :sender, :class_name => CommunityEngine.user_class.name, :foreign_key => "sender_id"
-  belongs_to :recipient, :class_name => CommunityEngine.user_class.name, :foreign_key => "recipient_id"
+  belongs_to :sender, :class_name => CommunityEngine.user_class_name, :foreign_key => "sender_id"
+  belongs_to :recipient, :class_name => CommunityEngine.user_class_name, :foreign_key => "recipient_id"
   
   before_destroy :mark_messages_deleted
   

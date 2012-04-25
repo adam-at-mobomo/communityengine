@@ -2,7 +2,7 @@ module CommunityEngine
 class Clipping < ActiveRecord::Base
 
   acts_as_commentable
-  belongs_to :user
+  belongs_to :user, :class_name => CommunityEngine.user_class_name
   validates_presence_of :user
   validates_presence_of :url
   validates_presence_of :image_url

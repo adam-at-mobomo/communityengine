@@ -7,7 +7,7 @@ class Rsvp < ActiveRecord::Base
   validate :event_in_future
   validate :event_allows_rsvp
 
-  belongs_to :user
+  belongs_to :user, :class_name => CommunityEngine.user_class_name
   belongs_to :event
 
   attr_protected :user_id

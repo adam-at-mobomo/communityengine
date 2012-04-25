@@ -4,13 +4,13 @@ class Topic < ActiveRecord::Base
   
   acts_as_taggable
   belongs_to :forum, :counter_cache => true
-  belongs_to :user
+  belongs_to :user, :class_name => CommunityEngine.user_class_name
   has_many :monitorships
   has_many :monitors, :through => :monitorships, :conditions => ['community_engine_monitorships.active = ?', true], :source => :user
 
   has_many :sb_posts, :dependent => :destroy
 
-  belongs_to :replied_by_user, :foreign_key => "replied_by", :class_name => CommunityEngine.user_class.name
+  belongs_to :replied_by_user, :foreign_key => "replied_by", :class_name => CommunityEngine.user_class_name
   
   validates_presence_of :forum, :user, :title
   before_create :set_default_replied_at_and_sticky

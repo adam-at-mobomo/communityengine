@@ -1,6 +1,6 @@
 module CommunityEngine
 class Authorization < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :user, :class_name => CommunityEngine.user_class_name
   validates_presence_of :user_id, :uid, :provider
   validates_uniqueness_of :uid, :scope => :provider
   validates_associated :user

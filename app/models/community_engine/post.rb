@@ -10,7 +10,7 @@ class Post < ActiveRecord::Base
   acts_as_activity :user, :if => Proc.new{|r| r.is_live?}
   acts_as_publishable :live, :draft
   
-  belongs_to :user
+  belongs_to :user, :class_name => CommunityEngine.user_class_name
   belongs_to :category
   has_many   :polls, :dependent => :destroy
   has_many :favorites, :as => :favoritable, :dependent => :destroy
