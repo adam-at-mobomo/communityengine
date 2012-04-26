@@ -8,7 +8,7 @@ class CommunityEngine::BaseController < ApplicationController
   include LocalizedApplication
   around_filter :set_locale  
   skip_before_filter :verify_authenticity_token, :only => :footer_content
-  helper_method :commentable_url, :logged_in?
+  helper_method :commentable_url, :logged_in?, :signup_path_helper
   before_filter :initialize_header_tabs
   before_filter :initialize_admin_tabs
   before_filter :store_location
@@ -158,6 +158,14 @@ class CommunityEngine::BaseController < ApplicationController
       # This hook allows plugins or host apps to easily add tabs to the admin nav by adding to the @admin_nav_links array
       # Usage: @admin_nav_links << {:name => "My link", :url => my_link_path,  }
       @admin_nav_links = []      
-    end 
+    end
+    
+    def signup_path_helper
+      if CommunityEngine.custom_user_class?
+        main_app.new_user_registration_path
+      else
+        signup_path
+      end
+    end
 
 end
