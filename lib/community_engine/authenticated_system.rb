@@ -48,7 +48,7 @@ module AuthenticatedSystem
       respond_to do |accepts|
         accepts.html do
           store_location
-          redirect_to login_path and return false
+          redirect_to login_path_helper and return false
         end
         accepts.xml do
           headers["Status"]           = "Unauthorized"
@@ -58,7 +58,7 @@ module AuthenticatedSystem
         accepts.js do
           store_location 
           render :update do |page|
-            page.redirect_to login_path
+            page.redirect_to login_path_helper
           end and return false
         end        
       end

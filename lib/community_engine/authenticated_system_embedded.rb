@@ -23,7 +23,7 @@ module AuthenticatedSystemEmbedded
 
   def return_to_admin
     unless current_user && !session[:admin_id].nil? && !current_user.admin?
-      redirect_to login_path
+      redirect_to login_path_helper
       return
     end
 
@@ -34,7 +34,7 @@ module AuthenticatedSystemEmbedded
       redirect_to user_path(admin)
     else
       current_user_session.destroy
-      redirect_to login_path
+      redirect_to login_path_helper
     end
   end
 
