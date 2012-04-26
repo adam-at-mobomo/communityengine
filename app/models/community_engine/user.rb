@@ -2,7 +2,7 @@ require 'digest/sha1'
 
 module CommunityEngine
   class User < ActiveRecord::Base
-    CommunityEngine.user_class.send :validate, :valid_birthday, :if => :requires_valid_birthday?
+    validate :valid_birthday, :if => :requires_valid_birthday?
     
     acts_as_authentic do |c|
       c.crypto_provider = CommunityEngine::CommunityEngineSha1CryptoMethod
