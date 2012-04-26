@@ -19,7 +19,7 @@ class AuthorizationsController < BaseController
       redirect_to request.env['omniauth.origin'] || user_path(current_user)
     else
       flash[:notice] = @auth.user.errors.full_messages.to_sentence 
-      redirect_to login_path
+      redirect_to login_path_helper
     end
   end
   

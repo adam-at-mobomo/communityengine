@@ -167,5 +167,13 @@ class CommunityEngine::BaseController < ApplicationController
         signup_path
       end
     end
+    
+    def login_path_helper
+      if CommunityEngine.custom_user_class?
+        main_app.sign_in_path
+      else
+        login_path
+      end
+    end
 
 end

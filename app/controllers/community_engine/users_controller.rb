@@ -43,7 +43,7 @@ class UsersController < BaseController
     @user.deactivate
     current_user_session.destroy if current_user_session
     flash[:notice] = :deactivate_completed.l
-    redirect_to login_path
+    redirect_to login_path_helper
   end
 
   def index
@@ -69,7 +69,7 @@ class UsersController < BaseController
     @accepted_friendships       = @user.accepted_friendships.find(:all, :limit => 5).collect{|f| f.friend }
     @pending_friendships_count  = @user.pending_friendships.count()
 
-    @comments       = @user.comments.find(:all, :limit => 10, :order => 'created_at DESC')
+    @comments       = @user.comments.all(:limit => 10, :order => 'created_at DESC')
     @photo_comments = CommunityEngine::Comment.find_photo_comments_for(@user)    
     @users_comments = CommunityEngine::Comment.find_comments_by_user(@user).limit(5)
 
@@ -304,7 +304,7 @@ class UsersController < BaseController
     if @user && !@user.active?
       flash[:notice] = :activation_email_resent_message.l
       CommunityEngine::UserNotifier.signup_notification(@user).deliver    
-      redirect_to login_path and return
+      redirect_to login_path_helper and return
     else
       flash[:notice] = :activation_email_not_sent_message.l
     end

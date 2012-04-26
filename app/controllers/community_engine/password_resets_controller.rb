@@ -14,7 +14,7 @@ class PasswordResetsController < BaseController
 
       flash[:info] = :your_password_reset_instructions_have_been_emailed_to_you.l      
 
-      redirect_to login_path
+      redirect_to login_path_helper
     else
       flash[:error] = :sorry_we_dont_recognize_that_email_address.l      
 
@@ -46,7 +46,7 @@ class PasswordResetsController < BaseController
     @user = CommunityEngine.user_class.find_using_perishable_token(params[:id])
     unless @user
       flash[:error] = :an_error_occurred.l
-      redirect_to login_path
+      redirect_to login_path_helper
     end
   end
 

@@ -39,7 +39,7 @@ class CommentsController < BaseController
     if @commentable = commentable_class.find(params[:commentable_id])
       unless logged_in? || (@commentable.owner && @commentable.owner.profile_public?)
         flash.now[:error] = :private_user_profile_message.l
-        redirect_to login_path and return
+        redirect_to login_path_helper and return
       end
       
       @comments = @commentable.comments.recent.page(params[:page])
