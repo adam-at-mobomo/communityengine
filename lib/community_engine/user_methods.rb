@@ -181,14 +181,18 @@ module CommunityEngine
         return if admin? #don't allow admin deactivation
         CommunityEngine.user_class.transaction do
           update_attribute(:activated_at, nil)
-          update_attribute(:activation_code, make_activation_code)
+          unless CommunityEngine.custom_user_class?
+            update_attribute(:activation_code, make_activation_code)
+          end
         end
       end
     
       def activate
         CommunityEngine.user_class.transaction do
           update_attribute(:activated_at, Time.now.utc)
-          update_attribute(:activation_code, nil)
+          unless CommunityEngine.custom_user_class?
+            update_attribute(:activation_code, nil)
+          end
         end
         CommunityEngine::UserNotifier.activation(self).deliver    
       end

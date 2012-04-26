@@ -63,9 +63,11 @@ module ::CommunityEngine
         CommunityEngine.user_class.send :tracks_unlinked_activities, [:logged_in, :invited_friends, :updated_profile, :joined_the_site]  
   
   #callbacks  
-        CommunityEngine.user_class.send :before_create, :make_activation_code
-        CommunityEngine.user_class.send :after_create,  :update_last_login
-        CommunityEngine.user_class.send :after_create,  :deliver_signup_notification
+        unless CommunityEngine.custom_user_class?
+          CommunityEngine.user_class.send :before_create, :make_activation_code
+          CommunityEngine.user_class.send :after_create,  :update_last_login
+          CommunityEngine.user_class.send :after_create,  :deliver_signup_notification
+        end
         CommunityEngine.user_class.send :before_save,   :whitelist_attributes  
         CommunityEngine.user_class.send :after_save,    :recount_metro_area_users
         CommunityEngine.user_class.send :after_destroy, :recount_metro_area_users
