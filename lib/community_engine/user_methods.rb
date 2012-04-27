@@ -88,10 +88,9 @@ module CommunityEngine
       def find_by_activity(options = {})
         options.reverse_merge! :limit => 30, :require_avatar => true, :since => 7.days.ago   
     
-        activities = Activity.since(options[:since]).find(:all, 
-          :select => 'activities.user_id, count(*) as count', 
+        activities = Activity.since(options[:since]).all(:select => 'activities.user_id, count(*) as count', 
           :group => 'activities.user_id', 
-          :conditions => "#{options[:require_avatar] ? ' #{table_name}.avatar_id IS NOT NULL AND ' : ''} #{table_name}.activated_at IS NOT NULL", 
+          :conditions => "#{options[:require_avatar] ? " #{table_name}.avatar_id IS NOT NULL AND " : ''} #{table_name}.activated_at IS NOT NULL", 
           :order => 'count DESC', 
           :joins => "LEFT JOIN #{table_name} ON #{table_name}.id = activities.user_id",
           :limit => options[:limit]
@@ -148,7 +147,7 @@ module CommunityEngine
       def recount_metro_area_users
         return unless self.metro_area
         ma = self.metro_area
-        ma.users_count = CommunityEngine.use_class.count(:conditions => ["metro_area_id = ?", ma.id])
+        ma.users_count = CommunityEngine.user_class.count(:conditions => ["metro_area_id = ?", ma.id])
         ma.save
       end  
         
