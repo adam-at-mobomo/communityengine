@@ -4,7 +4,7 @@ class MetroAreasController < BaseController
   before_filter :admin_required
 
   def index
-    @metro_areas = MetroArea.order("countries.name, metro_areas.name DESC").includes(:country).page(params[:page])
+    @metro_areas = MetroArea.order("community_engine_countries.name, community_engine_metro_areas.name DESC").includes(:country).page(params[:page])
   end
   
   def show
