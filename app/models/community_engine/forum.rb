@@ -5,12 +5,12 @@ class Forum < ActiveRecord::Base
 
   validates_presence_of :name
 
-  has_many :moderatorships, :dependent => :destroy
+  has_many :moderatorships, :class_name => 'CommunityEngine::Moderatorship', :dependent => :destroy
   has_many :moderators, :through => :moderatorships, :source => :user
 
-  has_many :topics, :dependent => :destroy
+  has_many :topics, :class_name => 'CommunityEngine::Topic', :dependent => :destroy
 
-  has_many :sb_posts
+  has_many :sb_posts, :class_name => 'CommunityEngine::Post'
 
   belongs_to :owner, :polymorphic => true
 

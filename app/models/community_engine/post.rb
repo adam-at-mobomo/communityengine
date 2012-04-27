@@ -11,9 +11,9 @@ class Post < ActiveRecord::Base
   acts_as_publishable :live, :draft
   
   belongs_to :user, :class_name => CommunityEngine.user_class_name
-  belongs_to :category
-  has_many   :polls, :dependent => :destroy
-  has_many :favorites, :as => :favoritable, :dependent => :destroy
+  belongs_to :category, :class_name => 'CommunityEngine::Category'
+  has_many   :polls, :class_name => 'CommunityEngine::Poll', :dependent => :destroy
+  has_many :favorites, :class_name => 'CommunityEngine::Favorite', :as => :favoritable, :dependent => :destroy
   
   validates_presence_of :raw_post
   validates_presence_of :title

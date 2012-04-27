@@ -12,8 +12,8 @@ class Clipping < ActiveRecord::Base
   validates_presence_of :image
   after_save :save_image
   
-  has_one  :image, :as => :attachable, :class_name => "ClippingImage", :dependent => :destroy
-  has_many :favorites, :as => :favoritable, :dependent => :destroy
+  has_one  :image, :as => :attachable, :class_name => "CommunityEngine::ClippingImage", :dependent => :destroy
+  has_many :favorites, :as => :favoritable, class_name => "CommunityEngine::Favorite", :dependent => :destroy
   
   acts_as_taggable
   acts_as_activity :user

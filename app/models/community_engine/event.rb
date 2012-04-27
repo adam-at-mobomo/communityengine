@@ -8,9 +8,9 @@ class Event < ActiveRecord::Base
   validate :start_time_cannot_be_before_end_time
 
   belongs_to :user, :class_name => CommunityEngine.user_class_name
-  belongs_to :metro_area
-  has_many :rsvps, :dependent=>:destroy
-  has_many :attendees, :source=>:user, :through=>:rsvps
+  belongs_to :metro_area, :class_name => 'CommunityEngine::MetroArea'
+  has_many :rsvps, :class_name => 'CommunityEngine::Rsvp', :dependent => :destroy
+  has_many :attendees, :source => :user, :through => :rsvps
 
   attr_protected :user_id
   

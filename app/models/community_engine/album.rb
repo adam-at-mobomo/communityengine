@@ -1,6 +1,6 @@
 module CommunityEngine
 class Album < ActiveRecord::Base
-  has_many :photos, :dependent => :destroy
+  has_many :photos, :class_name => 'CommunityEngine::Photo', :dependent => :destroy
   belongs_to :user, :class_name => CommunityEngine.user_class_name
   validates_presence_of :user_id
   acts_as_activity :user

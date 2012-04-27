@@ -8,7 +8,7 @@ class Message < ActiveRecord::Base
 
   belongs_to :parent, :class_name => "CommunityEngine::Message", :foreign_key => "parent_id", :inverse_of => :children
   has_many :children, :class_name => "CommunityEngine::Message", :foreign_key => "parent_id", :inverse_of => :parent
-  has_many :message_threads
+  has_many :message_threads, :class_name => 'CommunityEngine::MessageThread'
   
   scope :parent_messages, where("parent_id IS NULL")
   scope :already_read, where("read_at IS NOT NULL")

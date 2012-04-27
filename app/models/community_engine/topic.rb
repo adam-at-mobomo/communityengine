@@ -3,12 +3,12 @@ class Topic < ActiveRecord::Base
   acts_as_activity :user
   
   acts_as_taggable
-  belongs_to :forum, :counter_cache => true
+  belongs_to :forum, :class_name => 'CommunityEngine::Forum', :counter_cache => true
   belongs_to :user, :class_name => CommunityEngine.user_class_name
-  has_many :monitorships
+  has_many :monitorships, :class_name => 'CommunityEngine::Monitorship'
   has_many :monitors, :through => :monitorships, :conditions => ['community_engine_monitorships.active = ?', true], :source => :user
 
-  has_many :sb_posts, :dependent => :destroy
+  has_many :sb_posts, :class_name => 'CommunityEngine::SbPost', :dependent => :destroy
 
   belongs_to :replied_by_user, :foreign_key => "replied_by", :class_name => CommunityEngine.user_class_name
   

@@ -1,10 +1,10 @@
 module CommunityEngine
 class Poll < ActiveRecord::Base
-  has_many :choices, :dependent => :destroy
+  has_many :choices, :class_name => 'CommunityEngine::Choice', :dependent => :destroy
   validates_presence_of :question
   validates_presence_of :post
-  has_many :votes, :dependent => :destroy
-  belongs_to :post
+  has_many :votes, :class_name => 'CommunityEngine::Vote', :dependent => :destroy
+  belongs_to :post, :class_name => 'CommunityEngine::Post'
       
   def voted?(user)
     !self.votes.find_by_user_id(user.id).nil?

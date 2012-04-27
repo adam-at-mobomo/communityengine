@@ -4,9 +4,9 @@ class SbPost < ActiveRecord::Base
   include Rakismet::Model
   rakismet_attrs :author => :username, :comment_type => 'comment', :content => :body, :user_ip => :author_ip
   
-  belongs_to :forum, :counter_cache => true
+  belongs_to :forum, :class_name => 'CommunityEngine::Forum', :counter_cache => true
   belongs_to :user,  :class_name => CommunityEngine.user_class_name, :counter_cache => true
-  belongs_to :topic, :counter_cache => true
+  belongs_to :topic, :class_name => 'CommunityEngine::Topic', :counter_cache => true
 
   format_attribute :body
   before_create { |r| r.forum_id = r.topic.forum_id }

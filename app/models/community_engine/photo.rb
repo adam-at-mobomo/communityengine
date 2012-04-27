@@ -1,7 +1,7 @@
 module CommunityEngine
 class Photo < ActiveRecord::Base
   acts_as_commentable
-  belongs_to :album
+  belongs_to :album, :class_name => 'CommunityEngine::Album'
   
   has_attached_file :photo, configatron.photo.paperclip_options.to_hash
   validates_attachment_presence :photo
