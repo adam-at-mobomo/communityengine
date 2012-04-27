@@ -13,7 +13,7 @@ class Clipping < ActiveRecord::Base
   after_save :save_image
   
   has_one  :image, :as => :attachable, :class_name => "CommunityEngine::ClippingImage", :dependent => :destroy
-  has_many :favorites, :as => :favoritable, class_name => "CommunityEngine::Favorite", :dependent => :destroy
+  has_many :favorites, :as => :favoritable, :class_name => "CommunityEngine::Favorite", :dependent => :destroy
   
   acts_as_taggable
   acts_as_activity :user
