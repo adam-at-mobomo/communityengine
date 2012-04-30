@@ -1,11 +1,10 @@
 //= require prototype
-//= require rails
 //= require effects
-//= require builder
+//= require community_engine/builder
 //= require dragdrop
 //= require controls
-//= require lightbox
-//= require prototip-min
+//= require community_engine/lightbox
+//= require community_engine/prototip-min
 //= require tinymce
 
 function scrollToAnchor(anchor){
