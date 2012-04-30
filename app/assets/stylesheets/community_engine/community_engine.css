@@ -1,6 +1,6 @@
 /*
- *= require reset-fonts-grids
- *= require screen
- *= require lightbox
- *= require prototip 
+ *= require community_engine/reset-fonts-grids
+ *= require community_engine/screen
+ *= require community_engine/lightbox
+ *= require community_engine/prototip 
 */
