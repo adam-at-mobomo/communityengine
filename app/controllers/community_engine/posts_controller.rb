@@ -67,7 +67,7 @@ class PostsController < BaseController
 
     @user = @post.user
     @is_current_user = @user.eql?(current_user)
-    @comment = CommunityEngine::Comment.new(params[:comment])
+    @comment = ::Comment.new(params[:comment])
 
     @comments = @post.comments.includes(:user).order('created_at DESC').limit(20)
 

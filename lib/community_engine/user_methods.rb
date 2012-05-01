@@ -258,7 +258,7 @@ module CommunityEngine
       def comments_activity(page = {}, since = 1.week.ago)
         page.reverse_merge :per_page => 10, :page => 1
     
-        Activity.recent.since(since).where('community_engine_comments.recipient_id = ? AND activities.user_id != ?', self.id, self.id).joins("LEFT JOIN community_engine_comments ON community_engine_comments.id = activities.item_id AND activities.item_type = 'CommunityEngine::Comment'").page(page[:per_page]).per(page[:page])
+        Activity.recent.since(since).where('comments.recipient_id = ? AND activities.user_id != ?', self.id, self.id).joins("LEFT JOIN comments ON comments.id = activities.item_id AND activities.item_type = 'Comment'").page(page[:per_page]).per(page[:page])
       end
     
       def friends_ids

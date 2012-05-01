@@ -1,6 +1,6 @@
 module CommunityEngine
 class CommentSweeper < ActionController::Caching::Sweeper
-  observe CommunityEngine::Comment
+  observe ::Comment
 
   def after_create(comment)
     expire_cache_for(comment)

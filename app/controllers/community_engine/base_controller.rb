@@ -67,8 +67,27 @@ class CommunityEngine::BaseController < ApplicationController
   def css_help
   end
   
-  
   private
+=begin
+  def current_ability # like Forem
+    CommunityEngine::Ability.new(community_engine_user)
+  end
+
+  private
+
+    def authenticate_community_engine_user # like Forem
+      if !community_engine_user
+        session["user_return_to"] = request.fullpath
+        flash.alert = t("community_engine.errors.not_signed_in")
+        redirect_to main_app.sign_in_path
+      end
+    end
+  
+    def community_engine_admin? # like Forem
+      community_engine_user && community_engine_user.community_engine_admin?
+    end
+    helper_method :community_engine_admin? # like Forem
+=end  
     def update_user_activity
       session[:last_active] = current_user.record.sb_last_seen_at
       session[:topics] = controller.session[:forums] = {}
@@ -114,7 +133,7 @@ class CommunityEngine::BaseController < ApplicationController
     def get_recent_footer_content
       @recent_clippings = CommunityEngine::Clipping.find_recent(:limit => 10)
       @recent_photos = CommunityEngine::Photo.find_recent(:limit => 10)
-      @recent_comments = CommunityEngine::Comment.find_recent(:limit => 13)
+      @recent_comments = ::Comment.find_recent(:limit => 13)
       @popular_tags = popular_tags(30)
       @recent_activity = CommunityEngine.user_class.recent_activity(:size => 15, :current => 1)
     

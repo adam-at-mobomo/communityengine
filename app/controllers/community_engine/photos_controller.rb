@@ -71,7 +71,7 @@ class PhotosController < BaseController
     update_view_count(@photo) if current_user && current_user.id != @photo.user_id
     
     @is_current_user = @user.eql?(current_user)
-    @comment = CommunityEngine::Comment.new(params[:comment])
+    @comment = ::Comment.new(params[:comment])
 
     @previous = @photo.previous_photo
     @next = @photo.next_photo

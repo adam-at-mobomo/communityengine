@@ -70,13 +70,13 @@ class UsersController < BaseController
     @pending_friendships_count  = @user.pending_friendships.count()
 
     @comments       = @user.comments.all(:limit => 10, :order => 'created_at DESC')
-    @photo_comments = CommunityEngine::Comment.find_photo_comments_for(@user)    
-    @users_comments = CommunityEngine::Comment.find_comments_by_user(@user).limit(5)
+    @photo_comments = ::Comment.find_photo_comments_for(@user)    
+    @users_comments = ::Comment.find_comments_by_user(@user).limit(5)
 
     @recent_posts   = @user.posts.recent.find(:all, :limit => 2)
     @clippings      = @user.clippings.find(:all, :limit => 5)
     @photos         = @user.photos.find(:all, :limit => 5)
-    @comment        = CommunityEngine::Comment.new(params[:comment])
+    @comment        = ::Comment.new(params[:comment])
     
     @my_activity = Activity.recent.by_users([@user.id]).find(:all, :limit => 10) 
 

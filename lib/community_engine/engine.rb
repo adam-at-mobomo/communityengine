@@ -100,8 +100,8 @@ module ::CommunityEngine
         CommunityEngine.user_class.send :belongs_to,  :metro_area, :class_name => 'CommunityEngine::MetroArea', :counter_cache => true
         CommunityEngine.user_class.send :belongs_to,  :state, :class_name => 'CommunityEngine::State'
         CommunityEngine.user_class.send :belongs_to,  :country, :class_name => 'CommunityEngine::Country'
-        CommunityEngine.user_class.send :has_many,    :comments_as_author, :class_name => "CommunityEngine::Comment", :foreign_key => "user_id", :order => "created_at desc", :dependent => :destroy
-        CommunityEngine.user_class.send :has_many,    :comments_as_recipient, :class_name => "CommunityEngine::Comment", :foreign_key => "recipient_id", :order => "created_at desc", :dependent => :destroy
+        CommunityEngine.user_class.send :has_many,    :comments_as_author, :class_name => "::Comment", :foreign_key => "user_id", :order => "created_at desc", :dependent => :destroy
+        CommunityEngine.user_class.send :has_many,    :comments_as_recipient, :class_name => "::Comment", :foreign_key => "recipient_id", :order => "created_at desc", :dependent => :destroy
         CommunityEngine.user_class.send :has_many,    :clippings, :class_name => 'CommunityEngine::Clipping', :order => "created_at desc", :dependent => :destroy
         CommunityEngine.user_class.send :has_many,    :favorites, :class_name => 'CommunityEngine::Favorite', :order => "created_at desc", :dependent => :destroy
         

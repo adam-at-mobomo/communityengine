@@ -48,7 +48,7 @@ class AdminController < BaseController
   end
   
   def comments
-    @search = CommunityEngine::Comment.search(params[:search])
+    @search = ::Comment.search(params[:search])
     @search.meta_sort ||= 'created_at.desc'
     @comments = @search.page(params[:page]).per(100)
   end

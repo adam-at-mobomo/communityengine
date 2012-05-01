@@ -25,7 +25,7 @@
           =:added_to_a_forum_topic.l
           - topic = activity.item.topic
           = link_to truncate_words(activity.item.body), forum_topic_path(topic.forum, topic)
-        - when 'CommunityEngine::Comment'
+        - when 'Comment'
           =:left_a_comment.l
           = link_to truncate_words(activity.item.comment), commentable_url(activity.item)
         - when 'CommunityEngine::Favorite'

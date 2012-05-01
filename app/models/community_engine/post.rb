@@ -77,8 +77,8 @@ class Post < ActiveRecord::Base
     def find_most_commented(limit = 10, since = 7.days.ago)
       CommunityEngine::Post.find(:all, 
         :select => 'community_engine_posts.*, count(*) as comments_count',
-        :joins => "LEFT JOIN community_engine_comments ON community_engine_comments.commentable_id = community_engine_posts.id",
-        :conditions => ['community_engine_comments.commentable_type = ? AND community_engine_posts.published_at > ?', 'CommunityEngine::Post', since],
+        :joins => "LEFT JOIN comments ON comments.commentable_id = community_engine_posts.id",
+        :conditions => ['comments.commentable_type = ? AND community_engine_posts.published_at > ?', 'CommunityEngine::Post', since],
         :group => self.columns.map{|column| self.table_name + "." + column.name}.join(","),
         :order => 'comments_count DESC',
         :limit => limit
