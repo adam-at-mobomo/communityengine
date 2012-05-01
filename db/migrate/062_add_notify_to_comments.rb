@@ -1,11 +1,11 @@
-class AddNotifyToCommunityEngineComments < ActiveRecord::Migration
+class AddNotifyToComments < ActiveRecord::Migration
   
   def self.up
-    add_column :community_engine_comments, :notify_by_email, :boolean, :default => true
+    add_column :comments, :notify_by_email, :boolean, :default => true
   end
   
   def self.down
-    remove_column :community_engine_comments, :notify_by_email
+    remove_column :comments, :notify_by_email
   end
 
 end

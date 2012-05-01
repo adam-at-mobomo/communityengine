@@ -1,4 +1,3 @@
-module CommunityEngine
 class Comment < ActiveRecord::Base
   include ActsAsCommentable::Comment
   include Rakismet::Model
@@ -24,7 +23,7 @@ class Comment < ActiveRecord::Base
   acts_as_activity :user, :if => Proc.new{|record| record.user } #don't record an activity if there's no user
   
   def self.find_photo_comments_for(user)
-    CommunityEngine::Comment.find(:all, :conditions => ["recipient_id = ? AND commentable_type = ?", user.id, 'CommunityEngine::Photo'], :order => 'created_at DESC')
+    ::Comment.find(:all, :conditions => ["recipient_id = ? AND commentable_type = ?", user.id, 'CommunityEngine::Photo'], :order => 'created_at DESC')
   end
       
   def previous_commenters_to_notify
@@ -32,8 +31,8 @@ class Comment < ActiveRecord::Base
     # limit the number of emails we'll send (or posting will be slooowww)
     CommunityEngine.user_class.all(:conditions => ["#{CommunityEngine.user_class.table_name}.id NOT IN (?) AND #{CommunityEngine.user_class.table_name}.notify_comments = ? 
                       AND commentable_id = ? AND commentable_type = ? 
-                      AND community_engine_comments.notify_by_email = ? 
-                      AND community_engine_comments.created_at > ?", [user_id, recipient_id.to_i], true, commentable_id, commentable_type, true, 2.weeks.ago], 
+                      AND comments.notify_by_email = ? 
+                      AND comments.created_at > ?", [user_id, recipient_id.to_i], true, commentable_id, commentable_type, true, 2.weeks.ago], 
       :include => :comments_as_author, :limit => 20)
   end    
     
@@ -119,5 +118,4 @@ class Comment < ActiveRecord::Base
   end
   
   
-end
 end
