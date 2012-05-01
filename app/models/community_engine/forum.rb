@@ -10,7 +10,7 @@ class Forum < ActiveRecord::Base
 
   has_many :topics, :class_name => 'CommunityEngine::Topic', :dependent => :destroy
 
-  has_many :sb_posts, :class_name => 'CommunityEngine::Post'
+  has_many :sb_posts, :class_name => 'CommunityEngine::SbPost'
 
   belongs_to :owner, :polymorphic => true
 
