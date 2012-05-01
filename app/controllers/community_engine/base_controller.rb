@@ -8,7 +8,7 @@ class CommunityEngine::BaseController < ApplicationController
   include LocalizedApplication
   around_filter :set_locale  
   skip_before_filter :verify_authenticity_token, :only => :footer_content
-  helper_method :commentable_url, :logged_in?, :signup_path_helper
+  helper_method :commentable_url, :logged_in?, :signup_path_helper, :login_path_helper
   before_filter :initialize_header_tabs
   before_filter :initialize_admin_tabs
   before_filter :store_location
