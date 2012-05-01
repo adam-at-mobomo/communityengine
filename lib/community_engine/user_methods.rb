@@ -191,13 +191,17 @@ module CommunityEngine
           update_attribute(:activated_at, Time.now.utc)
           unless CommunityEngine.custom_user_class?
             update_attribute(:activation_code, nil)
+            CommunityEngine::UserNotifier.activation(self).deliver    
           end
         end
-        CommunityEngine::UserNotifier.activation(self).deliver    
       end
       
       def active?
-        activation_code.nil? && !activated_at.nil?
+        if CommunityEngine.custom_user_class?
+          activation_code.nil? && !activated_at.nil?
+        else
+          !activated_at.nil?
+        end
       end
       
       def valid_invite_code?(code)
