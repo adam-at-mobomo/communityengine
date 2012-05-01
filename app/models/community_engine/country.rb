@@ -1,6 +1,7 @@
 module CommunityEngine
 class Country < ActiveRecord::Base
   has_many :metro_areas, :class_name => 'CommunityEngine::MetroArea'
+  has_many :users, :class_name => CommunityEngine.user_class_name
   
   def self.get(name)
     case name
