@@ -197,7 +197,7 @@ module CommunityEngine
       end
       
       def active?
-        if CommunityEngine.custom_user_class?
+        if !CommunityEngine.custom_user_class?
           activation_code.nil? && !activated_at.nil?
         else
           !activated_at.nil?
