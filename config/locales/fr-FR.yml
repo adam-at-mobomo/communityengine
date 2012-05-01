@@ -1050,8 +1050,8 @@ fr:
   sb_post_was_deleted: "Le message &laquo;%{title}&raquo; a été supprimé."
   #en: scrapbook: Scrapbook
   scrapbook: Scrapbook
-  #en: search: Search
-  search: Recherche
+  #en: ce_search: Search
+  ce_search: Recherche
   #en: search_users: Search Users
   search_users: Chercher les membres
   #en: searching_for: Searching for

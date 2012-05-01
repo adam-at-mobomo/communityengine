@@ -246,7 +246,8 @@ es-MX:
   create_new_forum: Crear Nuevo Foro
   to_start_adding_friends: Para empezar a añadir amigos, puedes
   subscribe_to: Suscribirse a
-  search: Buscar
+  #en: ce_search: Search
+  ce_search: Buscar
   comments: Comentarios
   community_tagline: "¡Prueba CommunityEngine!"
   plural_posts: "%{count} publicaciones"

@@ -965,8 +965,8 @@ sv:
   sb_post_was_deleted: "Inlägget '%{title}' togs bort."
   #en: scrapbook: Scrapbook
   scrapbook: Klippbok
-  #en: search: Search
-  search: Sök
+  #en: ce_search: Search
+  ce_search: Sök
   #en: search_users: Search Users
   search_users: Sök användare
   #en: searching_for: Searching for

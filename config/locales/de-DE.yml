@@ -971,8 +971,8 @@ de-DE:
   sb_post_was_deleted: Der Eintrag '%{title}' wurde gelöscht.
   #en: scrapbook: Scrapbook
   scrapbook: Album
-  #en: search: Search
-  search: Suche
+  #en: ce_search: Search
+  ce_search: Suche
   #en: search_users: Search Users
   search_users: Suche Benutzer
   #en: searching_for: Searching for

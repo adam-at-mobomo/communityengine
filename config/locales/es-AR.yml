@@ -506,7 +506,8 @@ es-AR:
   save_post_as: "Guardar post como:"
   #en: sb_post_was_deleted: Post '%{title}' was deleted.
   sb_post_was_deleted: La entrada '%{title}' fue suprimida.
-  search: Search
+  #en: ce_search: Search
+  ce_search: Search
   #en: search_users: Search Users
   search_users: "B\xC3\xBAsqueda de usuarios"
   #en: see_all: SEE ALL

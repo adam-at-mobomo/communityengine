@@ -2,7 +2,7 @@
   = render :partial => 'community_engine/shared/admin_nav'
   
   -box do
-    %h3=:search.l
+    %h3=:ce_search.l
     = form_for @search, :url => ads_path, :html => {:class => "MainForm"} do |f|
 
       %label= :name.l
@@ -11,7 +11,7 @@
       %label= :location.l
       = f.text_field :location_contains
 
-      %p= f.submit :search.l
+      %p= f.submit :ce_search.l
   
 
 #yui-main

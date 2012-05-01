@@ -6,7 +6,7 @@
       %li=link_to :new_post.l, new_user_post_path(current_user)    
       
   -box do
-    %h3=:search.l
+    %h3=:ce_search.l
     = form_for @search, :url => manage_user_posts_path(current_user), :html => {:class => "MainForm"} do |f|
     
       %label= :title.l
@@ -24,7 +24,7 @@
         %label= :show.l
         = select_tag :size, options_for_select([['10',10], ['20',20], ['100',100]], params[:size].to_i )
 
-      %p= f.submit :search.l
+      %p= f.submit :ce_search.l
   
 
 #yui-main

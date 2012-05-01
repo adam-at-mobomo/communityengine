@@ -1159,8 +1159,8 @@ en:
   sb_post_was_deleted: "Post '%{title}' was deleted."
   #en: scrapbook: Scrapbook
   scrapbook: Scrapbook
-  #en: search: Search
-  search: Search
+  #en: ce_search: Search
+  ce_search: Search
   #en: search_users: Search Users
   search_users: Search Users
   #en: searching_for: Searching for

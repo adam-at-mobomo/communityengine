@@ -1186,8 +1186,8 @@ ru-RU:
   sb_post_was_deleted: "Сообщение '%{title}' было удалено."
   #en: scrapbook: Scrapbook
   scrapbook: Альбом
-  #en: search: Search
-  search: Поиск
+  #en: ce_search: Search
+  ce_search: Поиск
   #en: search_users: Search Users
   search_users: Поиск пользователей
   #en: searching_for: Searching for

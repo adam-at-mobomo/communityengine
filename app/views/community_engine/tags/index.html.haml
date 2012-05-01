@@ -7,7 +7,7 @@
       %strong= :bigger_font_size_more_popular_tag.l
       
   -box :class => "alt" do 
-    %h3= :search.l
+    %h3= :ce_search.l
     %form.MainForm{"action" => search_tags_path, "method" => "get"}
       %label= :tag_name.l+":"
       = text_field_tag 'id', params[:id], :autocomplete => "off"
