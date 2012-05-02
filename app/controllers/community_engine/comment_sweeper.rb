@@ -28,7 +28,7 @@ class CommentSweeper < ActionController::Caching::Sweeper
         # Expire the home page    
         expire_action :controller => 'community_engine/base', :action => 'site_index'
         # Expire the category pages
-        expire_action :controller => 'community_engine/categories', :action => 'show', :id => record.commentable.category
+        expire_action :controller => 'community_engine/categories', :action => 'show', :id => record.commentable.category if record.commentable.category
       end
     end
 

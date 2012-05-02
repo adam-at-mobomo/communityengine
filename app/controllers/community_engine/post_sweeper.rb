@@ -28,7 +28,7 @@ class CommunityEngine::PostSweeper < ActionController::Caching::Sweeper
     expire_action(:controller => 'community_engine/sitemap', :action => 'index')
 
     # Expire the category pages
-    expire_action(:controller => 'community_engine/categories', :action => 'index')
+    expire_action :controller => 'community_engine/categories', :action => 'show', :id => record.category if record.category
 
     # Also expire the show pages, in case we just edited a blog entry
     expire_action(:controller => 'community_engine/posts', :action => 'show', :id => record.to_param, :user_id => record.user.to_param)
