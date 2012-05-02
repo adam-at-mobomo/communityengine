@@ -334,7 +334,7 @@ module CommunityEngine
         if self.login.blank?
           self.login = (self.name || "").gsub(/[^A-Za-z0-9\- ]+/, ' ').downcase.split.join("-")
           self.login = "none" if self.login.blank?
-          while CommunityEngine.user_class.where(:login => self.login).where("id <> ?", self.id).count > 0 do
+          while CommunityEngine.user_class.where(:login => self.login).where("id <> ?", (self.id || 0)).count > 0 do
             self.login = "#{self.login.gsub(/[0-9]$/, '')}#{rand(10000)}"
           end
         end
