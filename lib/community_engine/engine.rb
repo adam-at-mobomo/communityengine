@@ -109,7 +109,7 @@ module ::CommunityEngine
 
   #validation
         CommunityEngine.user_class.send :validates_presence_of,     :metro_area, :if => Proc.new { |user| user.state }
-        CommunityEngine.user_class.send :validates_uniqueness_of,   :login
+        CommunityEngine.user_class.send :validates_uniqueness_of,   :login, :if => :login_changed?
         CommunityEngine.user_class.send :validates_exclusion_of,    :login, :in => configatron.reserved_logins
 
         CommunityEngine.user_class.send :validate, :check_spam    
