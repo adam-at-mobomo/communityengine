@@ -161,7 +161,11 @@ class CommentsController < BaseController
 
   private
     def get_commentable_class_name(string)
-      "CommunityEngine::#{get_commentable_type(string).singularize}"
+      if CommunityEngine.user_class.name.demodulize.downcase == string.singularize.downcase
+        CommunityEngine.user_class.name
+      else
+        "CommunityEngine::#{get_commentable_type(string).singularize}"
+      end
     end
     
     def get_commentable_type(string)
