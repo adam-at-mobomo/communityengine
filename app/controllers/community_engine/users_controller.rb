@@ -187,7 +187,7 @@ class UsersController < BaseController
     
   def edit_account
     @user             = current_user
-    @authorizations   = current_user.authorizations
+    @authorizations   = current_user.authorizations || []
     @is_current_user  = true
   end
   
