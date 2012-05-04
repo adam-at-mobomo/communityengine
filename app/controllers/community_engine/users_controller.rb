@@ -187,7 +187,7 @@ class UsersController < BaseController
     
   def edit_account
     @user             = current_user
-    @authorizations   = current_user.authorizations || []
+    @authorizations   = current_user.authorizations
     @is_current_user  = true
   end
   
@@ -201,6 +201,8 @@ class UsersController < BaseController
         format.js
       end      
     else
+      @authorizations   = current_user.authorizations
+      @is_current_user  = true
       respond_to do |format|
         format.html {render :action => 'edit_account'}
         format.js
