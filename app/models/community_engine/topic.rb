@@ -17,7 +17,7 @@ class Topic < ActiveRecord::Base
   after_save    :set_post_topic_id
   after_create  :create_monitorship_for_owner
 
-  attr_accessible :title
+  attr_accessible :title, :body
   # to help with the create form
   attr_accessor :body
   

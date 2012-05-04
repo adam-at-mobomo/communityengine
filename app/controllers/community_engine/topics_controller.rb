@@ -51,9 +51,16 @@ class TopicsController < BaseController
   def create
     # this is icky - move the topic/first post workings into the topic model?
     Topic.transaction do
-      @topic  = @forum.topics.new(params[:topic])
+      topics_params = params[:topic] && params[:topic].clone
+      topics_params.delete :sticky if topics_params
+      topics_params.delete :locked if topics_params
+      sb_posts_params = params[:topic] && params[:topic].clone
+      sb_posts_params.delete :title if sb_posts_params
+      sb_posts_params.delete :sticky if sb_posts_params
+      sb_posts_params.delete :locked if sb_posts_params
+      @topic  = @forum.topics.new(topics_params)
       assign_protected
-      @post   = @topic.sb_posts.new(params[:topic])
+      @post   = @topic.sb_posts.new(sb_posts_params)
       @post.topic=@topic
       @post.user = current_user
       # only save topic if post is valid so in the view topic will be a new record if there was an error
@@ -103,7 +110,7 @@ class TopicsController < BaseController
       @topic.user     = current_user if @topic.new_record?
       # admins and moderators can sticky and lock topics
       return unless admin? or current_user.moderator_of?(@topic.forum)
-      @topic.sticky, @topic.locked = params[:topic][:sticky], params[:topic][:locked] 
+      @topic.sticky, @topic.locked = params[:topic][:sticky], params[:topic][:locked]
       # only admins can move
       return unless admin?
       @topic.forum_id = params[:topic][:forum_id] if params[:topic][:forum_id]
