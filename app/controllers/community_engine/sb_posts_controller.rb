@@ -21,13 +21,15 @@ class SbPostsController < BaseController
   def index
     conditions = []
     [:user_id, :forum_id].each { |attr| 
-      conditions << SbPost.send(:sanitize_sql, ["community_engine_sb_posts.#{attr} = ?", params[attr].to_i]) if params[attr] 
+      conditions << CommunityEngine::SbPost.send(:sanitize_sql, ["community_engine_sb_posts.#{attr} = ?", params[attr].to_i]) if params[attr] 
     }
     conditions = conditions.any? ? conditions.collect { |c| "(#{c})" }.join(' AND ') : nil
 
-    @posts = SbPost.with_query_options.where(conditions).page(params[:page])
+    @posts = CommunityEngine::SbPost.with_query_options.where(conditions).page(params[:page])
     
-    @users = CommunityEngine.user_class.find(:all, :select => 'distinct *', :conditions => ['id in (?)', @posts.collect(&:user_id).uniq]).index_by(&:id)
+    @users = CommunityEngine.user_class.select('distinct *').where(['id in (?)', @posts.collect(&:user_id).uniq]).all.index_by(&:id)
+    
+    render_posts_or_xml
   end
 
   def search
@@ -136,5 +138,12 @@ class SbPostsController < BaseController
       @post = CommunityEngine::SbPost.find_by_id_and_topic_id_and_forum_id(params[:id].to_i, params[:topic_id].to_i, params[:forum_id].to_i) || raise(ActiveRecord::RecordNotFound)
     end
     
+    def render_posts_or_xml(template_name = action_name)
+      respond_to do |format|
+        format.html { render :action => "#{template_name}" }
+        format.rss  { render :action => "#{template_name}.xml.builder", :layout => false }
+        format.xml  { render :xml => @posts.to_xml }
+      end
+    end
 end
 end
