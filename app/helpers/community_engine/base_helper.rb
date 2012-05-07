@@ -196,7 +196,7 @@ module CommunityEngine::BaseHelper
   end
     
   def ajax_spinner_for(id, spinner="spinner.gif")
-    image_tag spinner, :style => 'display:none; vertical-align:middle;', :id => "#{id.to_s}_spinner"
+    image_tag "community_engine/#{spinner}", :style => 'display:none; vertical-align:middle;', :id => "#{id.to_s}_spinner"
   end
 
   def avatar_for(user, size=32)
