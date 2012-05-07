@@ -1,7 +1,7 @@
 require_dependency ActsAsTaggableOn::Engine.config.root.join('app', 'models', 'acts_as_taggable_on', 'tag.rb').to_s
 
 class ActsAsTaggableOn::Tag < ActiveRecord::Base
-  set_table_name "community_engine_tags"
+  self.table_name = "community_engine_tags"
   
   class << self
     def popular(limit = 20, type = nil)
