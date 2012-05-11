@@ -225,10 +225,10 @@ module CommunityEngine::BaseHelper
   end
 
   def time_ago_in_words(from_time, to_time = Time.now, include_seconds = false)
-    from_time = from_time.to_time if from_time.respond_to?(:to_time)
-    to_time = to_time.to_time if to_time.respond_to?(:to_time)
+    from_time = from_time.to_time.in_time_zone if from_time.respond_to?(:to_time)
+    to_time = to_time.to_time.in_time_zone if to_time.respond_to?(:to_time)
     distance_in_minutes = (((to_time - from_time).abs)/60).round
-      
+
     case distance_in_minutes
       when 0              then :a_few_seconds_ago.l
       when 1..59          then :minutes_ago.l(:count => distance_in_minutes)
@@ -240,7 +240,7 @@ module CommunityEngine::BaseHelper
 
   def time_ago_in_words_or_date(date)
     if date.to_date.eql?(Time.now.to_date)
-      display = I18n.l(date.to_time, :format => :time_ago)
+      display = I18n.l(date.to_time.in_time_zone, :format => :time_ago)
     elsif date.to_date.eql?(Time.now.to_date - 1)
       display = :yesterday.l
     else
