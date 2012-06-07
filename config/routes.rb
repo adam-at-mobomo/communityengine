@@ -106,6 +106,7 @@ CommunityEngine::Engine.routes.draw do
   resources :tags do
     collection do
       get 'auto_complete_for_tag_name'
+      post 'auto_complete_for_tag_name'
     end
   end
   match '/tags/:id/:type' => 'tags#show', :as => :show_tag_type
