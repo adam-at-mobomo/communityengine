@@ -10,7 +10,7 @@ class TagsController < BaseController
   end  
 
   def auto_complete_for_tag_name
-    @tags = ActsAsTaggableOn::Tag.all(:limit => 10, :conditions => [ 'LOWER(name) LIKE ?', '%' + (params[:id] || params[:tag_list]) + '%' ])
+    @tags = (params[:id] || params[:tag_list]) && ActsAsTaggableOn::Tag.all(:limit => 10, :conditions => [ 'LOWER(name) LIKE ?', '%' + (params[:id] || params[:tag_list]) + '%' ])
     render :inline => "<%= auto_complete_result(@tags, 'name') %>"
   end
   
