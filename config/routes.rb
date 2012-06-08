@@ -150,6 +150,7 @@ CommunityEngine::Engine.routes.draw do
     collection do
       post 'return_admin'
       delete 'delete_selected'
+      match 'metro_area_update'
     end
     member do
       get 'dashboard'
@@ -175,7 +176,6 @@ CommunityEngine::Engine.routes.draw do
       match 'statistics'
       match 'crop_profile_photo'
       match 'upload_profile_photo'
-      match 'metro_area_update'
     end
     
     resources :friendships do
