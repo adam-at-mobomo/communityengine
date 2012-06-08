@@ -40,6 +40,7 @@ module CommunityEngine
 
 
   def self.user_class
+    @@user_class ||= 'CommunityEngine::User'
     if @@user_class.is_a?(Class)
       raise "You cannot set CommunityEngine.user_class to be a class. Please use a string instead.\n\n "
     elsif @@user_class.is_a?(String)
