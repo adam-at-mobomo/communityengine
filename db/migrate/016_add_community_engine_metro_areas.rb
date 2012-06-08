@@ -1,10 +1,10 @@
 class AddCommunityEngineMetroAreas < ActiveRecord::Migration
   class CommunityEngine::State < ActiveRecord::Base
-    has_many :metro_areas, :class => 'CommunityEngine::MetroArea'
+    has_many :metro_areas, :class_name => 'CommunityEngine::MetroArea'
   end
   
   class CommunityEngine::MetroArea < ActiveRecord::Base
-    belongs_to :state, :class => 'CommunityEngine::State'
+    belongs_to :state, :class_name => 'CommunityEngine::State'
   end
   
   def self.up
