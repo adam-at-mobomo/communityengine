@@ -1,6 +1,6 @@
 %h2#user-menu
   =:logged_in.l
-  = link_to current_user.login, dashboard_user_path(current_user)
+  = link_to current_user.display_name, dashboard_user_path(current_user)
   #user-menu-tip
     %ul
       -if current_user.admin?

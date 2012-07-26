@@ -28,7 +28,7 @@
           %ul.list.page
             - @posts.each do |post|
               %li
-                = link_to( truncate(post.display_title, :length => 75), user_post_path(post.user, post), :title => :by.l(:login => post.user.login) )
+                = link_to( truncate(post.display_title, :length => 75), user_post_path(post.user, post), :title => :by.l(:login => post.user.display_name) )
                 %p.post_excerpt= truncate_words(post.post, 35, '...' )
           %h6.all= link_to :all_posts_tagged.l(:tag_name => @tags_raw), show_tag_type_path(:id => @tags_raw, :type => 'CommunityEngine::Post') unless params[:type]
       -else 
@@ -42,14 +42,14 @@
       %br.clear
       %h3=:photos.l(:count => @photos.size)
       - @photos.each do |photo|
-        = link_to image_tag(photo.photo.url(:thumb), :title => "#{photo.description} ("+:uploaded_by.l+" #{photo.user.login})", :class => "polaroid"), user_photo_path(photo.user, photo)
+        = link_to image_tag(photo.photo.url(:thumb), :title => "#{photo.description} ("+:uploaded_by.l+" #{photo.user.display_name})", :class => "polaroid"), user_photo_path(photo.user, photo)
       %h6.all= link_to :all_photos_tagged.l(:tag_name => @tags_raw), show_tag_type_path(:id => @tags_raw, :type => 'CommunityEngine::Photo') unless params[:type]
       
     - if @users.any?
       .user
         %h3= t('tags.show.users')
         - @users.each do |user|
-          = link_to image_tag(user.avatar_photo_url(:thumb), :class => "polaroid"), user_path(user), :title => user.login
+          = link_to image_tag(user.avatar_photo_url(:thumb), :class => "polaroid"), user_path(user), :title => user.display_name
         %h6.all= link_to :all_users_tagged.l(:tag_name => @tags_raw), show_tag_type_path(:id => @tags_raw, :type => CommunityEngine.user_class.name) unless params[:type]
 
 

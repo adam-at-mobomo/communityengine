@@ -24,7 +24,7 @@
         - children.each do |child|      
           .right=h I18n.l(child.created_at, :format => :literal_date)
           %em
-            =child.sender.login
+            =child.sender.display_name
             \:
           %br
           %pre.message_body= auto_link child.body
