@@ -24,7 +24,7 @@
                   =children.any? ? "(#{children.size} messages)" : ''
                   %br
                   %em
-                    =message.sender.login
+                    =message.sender.display_name
                     \: 
                     =truncate(message.body)
                 

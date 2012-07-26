@@ -2,7 +2,7 @@
   %h3=:friendship_request_detail.l
   - if @friendship.initiator? && @friendship.pending?
     =:waiting_for.l 
-    = @friendship.friend.login
+    = @friendship.friend.display_name
     =:to_accept.l
   - elsif @friendship.pending?
     =:this_friendship_is_pending.l 

@@ -14,7 +14,7 @@ xml.RelationViewerData do
     @users.each do |user|
       imageUrl = (user.avatar_photo_url(:thumb).eql?('icon_missing_thumb.png') ? 'community_engine/images/icon_missing_thumb.png' : user.avatar_photo_url(:thumb) )
       xml.Person :tags => "#{user.tags.collect{|t| t.name }.join(", ")}", :dataURL=>"friendships.xml?id=#{user.id}", 
-      :id=>"#{home_url}#{user.login_slug}", :name=>"#{user.login}", :imageURL=>imageUrl, :URL=>"#{home_url}#{user.login_slug}" do
+      :id => "#{home_url}#{user.login_slug}", :name => "#{user.display_name}", :imageURL => imageUrl, :URL => "#{home_url}#{user.login_slug}" do
           xml.cdata!( truncate_words( strip_tags(user.description), 50, '...') )
       end
     end
