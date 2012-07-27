@@ -101,7 +101,7 @@ module CommunityEngine::BaseHelper
         end
       when 'users'
         if @user && !@user.new_record? && @user.login
-          title = @user.login
+          title = @user.display_name
           title += divider + app_base + tagline
           @canonical_url = user_url(@user)
         else
@@ -109,11 +109,11 @@ module CommunityEngine::BaseHelper
         end
       when 'photos'
         if @user and @user.login
-          title = :users_photos.l(:user => @user.login) + divider + app_base + tagline
+          title = :users_photos.l(:user => @user.display_name) + divider + app_base + tagline
         end
       when 'clippings'
         if @user and @user.login
-          title = :user_clippings.l(:user => @user.login) + divider + app_base + tagline
+          title = :user_clippings.l(:user => @user.display_name) + divider + app_base + tagline
         end
       when 'tags'
         case controller.action_name.demodulize

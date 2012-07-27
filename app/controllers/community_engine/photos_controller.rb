@@ -31,7 +31,7 @@ class PhotosController < BaseController
   
     @tags = CommunityEngine::Photo.includes(:taggings).where(:user_id => @user.id).tag_counts(:limit => 20)
   
-    @rss_title = "#{configatron.community_name}: #{@user.login}'s photos"
+    @rss_title = "#{configatron.community_name}: #{@user.display_name}'s photos"
     @rss_url = user_photos_path(@user,:format => :rss)
 
     respond_to do |format|

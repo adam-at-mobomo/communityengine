@@ -61,7 +61,7 @@ class CommentsController < BaseController
       else
         if @commentable.is_a?(CommunityEngine.user_class)
           @user = @commentable
-          @title = @user.login
+          @title = @user.display_name
           @back_url = user_path(@user)
         elsif @user = @commentable.user
           @title = @commentable.respond_to?(:title) ? @commentable.title : @title

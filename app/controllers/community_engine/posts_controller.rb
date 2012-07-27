@@ -40,7 +40,7 @@ class PostsController < BaseController
 
     @popular_posts = @user.posts.order("view_count DESC").limit(10).all
     
-    @rss_title = "#{configatron.community_name}: #{@user.login}'s posts"
+    @rss_title = "#{configatron.community_name}: #{@user.display_name}'s posts"
     @rss_url = user_posts_path(@user,:format => :rss)
         
     respond_to do |format|
@@ -60,7 +60,7 @@ class PostsController < BaseController
   # GET /posts/1
   # GET /posts/1.xml
   def show
-    @rss_title = "#{configatron.community_name}: #{@user.login}'s posts"
+    @rss_title = "#{configatron.community_name}: #{@user.display_name}'s posts"
     @rss_url = user_posts_path(@user,:format => :rss)
     
     @post = CommunityEngine::Post.unscoped.find(params[:id])

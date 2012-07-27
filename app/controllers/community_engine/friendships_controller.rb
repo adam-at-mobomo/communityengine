@@ -100,10 +100,10 @@ class FriendshipsController < BaseController
       if @friendship.save && reverse_friendship.save
         CommunityEngine::UserNotifier.friendship_request(@friendship).deliver if @friendship.friend.notify_friend_requests?
         format.html {
-          flash[:notice] = :friendship_requested.l_with_args(:friend => @friendship.friend.login) 
+          flash[:notice] = :friendship_requested.l_with_args(:friend => @friendship.friend.display_name) 
           redirect_to accepted_user_friendships_path(@user)
         }
-        format.js { render( :inline => :requested_friendship_with.l+" #{@friendship.friend.login}." ) }        
+        format.js { render( :inline => :requested_friendship_with.l+" #{@friendship.friend.display_name}." ) }        
       else
         flash.now[:error] = :friendship_could_not_be_created.l
         format.html { redirect_to user_friendships_path(@user) }
