@@ -40,13 +40,13 @@ class Comment < ActiveRecord::Base
     type = self.commentable_type.demodulize.underscore
     case type
       when 'user'
-        commentable.login
+        commentable.display_name
       when 'post'
         commentable.title
       when 'clipping'
-        commentable.description || "Clipping from #{commentable.user.login}"
+        commentable.description || "Clipping from #{commentable.user.display_name}"
       when 'photo'
-        commentable.description || "Photo from #{commentable.user.login}"
+        commentable.description || "Photo from #{commentable.user.display_name}"
       else 
         commentable.class.model_name.human
     end
@@ -57,7 +57,7 @@ class Comment < ActiveRecord::Base
   end
   
   def username
-    user ? user.login : (author_name.blank? ? 'Anonymous' : author_name)
+    user ? user.display_name : (author_name.blank? ? 'Anonymous' : author_name)
   end
   
   def self.find_recent(options = {:limit => 5})

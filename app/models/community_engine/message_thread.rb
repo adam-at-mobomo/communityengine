@@ -12,7 +12,7 @@ class MessageThread < ActiveRecord::Base
   end
   
   def creator_name
-    parent_message.sender.eql?(recipient) ? 'Me' : parent_message.sender.login
+    parent_message.sender.eql?(recipient) ? 'Me' : parent_message.sender.display_name
   end
   
   def self.for(message, user)

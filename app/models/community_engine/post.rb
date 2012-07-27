@@ -154,7 +154,7 @@ class Post < ActiveRecord::Base
     else    
       emails = email_addresses.split(",").collect{|email| email.strip }.uniq 
       emails.each{|email|
-        CommunityEngine::UserNotifier.post_recommendation((user ? user.login : 'Someone'), email, self, message, user).deliver
+        CommunityEngine::UserNotifier.post_recommendation((user ? user.display_name : 'Someone'), email, self, message, user).deliver
       }
       self.increment(:emailed_count).save    
     end

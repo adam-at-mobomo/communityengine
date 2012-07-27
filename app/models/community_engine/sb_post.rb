@@ -50,7 +50,7 @@ class SbPost < ActiveRecord::Base
   end
     
   def username
-    user ? user.login : (author_name.blank? ? :anonymous.l : author_name)
+    user ? user.display_name : (author_name.blank? ? :anonymous.l : author_name)
   end
   
   def check_spam

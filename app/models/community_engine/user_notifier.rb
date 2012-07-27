@@ -11,7 +11,7 @@ class UserNotifier < ActionMailer::Base
   def signup_invitation(email, user, message)
 
     @recipients  = "#{email}"
-    @subject     = "#{:would_like_you_to_join.l(:user => user.login, :site => configatron.community_name)}"
+    @subject     = "#{:would_like_you_to_join.l(:user => user.display_name, :site => configatron.community_name)}"
     @sent_on     = Time.now
     @user = user
     @url  = signup_by_id_url(user, user.invite_code)
@@ -22,7 +22,7 @@ class UserNotifier < ActionMailer::Base
 
   def friendship_request(friendship)
     setup_email(friendship.friend)
-    @subject     += "#{:would_like_to_be_friends_with_you_on.l(:user => friendship.user.login, :site => configatron.community_name)}"
+    @subject     += "#{:would_like_to_be_friends_with_you_on.l(:user => friendship.user.display_name, :site => configatron.community_name)}"
     @url  = pending_user_friendships_url(friendship.friend)
     @requester = friendship.user
     mail(:to => @recipients, :subject => @subject)    
@@ -86,7 +86,7 @@ class UserNotifier < ActionMailer::Base
   
   def message_notification(message)
     setup_email(message.recipient)
-    @subject     += "#{:sent_you_a_private_message.l(:user => message.sender.login)}"
+    @subject     += "#{:sent_you_a_private_message.l(:user => message.sender.display_name)}"
     @message = message
     mail(:to => @recipients, :subject => @subject)    
   end
