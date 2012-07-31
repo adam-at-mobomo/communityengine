@@ -105,7 +105,7 @@ module ::CommunityEngine
         CommunityEngine.user_class.send :has_many,    :clippings, :class_name => 'CommunityEngine::Clipping', :order => "created_at desc", :dependent => :destroy
         CommunityEngine.user_class.send :has_many,    :favorites, :class_name => 'CommunityEngine::Favorite', :order => "created_at desc", :dependent => :destroy
         
-        CommunityEngine.user_class.send :accepts_nested_attributes_for, :avatar
+        CommunityEngine.user_class.send :accepts_nested_attributes_for, :avatar, :allow_destroy => true, :reject_if => lambda { |a| a[:photo].blank? }
 
   #validation
         CommunityEngine.user_class.send :validates_presence_of,     :metro_area, :if => Proc.new { |user| user.state }
