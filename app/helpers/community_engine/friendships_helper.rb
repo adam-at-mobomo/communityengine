@@ -2,11 +2,11 @@ module CommunityEngine::FriendshipsHelper
 
   def friendship_control_links(friendship)
     html = case friendship.friendship_status_id
-      when FriendshipStatus[:pending].id
+      when CommunityEngine::FriendshipStatus[:pending].id
         "#{(link_to(:accept.l, accept_user_friendship_path(friendship.user, friendship), :method => :put, :class => 'button positive') unless friendship.initiator?)} #{link_to(:deny.l, deny_user_friendship_path(friendship.user, friendship), :method => :put, :class => 'button negative')}"
-      when FriendshipStatus[:accepted].id
+      when CommunityEngine::FriendshipStatus[:accepted].id
         "#{link_to(:remove_this_friend.l, deny_user_friendship_path(friendship.user, friendship), :method => :put, :class => 'button negative')}"
-      when FriendshipStatus[:denied].id
+      when CommunityEngine::FriendshipStatus[:denied].id
     		"#{link_to(:accept_this_request.l, accept_user_friendship_path(friendship.user, friendship), :method => :put, :class => 'button positive')}"
     end
     
