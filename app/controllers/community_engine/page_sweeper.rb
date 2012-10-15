@@ -23,7 +23,7 @@ class PageSweeper < ActionController::Caching::Sweeper
     expire_action(:controller => 'community_engine/base', :action => 'site_index')
 
     # Expire the footer content
-    expire_action(:controller => 'communitye_engine/base', :action => 'footer_content')
+    expire_action(:controller => 'community_engine/base', :action => 'footer_content')
     
     # Also expire the sitemap
     expire_action(:controller => 'community_engine/sitemap', :action => 'index')
