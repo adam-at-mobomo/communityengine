@@ -31,7 +31,7 @@
 
 -content_for :head_css
 -content_for :end_javascript do
-  = javascript_include_tag "cropper"
+  = javascript_include_tag "community_engine/cropper"
   :javascript
     function onEndCrop( coords, dimensions ) {
       $( 'crop_x' ).value = coords.x1;
