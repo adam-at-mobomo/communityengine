@@ -4,13 +4,14 @@ module CommunityEngine::PostsHelper
   # Facebook seems to ignore them (it uses title and description meta tags
   # instead).  MySpace, however, only works if you set these attributes.
   def sharethis_options(post)
-    content_tag :script, :type=>"text/javascript" do   
-      js = <<-eos
+		js = <<-eos
 	SHARETHIS.addEntry({
 		title:'#{escape_javascript(post.title)}',
                 content:'#{escape_javascript(truncate_words(post.post, 75, '...' ))}'
 	}, {button:true});
-      eos
+		eos
+		
+    javascript_tag do   
       js.html_safe
     end
   end
