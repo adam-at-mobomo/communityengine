@@ -25,7 +25,9 @@
             %li.email
               %a{:href=>"#", :title=>:email_this_story_to_friends.l}= :email_to_friends.l
             %li.share
-              %script{:type=>"text/javascript", :src=>"https://ws.sharethis.com/widget/?tabs=web&amp;charset=utf-8&amp;style=default&amp;publisher=4488bdef-d776-4c80-93e1-ac1fb8359971&amp;linkfg=%23131358&amp;button=false"}
+              =javascript_include_tag 'https://ws.sharethis.com/button/buttons.js'
+              =javascript_tag do
+                stLight.options({ tabs:'web', publisher:'4488bdef-d776-4c80-93e1-ac1fb8359971', charset:'utf-8', style:'default', linkfg:'%23131358', button:false });
               =sharethis_options(@post)
             -if @is_current_user || admin? || moderator?
               %li.edit= link_to :edit.l, edit_user_post_path(@post.user, @post)
