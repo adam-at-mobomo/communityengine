@@ -7,7 +7,7 @@ module CommunityEngine::PostsHelper
 		js = <<-eos
 	SHARETHIS.addEntry({
 		title:'#{escape_javascript(post.title)}',
-                content:'#{escape_javascript(truncate_words(post.post, 75, '...' ))}'
+		summary:'#{escape_javascript(truncate_words(post.post, 75, '...' ))}'
 	}, {button:true});
 		eos
 		
