@@ -4,5 +4,5 @@
   = javascript_include_tag 'community_engine/forum'
 
 -if show_footer_content?        
-  :javascript
-    #{remote_function(:update => "footer_content", :url => { :controller => 'community_engine/base', :action => 'footer_content' })}
+  = javascript_tag do
+    = remote_function(:update => "footer_content", :url => { :controller => 'community_engine/base', :action => 'footer_content' })
