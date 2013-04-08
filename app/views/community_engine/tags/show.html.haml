@@ -61,5 +61,5 @@
             %img.polaroid.clipping{"src"=>"#{h clipping.image_uri}", "style"=>"width:108px"}
         %h6.all= link_to :all_clippings_tagged.l(:tag_name => @tags_raw), show_tag_type_path(:id => @tags_raw, :type => 'Clipping') unless params[:type]
 
-    - if @pages && !params[:type].eql?('CommunityEngine::Post')
+    - if @pages && !params[:type].eql?('Post')
       = paginate @pages
