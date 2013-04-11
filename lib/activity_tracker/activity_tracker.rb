@@ -1,3 +1,4 @@
+require File.join(File.dirname('__FILE__'), 'activity')
 module ActivityTracker # :nodoc:
 
   def self.included(base) # :nodoc:
