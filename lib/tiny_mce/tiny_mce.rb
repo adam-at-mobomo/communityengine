@@ -1,9 +1,9 @@
 # Require all the necessary files to run TinyMCE
-require 'tiny_mce/base'
-require 'tiny_mce/exceptions'
-require 'tiny_mce/configuration'
-require 'tiny_mce/spell_checker'
-require 'tiny_mce/helpers'
+require File.join(File.dirname(__FILE__), 'tiny_mce', 'base')
+require File.join(File.dirname(__FILE__), 'tiny_mce', 'exceptions')
+require File.join(File.dirname(__FILE__), 'tiny_mce', 'configuration')
+require File.join(File.dirname(__FILE__), 'tiny_mce', 'spell_checker')
+require File.join(File.dirname(__FILE__), 'tiny_mce', 'helpers')
 
 module TinyMCE
   def self.initialize
