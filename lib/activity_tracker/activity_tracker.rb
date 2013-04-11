@@ -1,4 +1,4 @@
-require File.join(File.dirname('__FILE__'), 'activity')
+require CommunityEngine::Engine.config.root.join('lib', 'activity_tracker', 'activity')
 module ActivityTracker # :nodoc:
 
   def self.included(base) # :nodoc:
