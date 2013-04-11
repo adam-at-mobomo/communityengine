@@ -53,5 +53,6 @@ Gem::Specification.new do |s|
   s.add_dependency(%q<power_enum>, [">= 0.6.2"])
   s.add_dependency(%q<acts_as_list>, [">= 0"])
   s.add_dependency(%q<prototype_legacy_helper>, ["0.0.0"])
+  s.add_dependency(%q<respond_to_parent>, [">= 0"])
 end
 
